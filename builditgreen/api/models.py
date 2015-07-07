@@ -19,7 +19,7 @@ class Project(models.Model):
     total_property_area = models.IntegerField(null=True)
     project_types = models.CharField(max_length=255, null=True)
     registration_date = models.DateField()
-    state = models.ForeignKey(State)
+    us_state = models.ForeignKey(State)
 
 
 class State(models.Model):
