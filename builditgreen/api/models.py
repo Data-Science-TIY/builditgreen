@@ -1,6 +1,12 @@
 from django.db import models
 
 # Create your models here.
+class State(models.Model):
+    abbreviation = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    population = models.IntegerField(null=True)
+
+
 class Project(models.Model):
     id = models.IntegerField(primary_key=True)
     is_confidential = models.CharField(max_length=255)
@@ -21,10 +27,5 @@ class Project(models.Model):
     registration_date = models.DateField()
     us_state = models.ForeignKey(State)
 
-
-class State(models.Model):
-    abbreviation = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    population = models.IntegerField(null=True)
 
 
