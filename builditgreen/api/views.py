@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from rest_framework import viewsets, permissions, generics
+from .models import Project, State
+from .serializers import StateMapSerializer, ProjectSerializer
 
-# Create your views here.
+
+class StateMapListView(generics.ListAPIView):
+    serializer_class = StateMapSerializer
+    queryset = State.objects.all()
