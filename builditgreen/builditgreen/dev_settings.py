@@ -1,4 +1,3 @@
-__author__ = 'joshuahiggins'
 from .settings import *
 
 DATABASES = {
@@ -9,7 +8,7 @@ DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
        'NAME': 'builditgreen',
-       'USER': 'josh',
+       'USER': 'tripp',
        'PASSWORD': '',
        'HOST': ''
    }
