@@ -1,4 +1,4 @@
-from api.models import State, Project
+from api.models import State, Project, BuildingPermit, HousingPermit
 import csv
 import time
 from datetime import datetime
@@ -119,3 +119,34 @@ def make_projects():
                 project.registration_date = fix_time(row[18].split(" ")[0])
                 project.save()
                 print(project.name)
+
+
+col_headers = ["", "AL", "AL", "AK", "AK", "AZ", "AZ","AR", "AR", "CA", "CA", "CO", "CO", "CT", "CT" ,"DE", "DE",
+               "DC", "DC", "FL", "FL", "GA", "GA", "HI", "HI", "ID", "ID", "IL", "IL", "IN", "IN", "IA", "IA", "KS",
+               "KS", "KY", "KY", "LA", "LA", "ME", "ME", "MD", "MD", "MA", "MA", "MI", "MI", "MN", "MN", "MS", "MS",
+               "MO", "MO", "MT", "MT", "NE", "NE", "NV", "NV", "NH", "NH", "NJ", "NJ", "NM", "NM", "NY", "NY", "NC",
+               "NC", "ND", "ND", "OH", "OH", "OK", "OK", "OR", "OR", "PA", "PA", "PR", "PR", "RI", "RI", "SC", "SC",
+               "SD", "SD", "TN", "TN", "TX", "TX", "UT", "UT", "VT", "VT", "VA", "VA", "VI", "VI", "WA", "WA", "WV",
+               "WV", "WI", "WI", "WY", "WY"]
+
+def make_state_building_permits():
+    with open("states_building_permits.csv") as infile:
+        reader = csv.reader(infile)
+        for row in reader:
+            for i in len(row):
+                if i == 0:
+                    print(row[0])
+
+                elif i % 2 != 0:
+                    building_permit = BuildingPermit()
+                    building_permit.state_id = State.objects.get(abbreviation = col_headers[i])
+                    building_permit.year = row[0]
+                    building_permit.total = row[i]
+
+                else:
+                    housing_permit = HousingPermit()
+                    housing_permit.state_id = State.objects.get(abbreviation = col_headers[i])
+                    housing_permit.year = row[0]
+                    housing_permit.total = row[i]
+
+

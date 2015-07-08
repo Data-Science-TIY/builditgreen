@@ -7,6 +7,7 @@ class State(models.Model):
     population = models.IntegerField(null=True)
 
 
+
 class Project(models.Model):
     id = models.IntegerField(primary_key=True)
     is_confidential = models.CharField(max_length=255)
@@ -25,6 +26,25 @@ class Project(models.Model):
     project_types = models.CharField(max_length=255, null=True)
     registration_date = models.DateField(null=True)
     state_id = models.ForeignKey(State)
+
+
+class BuildingPermit(models.Model):
+    state_id = models.ForeignKey(State)
+    year = models.IntegerField(null=True)
+    total = models.IntegerField(null=True)
+
+
+class HousingPermit(models.Model):
+    state_id = models.ForeignKey(State)
+    year = models.IntegerField(null=True)
+    total = models.IntegerField(null=True)
+
+
+class Population(models.Model):
+    state_id = models.ForeignKey(State)
+    year = models.IntegerField(null=True)
+    total = models.IntegerField(null=True)
+
 
 
 

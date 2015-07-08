@@ -74,3 +74,4 @@ target/
 
 node_modules
 PublicLEEDProjectDirectory.csv
+states_building_permits.csv

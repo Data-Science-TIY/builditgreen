@@ -73,35 +73,67 @@ class StateMapSerializer(serializers.ModelSerializer):
         return obj.project_set.filter(points_achieved__gte=1).count()
 
     def get_average_of_scored_leed_projects_all(self, obj):
-        return obj.project_set.filter(points_achieved__gte=1).aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(points_achieved__gte=1).aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(points_achieved__gte=1).aggregate(Avg('points_achieved'))\
+                                 ['points_achieved__avg']))
 
     def get_average_of_leed_single_family_home_projects(self, obj):
-        return obj.project_set.filter(leed_version="LEED For Homes Single Family")\
-            .aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(leed_version="LEED For Homes Single Family")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(leed_version="LEED For Homes Single Family")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']))
 
     def get_average_of_leed_nc_v2009(self, obj):
-        return obj.project_set.filter(leed_version="LEED-NC v2009")\
-            .aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(leed_version="LEED-NC v2009")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(leed_version="LEED-NC v2009")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']))
 
     def get_average_of_leed_nc_2_2(self, obj):
-        return obj.project_set.filter(leed_version="LEED-NC 2.2")\
-            .aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(leed_version="LEED-NC 2.2")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(leed_version="LEED-NC 2.2")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']))
 
     def get_average_of_leed_nc_2_1(self, obj):
-        return obj.project_set.filter(leed_version="LEED-NC 2.1")\
-            .aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(leed_version="LEED-NC 2.1")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(leed_version="LEED-NC 2.1")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']))
 
     def get_average_of_leed_for_schools_2009(self, obj):
-        return obj.project_set.filter(leed_version="LEED FOR SCHOOLS v2009")\
-            .aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(leed_version="LEED FOR SCHOOLS v2009")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(leed_version="LEED FOR SCHOOLS v2009")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']))
 
     def get_average_of_leed_for_homes_multi_family_low_rise(self, obj):
-        return obj.project_set.filter(leed_version="LEED For Homes Multi Family Low-Rise")\
-            .aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(leed_version="LEED For Homes Multi Family Low-Rise")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(leed_version="LEED For Homes Multi Family Low-Rise")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']))
 
     def get_average_of_leed_for_homes_multi_family_mid_rise(self, obj):
-        return obj.project_set.filter(leed_version="LEED For Homes Multi Family Mid-Rise")\
-            .aggregate(Avg('points_achieved'))['points_achieved__avg']
+        if not obj.project_set.filter(leed_version="LEED For Homes Multi Family Mid-Rise")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']:
+            return 0
+        else:
+            return int(round(obj.project_set.filter(leed_version="LEED For Homes Multi Family Mid-Rise")\
+                .aggregate(Avg('points_achieved'))['points_achieved__avg']))
 
     def get_number_platinum(self, obj):
         return obj.project_set.filter(certification_level="Platinum").count()
