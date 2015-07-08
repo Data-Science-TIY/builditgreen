@@ -91,6 +91,7 @@ def make_states():
 
 
 def make_projects():
+    #takes bad csv and converts to usable models
     with open("PublicLEEDProjectDirectory.csv", encoding='ISO-8859-1') as infile:
         reader = csv.reader(infile)
         for row in reader:
