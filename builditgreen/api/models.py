@@ -13,7 +13,6 @@ class Project(models.Model):
     name = models.CharField(max_length=255, null=True)
     street = models.CharField(max_length=255, null=True)
     city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=10)
     country = models.CharField(max_length=255)
     leed_version = models.CharField(max_length=255)
@@ -25,7 +24,9 @@ class Project(models.Model):
     total_property_area = models.IntegerField(null=True)
     project_types = models.CharField(max_length=255, null=True)
     registration_date = models.DateField()
-    us_state = models.ForeignKey(State)
+    state = models.ForeignKey(State)
+
+
 
 
 
