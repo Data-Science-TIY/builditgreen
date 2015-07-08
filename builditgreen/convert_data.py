@@ -133,7 +133,7 @@ def make_state_building_permits():
     with open("states_building_permits.csv") as infile:
         reader = csv.reader(infile)
         for row in reader:
-            for i in len(row):
+            for i in range(len(row)):
                 if i == 0:
                     print(row[0])
 
@@ -142,11 +142,13 @@ def make_state_building_permits():
                     building_permit.state_id = State.objects.get(abbreviation = col_headers[i])
                     building_permit.year = row[0]
                     building_permit.total = row[i]
+                    building_permit.save()
 
                 else:
                     housing_permit = HousingPermit()
                     housing_permit.state_id = State.objects.get(abbreviation = col_headers[i])
                     housing_permit.year = row[0]
                     housing_permit.total = row[i]
+                    housing_permit.save()
 
 

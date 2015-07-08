@@ -4,8 +4,6 @@ from django.db import models
 class State(models.Model):
     abbreviation = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
-    population = models.IntegerField(null=True)
-
 
 
 class Project(models.Model):
