@@ -6,6 +6,17 @@ import re
 import pickle
 import csv
 
+import sqlite3
+
+def setup_db():
+    conn = sqlite3.connect('db.sqlite')
+    c = conn.cursor()
+    # c.execute("""CREATE TABLE "api_project" ("id" integer NOT NULL PRIMARY KEY, "is_confidential" varchar(255) NOT NULL, "name" varchar(255) NULL, "street" varchar(255) NULL, "city" varchar(255) NULL, "zip_code" varchar(255) NULL, "country" varchar(255) NULL, "leed_version" varchar(255) NULL, "points_achieved" integer NULL, "certification_level" varchar(255) NULL, "certification_date" date NULL, "owner_types" varchar(255) NULL, "gross_square_foot" bigint NULL, "total_property_area" bigint NULL, "project_types" varchar(255) NULL, "registration_date" date NULL);
+    # """)
+    c.execute('CREATE TABLE "points_data" ("id" integer NOT NULL PRIMARY KEY, "points_achieved")')
+    conn.commit()
+    conn.close()
+
 
 def pull_score_card(id):
     scores_dict = {}
@@ -22,7 +33,7 @@ def pull_score_card(id):
     return scores_dict
 
 def scraper():
-    with open("public_project_ids.csv", encoding='ISO-8859-1') as infile:
+    with open('public_project_ids.csv', encoding='ISO-8859-1') as infile:
         ids = csv.reader(infile)
         scores = []
         for id in ids:

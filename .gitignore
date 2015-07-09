@@ -81,3 +81,4 @@ dev_settings
 .DS_Store
 public_project_ids.csv
 public_scores.pickle
+db.sqlite
