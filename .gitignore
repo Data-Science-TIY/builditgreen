@@ -77,5 +77,6 @@ PublicLEEDProjectDirectory.csv
 states_building_permits.csv
 .envrc
 .direnv
+green_backup.sql
 
 
