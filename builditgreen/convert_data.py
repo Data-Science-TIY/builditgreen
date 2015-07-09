@@ -150,5 +150,16 @@ def make_state_building_permits():
                     housing_permit.year = row[0]
                     housing_permit.total = row[i]
                     housing_permit.save()
-
+#
+#
+#
+# def make_project_arrays():
+# not sure if we will implement -- mark needs postgres
+#     with open("PublicLEEDProjectDirectory.csv", encoding='ISO-8859-1') as infile:
+#         reader = csv.reader(infile)
+#         for row in reader:
+#             if row[5] in states_list:
+#                 project = Project.objects.get(id=row[0])
+#                 project.project_types_list = row[16].split(",")
+#                 project.save()
 
