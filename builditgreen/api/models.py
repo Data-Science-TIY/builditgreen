@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class State(models.Model):
@@ -24,6 +25,8 @@ class Project(models.Model):
     project_types = models.CharField(max_length=255, null=True)
     registration_date = models.DateField(null=True)
     state_id = models.ForeignKey(State)
+    #project_types_list = ArrayField(models.CharField(max_length=255), blank=True)
+    #not sure if we need blank
 
 
 class BuildingPermit(models.Model):
