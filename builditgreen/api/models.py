@@ -46,8 +46,3 @@ class Population(models.Model):
     year = models.IntegerField(null=True)
     total = models.IntegerField(null=True)
 
-
-
-
-
-
