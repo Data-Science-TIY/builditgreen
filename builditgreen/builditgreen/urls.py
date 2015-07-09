@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', TemplateView.as_view(template_name="index.html")),
     url(r'^api/us/$', api_views.StateMapListView.as_view(), name="state_map"),
-    url(r'^api/trends/$', api_views.TrendsOverview.as_view(), name="trends_overview"),
+    url(r'^api/trends/$', api_views.AllTrends.as_view(), name="all_trends"),
 ]
