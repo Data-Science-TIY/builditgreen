@@ -6,6 +6,18 @@ class ProjectSerializer(serializers.ModelSerializer):
     pass
 
 
+# class GoldTrendSerializer(serializers.ModelSerializer):
+#     year_2000 = serializers.SerializerMethodField()
+#
+#     class Meta:
+#         model = Project
+#         fields = ("year_2000")
+#
+#     def get_year_2000(self, obj):
+#         pass
+#
+# idea = create model for each year, serialize year with searches on year
+
 class StateMapSerializer(serializers.ModelSerializer):
     number_of_projects = serializers.SerializerMethodField()
     number_of_public_projects = serializers.SerializerMethodField()
