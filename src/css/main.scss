@@ -1,11 +1,43 @@
 @import 'reset';
 @import 'material';
 
-.land {
-  fill: #222;
+body {
+  background-color: #FEFFFE;
 }
 
-.state-boundary {
-  fill: none;
-  stroke: #fff;
+.page-content {
+  margin: 0 auto;
+}
+
+.section-header {
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+
+.chart-container {
+  margin: 0 auto;
+  padding: 0.5em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mdl-layout__header-row .mdl-navigation__link {
+  color: #FEFFFE;
+}
+
+.mdl-layout__header-row > * {
+  color: #FEFFFE;
+}
+
+.material-icons {
+  color: #FEFFFE;
+}
+
+svg {
+  display: block;
+  margin: 0 auto;
 }
