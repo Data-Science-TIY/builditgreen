@@ -9,7 +9,7 @@ import json
 import sqlite3
 
 def setup_db():
-   conn = sqlite3.connect('scrape_test.sqlite3')
+   conn = sqlite3.connect('scraping_test.sqlite3')
    c = conn.cursor()
    # c.execute("""CREATE TABLE "api_project" ("id" integer NOT NULL PRIMARY KEY, "is_confidential" varchar(255) NOT NULL, "name" varchar(255) NULL, "street" varchar(255) NULL, "city" varchar(255) NULL, "zip_code" varchar(255) NULL, "country" varchar(255) NULL, "leed_version" varchar(255) NULL, "points_achieved" integer NULL, "certification_level" varchar(255) NULL, "certification_date" date NULL, "owner_types" varchar(255) NULL, "gross_square_foot" bigint NULL, "total_property_area" bigint NULL, "project_types" varchar(255) NULL, "registration_date" date NULL);
    # """)
@@ -39,7 +39,7 @@ def scraper():
            print(id)
            one_score = pull_score_card(id[0])
            one_score_key, one_score_value = list(one_score.items())[0]
-           conn = sqlite3.connect('scrape_test.sqlite3')
+           conn = sqlite3.connect('scraping_test.sqlite3')
            c = conn.cursor()
            c.execute("INSERT OR IGNORE INTO points_data (id, points_achieved) VALUES (?, ?)",
                      (one_score_key, json.dumps(one_score_value)))

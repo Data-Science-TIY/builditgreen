@@ -85,7 +85,7 @@ DATABASES = {
        },
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'builditgreen',
+       'NAME': 'builditgreentest',
        'USER': 'josh',
        'PASSWORD': '',
        'HOST': ''
