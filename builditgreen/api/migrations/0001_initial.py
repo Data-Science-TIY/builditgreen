@@ -11,9 +11,33 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='BuildingPermit',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('year', models.IntegerField(null=True)),
+                ('total', models.IntegerField(null=True)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='HousingPermit',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('year', models.IntegerField(null=True)),
+                ('total', models.IntegerField(null=True)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Population',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('year', models.IntegerField(null=True)),
+                ('total', models.IntegerField(null=True)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Project',
             fields=[
-                ('id', models.IntegerField(serialize=False, primary_key=True)),
+                ('id', models.IntegerField(primary_key=True, serialize=False)),
                 ('is_confidential', models.CharField(max_length=255)),
                 ('name', models.CharField(null=True, max_length=255)),
                 ('street', models.CharField(null=True, max_length=255)),
@@ -34,14 +58,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='State',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('abbreviation', models.CharField(max_length=255)),
                 ('name', models.CharField(max_length=255)),
-                ('population', models.IntegerField(null=True)),
             ],
         ),
         migrations.AddField(
             model_name='project',
+            name='state_id',
+            field=models.ForeignKey(to='api.State'),
+        ),
+        migrations.AddField(
+            model_name='population',
+            name='state_id',
+            field=models.ForeignKey(to='api.State'),
+        ),
+        migrations.AddField(
+            model_name='housingpermit',
+            name='state_id',
+            field=models.ForeignKey(to='api.State'),
+        ),
+        migrations.AddField(
+            model_name='buildingpermit',
             name='state_id',
             field=models.ForeignKey(to='api.State'),
         ),

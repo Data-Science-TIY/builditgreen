@@ -90,7 +90,7 @@ gulp.task('js', function () {
   try {
     stream = browserify('./src/js/init.js', { debug: true })
     .transform('bulkify')
-    .transform({ global: true }, 'uglifyify')
+    //.transform({ global: true }, 'uglifyify')
     .external('views')
     .external('jquery')
     .external('underscore')
@@ -114,7 +114,7 @@ gulp.task('js', function () {
 // Bundle vendor scripts (jQuery, Backbone, etc) into one script (vendor.js)
 gulp.task('js:vendor', function () {
   return browserify({ debug: true })
-    .transform({ global: true }, 'uglifyify')
+    //.transform({ global: true }, 'uglifyify')
     .require('jquery')
     .require('underscore')
     .require('backbone')

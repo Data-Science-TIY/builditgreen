@@ -1,4 +1,3 @@
-__author__ = 'joshuahiggins'
 from .settings import *
 
 DATABASES = {
