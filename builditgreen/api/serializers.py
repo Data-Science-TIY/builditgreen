@@ -44,10 +44,13 @@ class StateMapSerializer(serializers.ModelSerializer):
     number_silver = serializers.SerializerMethodField()
     number_platinum = serializers.SerializerMethodField()
     number_certified = serializers.SerializerMethodField()
+    number_of_projects_population_corrected = serializers.SerializerMethodField()
+
 
     class Meta:
         model = State
-        fields = ('abbreviation', 'name', 'number_of_projects', 'number_of_public_projects',
+        fields = ('abbreviation', 'name', 'population' ,'number_of_projects',
+                  'number_of_projects_population_corrected','number_of_public_projects',
                   'number_of_leed_single_family_home_projects', 'number_of_leed_nc_v2009',
                   'number_of_leed_nc_2_2', 'number_of_leed_nc_2_1', 'number_of_leed_for_schools_2009',
                   'number_of_leed_for_homes_multi_family_mid_rise', 'number_of_leed_for_homes_multi_family_low_rise',
@@ -59,6 +62,12 @@ class StateMapSerializer(serializers.ModelSerializer):
 
     def get_number_of_projects(self, obj):
         return obj.project_set.all().count()
+
+    def get_number_of_projects_population_corrected(self, obj):
+        if obj.population != 0:
+            return (obj.project_set.all().count()/obj.population*10000)
+        else:
+            return 0
 
     def get_number_of_public_projects(self, obj):
         return obj.project_set.filter(is_confidential="No").count()

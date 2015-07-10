@@ -5,6 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 class State(models.Model):
     abbreviation = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
+    population = models.IntegerField(default=0)
 
 
 class Project(models.Model):
@@ -36,12 +37,6 @@ class BuildingPermit(models.Model):
 
 
 class HousingPermit(models.Model):
-    state_id = models.ForeignKey(State)
-    year = models.IntegerField(null=True)
-    total = models.IntegerField(null=True)
-
-
-class Population(models.Model):
     state_id = models.ForeignKey(State)
     year = models.IntegerField(null=True)
     total = models.IntegerField(null=True)

@@ -150,6 +150,16 @@ def make_state_building_permits():
                     housing_permit.year = row[0]
                     housing_permit.total = row[i]
                     housing_permit.save()
+
+
+def make_population():
+    with open("state_pop.csv") as infile:
+        reader = csv.reader(infile)
+        for row in reader:
+            state = State.objects.get(abbreviation = row[0])
+            state.population = row[1]
+            state.save()
+
 #
 #
 #
