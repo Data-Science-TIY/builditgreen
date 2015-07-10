@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions, generics
-from .models import Project, State
-from .serializers import StateMapSerializer, ProjectSerializer
+from .models import Project, State, Score2009, ScoreTwoPointOne, ScoreTwoPointTwo
+from .serializers import StateMapSerializer, ProjectSerializer, ScoreTwoPointOneSerializer, ScoreTwoPointTwoSerializer, \
+    Score2009Serializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import datetime
@@ -31,6 +32,22 @@ class Project2Point1ListView(generics.ListAPIView):
 class Project2Point2ListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC 2.2")
+
+
+class Score2009ListView(generics.ListAPIView):
+    serializer_class = Score2009Serializer
+    queryset = Score2009.objects.all()
+
+
+class ScoreTwoPointOneListView(generics.ListAPIView):
+    serializer_class = ScoreTwoPointOneSerializer
+    queryset = ScoreTwoPointOne.objects.all()
+
+
+class ScoreTwoPointTwoListView(generics.ListAPIView):
+    serializer_class = ScoreTwoPointTwoSerializer
+    queryset = ScoreTwoPointTwo.objects.all()
+
 
 
 class AllTrends(APIView):

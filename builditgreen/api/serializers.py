@@ -1,12 +1,27 @@
 from rest_framework import serializers
-from .models import Project, State
+from .models import Project, State, ScoreTwoPointOne, ScoreTwoPointTwo, Score2009
 from django.db.models import Avg
 
 class ProjectSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Project
         fields = ('certification_date', 'gross_square_foot', 'points_achieved', 'leed_version', 'certification_level')
+
+
+class ScoreTwoPointOneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScoreTwoPointOne
+
+
+class ScoreTwoPointTwoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScoreTwoPointTwo
+
+
+class Score2009Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Score2009
+
 
 
 # class GoldTrendSerializer(serializers.ModelSerializer):
@@ -65,7 +80,7 @@ class StateMapSerializer(serializers.ModelSerializer):
 
     def get_number_of_projects_population_corrected(self, obj):
         if obj.population != 0:
-            return (obj.project_set.all().count()/obj.population*10000)
+            return int(obj.project_set.all().count()/obj.population*100000)
         else:
             return 0
 

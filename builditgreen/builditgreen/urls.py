@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^api/projects/2009/$', api_views.Project2009ListView.as_view(), name="projects_2009"),
     url(r'^api/projects/2-2/$', api_views.Project2Point2ListView.as_view(), name="projects_2_2"),
     url(r'^api/projects/2-1/$', api_views.Project2Point1ListView.as_view(), name="projects_2_1"),
+    url(r'^api/score2009/$', api_views.Score2009ListView.as_view(), name="score_2009"),
+    url(r'^api/score2-2/$', api_views.ScoreTwoPointTwoListView.as_view(), name="score_2_2"),
+    url(r'^api/score2-1/$', api_views.ScoreTwoPointOneListView.as_view(), name="score_2_1"),
 ]
