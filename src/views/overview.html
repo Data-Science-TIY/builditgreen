@@ -1,14 +1,15 @@
 <div class="mdl-grid">
-  <h2 class="section-header">Overview</h2>
+  <h2 class="section-header">LEED Implementation by State</h2>
   <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
-    <select name="descriptor" id="dropdown">
-      <option value="number_of_projects" selected="selected">LEED Projects</option>
-      <option value="number_certified">Certified Projects</option>
-      <option value="number_gold">Gold Level Projects</option>
-      <option value="number_silver">Silver Level Projects</option>
-      <option value="number_platinum">Platinum Level Projects</option>
-      <option value="average_of_scored_leed_projects_all">Average LEED Score</option>
-    </select>
+    <div name="descriptor" id="dropdown">
+      <h5>Choose A Trend</h5>
+      <div value="number_of_projects" checked="checked">Total LEED Projects</div>
+      <div value="number_certified">Certified Projects</div>
+      <div value="number_gold">Gold Level Projects</div>
+      <div value="number_silver">Silver Level Projects</div>
+      <div value="number_platinum">Platinum Level Projects</div>
+      <div value="number_of_projects_population_corrected">Total Projects Per 10K Residents</div>
+    </div>
     <div class="map"></div>
   </div>
   <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
