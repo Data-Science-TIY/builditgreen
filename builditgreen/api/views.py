@@ -7,9 +7,30 @@ from rest_framework.response import Response
 from datetime import datetime
 from datetime import date
 
+
 class StateMapListView(generics.ListAPIView):
     serializer_class = StateMapSerializer
     queryset = State.objects.all()
+
+
+class ProjectListView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.filter(points_achieved__gte=1)
+
+
+class Project2009ListView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC v2009")
+
+
+class Project2Point1ListView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC 2.1")
+
+
+class Project2Point2ListView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC 2.2")
 
 
 class AllTrends(APIView):

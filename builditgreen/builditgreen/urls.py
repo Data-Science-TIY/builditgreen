@@ -23,4 +23,8 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name="index.html")),
     url(r'^api/us/$', api_views.StateMapListView.as_view(), name="state_map"),
     url(r'^api/trends/$', api_views.AllTrends.as_view(), name="all_trends"),
+    url(r'^api/projects/$', api_views.ProjectListView.as_view(), name="all_projects"),
+    url(r'^api/projects/2009/$', api_views.Project2009ListView.as_view(), name="projects_2009"),
+    url(r'^api/projects/2-2/$', api_views.Project2Point2ListView.as_view(), name="projects_2_2"),
+    url(r'^api/projects/2-1/$', api_views.Project2Point1ListView.as_view(), name="projects_2_1"),
 ]
