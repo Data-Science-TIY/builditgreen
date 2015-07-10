@@ -9586,6 +9586,316 @@
 })();
 
 },{}],3:[function(require,module,exports){
+/*
+RainbowVis-JS 
+Released under Eclipse Public License - v 1.0
+*/
+
+function Rainbow()
+{
+	"use strict";
+	var gradients = null;
+	var minNum = 0;
+	var maxNum = 100;
+	var colours = ['ff0000', 'ffff00', '00ff00', '0000ff']; 
+	setColours(colours);
+	
+	function setColours (spectrum) 
+	{
+		if (spectrum.length < 2) {
+			throw new Error('Rainbow must have two or more colours.');
+		} else {
+			var increment = (maxNum - minNum)/(spectrum.length - 1);
+			var firstGradient = new ColourGradient();
+			firstGradient.setGradient(spectrum[0], spectrum[1]);
+			firstGradient.setNumberRange(minNum, minNum + increment);
+			gradients = [ firstGradient ];
+			
+			for (var i = 1; i < spectrum.length - 1; i++) {
+				var colourGradient = new ColourGradient();
+				colourGradient.setGradient(spectrum[i], spectrum[i + 1]);
+				colourGradient.setNumberRange(minNum + increment * i, minNum + increment * (i + 1)); 
+				gradients[i] = colourGradient; 
+			}
+
+			colours = spectrum;
+		}
+	}
+
+	this.setSpectrum = function () 
+	{
+		setColours(arguments);
+		return this;
+	}
+
+	this.setSpectrumByArray = function (array)
+	{
+		setColours(array);
+		return this;
+	}
+
+	this.colourAt = function (number)
+	{
+		if (isNaN(number)) {
+			throw new TypeError(number + ' is not a number');
+		} else if (gradients.length === 1) {
+			return gradients[0].colourAt(number);
+		} else {
+			var segment = (maxNum - minNum)/(gradients.length);
+			var index = Math.min(Math.floor((Math.max(number, minNum) - minNum)/segment), gradients.length - 1);
+			return gradients[index].colourAt(number);
+		}
+	}
+
+	this.colorAt = this.colourAt;
+
+	this.setNumberRange = function (minNumber, maxNumber)
+	{
+		if (maxNumber > minNumber) {
+			minNum = minNumber;
+			maxNum = maxNumber;
+			setColours(colours);
+		} else {
+			throw new RangeError('maxNumber (' + maxNumber + ') is not greater than minNumber (' + minNumber + ')');
+		}
+		return this;
+	}
+}
+
+function ColourGradient() 
+{
+	"use strict";
+	var startColour = 'ff0000';
+	var endColour = '0000ff';
+	var minNum = 0;
+	var maxNum = 100;
+
+	this.setGradient = function (colourStart, colourEnd)
+	{
+		startColour = getHexColour(colourStart);
+		endColour = getHexColour(colourEnd);
+	}
+
+	this.setNumberRange = function (minNumber, maxNumber)
+	{
+		if (maxNumber > minNumber) {
+			minNum = minNumber;
+			maxNum = maxNumber;
+		} else {
+			throw new RangeError('maxNumber (' + maxNumber + ') is not greater than minNumber (' + minNumber + ')');
+		}
+	}
+
+	this.colourAt = function (number)
+	{
+		return calcHex(number, startColour.substring(0,2), endColour.substring(0,2)) 
+			+ calcHex(number, startColour.substring(2,4), endColour.substring(2,4)) 
+			+ calcHex(number, startColour.substring(4,6), endColour.substring(4,6));
+	}
+	
+	function calcHex(number, channelStart_Base16, channelEnd_Base16)
+	{
+		var num = number;
+		if (num < minNum) {
+			num = minNum;
+		}
+		if (num > maxNum) {
+			num = maxNum;
+		} 
+		var numRange = maxNum - minNum;
+		var cStart_Base10 = parseInt(channelStart_Base16, 16);
+		var cEnd_Base10 = parseInt(channelEnd_Base16, 16); 
+		var cPerUnit = (cEnd_Base10 - cStart_Base10)/numRange;
+		var c_Base10 = Math.round(cPerUnit * (num - minNum) + cStart_Base10);
+		return formatHex(c_Base10.toString(16));
+	}
+
+	function formatHex(hex) 
+	{
+		if (hex.length === 1) {
+			return '0' + hex;
+		} else {
+			return hex;
+		}
+	} 
+	
+	function isHexColour(string)
+	{
+		var regex = /^#?[0-9a-fA-F]{6}$/i;
+		return regex.test(string);
+	}
+
+	function getHexColour(string)
+	{
+		if (isHexColour(string)) {
+			return string.substring(string.length - 6, string.length);
+		} else {
+			var name = string.toLowerCase();
+			if (colourNames.hasOwnProperty(name)) {
+				return colourNames[name];
+			}
+			throw new Error(string + ' is not a valid colour.');
+		}
+	}
+	
+	// Extended list of CSS colornames s taken from
+	// http://www.w3.org/TR/css3-color/#svg-color
+	var colourNames = {
+		aliceblue: "F0F8FF",
+		antiquewhite: "FAEBD7",
+		aqua: "00FFFF",
+		aquamarine: "7FFFD4",
+		azure: "F0FFFF",
+		beige: "F5F5DC",
+		bisque: "FFE4C4",
+		black: "000000",
+		blanchedalmond: "FFEBCD",
+		blue: "0000FF",
+		blueviolet: "8A2BE2",
+		brown: "A52A2A",
+		burlywood: "DEB887",
+		cadetblue: "5F9EA0",
+		chartreuse: "7FFF00",
+		chocolate: "D2691E",
+		coral: "FF7F50",
+		cornflowerblue: "6495ED",
+		cornsilk: "FFF8DC",
+		crimson: "DC143C",
+		cyan: "00FFFF",
+		darkblue: "00008B",
+		darkcyan: "008B8B",
+		darkgoldenrod: "B8860B",
+		darkgray: "A9A9A9",
+		darkgreen: "006400",
+		darkgrey: "A9A9A9",
+		darkkhaki: "BDB76B",
+		darkmagenta: "8B008B",
+		darkolivegreen: "556B2F",
+		darkorange: "FF8C00",
+		darkorchid: "9932CC",
+		darkred: "8B0000",
+		darksalmon: "E9967A",
+		darkseagreen: "8FBC8F",
+		darkslateblue: "483D8B",
+		darkslategray: "2F4F4F",
+		darkslategrey: "2F4F4F",
+		darkturquoise: "00CED1",
+		darkviolet: "9400D3",
+		deeppink: "FF1493",
+		deepskyblue: "00BFFF",
+		dimgray: "696969",
+		dimgrey: "696969",
+		dodgerblue: "1E90FF",
+		firebrick: "B22222",
+		floralwhite: "FFFAF0",
+		forestgreen: "228B22",
+		fuchsia: "FF00FF",
+		gainsboro: "DCDCDC",
+		ghostwhite: "F8F8FF",
+		gold: "FFD700",
+		goldenrod: "DAA520",
+		gray: "808080",
+		green: "008000",
+		greenyellow: "ADFF2F",
+		grey: "808080",
+		honeydew: "F0FFF0",
+		hotpink: "FF69B4",
+		indianred: "CD5C5C",
+		indigo: "4B0082",
+		ivory: "FFFFF0",
+		khaki: "F0E68C",
+		lavender: "E6E6FA",
+		lavenderblush: "FFF0F5",
+		lawngreen: "7CFC00",
+		lemonchiffon: "FFFACD",
+		lightblue: "ADD8E6",
+		lightcoral: "F08080",
+		lightcyan: "E0FFFF",
+		lightgoldenrodyellow: "FAFAD2",
+		lightgray: "D3D3D3",
+		lightgreen: "90EE90",
+		lightgrey: "D3D3D3",
+		lightpink: "FFB6C1",
+		lightsalmon: "FFA07A",
+		lightseagreen: "20B2AA",
+		lightskyblue: "87CEFA",
+		lightslategray: "778899",
+		lightslategrey: "778899",
+		lightsteelblue: "B0C4DE",
+		lightyellow: "FFFFE0",
+		lime: "00FF00",
+		limegreen: "32CD32",
+		linen: "FAF0E6",
+		magenta: "FF00FF",
+		maroon: "800000",
+		mediumaquamarine: "66CDAA",
+		mediumblue: "0000CD",
+		mediumorchid: "BA55D3",
+		mediumpurple: "9370DB",
+		mediumseagreen: "3CB371",
+		mediumslateblue: "7B68EE",
+		mediumspringgreen: "00FA9A",
+		mediumturquoise: "48D1CC",
+		mediumvioletred: "C71585",
+		midnightblue: "191970",
+		mintcream: "F5FFFA",
+		mistyrose: "FFE4E1",
+		moccasin: "FFE4B5",
+		navajowhite: "FFDEAD",
+		navy: "000080",
+		oldlace: "FDF5E6",
+		olive: "808000",
+		olivedrab: "6B8E23",
+		orange: "FFA500",
+		orangered: "FF4500",
+		orchid: "DA70D6",
+		palegoldenrod: "EEE8AA",
+		palegreen: "98FB98",
+		paleturquoise: "AFEEEE",
+		palevioletred: "DB7093",
+		papayawhip: "FFEFD5",
+		peachpuff: "FFDAB9",
+		peru: "CD853F",
+		pink: "FFC0CB",
+		plum: "DDA0DD",
+		powderblue: "B0E0E6",
+		purple: "800080",
+		red: "FF0000",
+		rosybrown: "BC8F8F",
+		royalblue: "4169E1",
+		saddlebrown: "8B4513",
+		salmon: "FA8072",
+		sandybrown: "F4A460",
+		seagreen: "2E8B57",
+		seashell: "FFF5EE",
+		sienna: "A0522D",
+		silver: "C0C0C0",
+		skyblue: "87CEEB",
+		slateblue: "6A5ACD",
+		slategray: "708090",
+		slategrey: "708090",
+		snow: "FFFAFA",
+		springgreen: "00FF7F",
+		steelblue: "4682B4",
+		tan: "D2B48C",
+		teal: "008080",
+		thistle: "D8BFD8",
+		tomato: "FF6347",
+		turquoise: "40E0D0",
+		violet: "EE82EE",
+		wheat: "F5DEB3",
+		white: "FFFFFF",
+		whitesmoke: "F5F5F5",
+		yellow: "FFFF00",
+		yellowgreen: "9ACD32"
+	}
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = Rainbow;
+}
+
+},{}],4:[function(require,module,exports){
 !function() {
   var topojson = {
     version: "1.6.19",
@@ -10121,7 +10431,7 @@
   else this.topojson = topojson;
 }();
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -10134,7 +10444,7 @@ router.route('about', function () {
   $('.page-content').html(views['about']);
   
 });
-},{"../router":13,"jquery":"jquery","underscore":"underscore","views":"views"}],5:[function(require,module,exports){
+},{"../router":16,"jquery":"jquery","underscore":"underscore","views":"views"}],6:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -10147,7 +10457,7 @@ router.route('leedvs', function () {
   $('.page-content').html(views['leedvs']);
   
 });
-},{"../router":13,"jquery":"jquery","underscore":"underscore","views":"views"}],6:[function(require,module,exports){
+},{"../router":16,"jquery":"jquery","underscore":"underscore","views":"views"}],7:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -10160,7 +10470,8 @@ var d3 = require('d3');
 var mapdata = require('../datavis/mapdata');
 var buildmap = require('../datavis/buildmap');
 var linechart = require('../datavis/linechart');
-
+var gradients = require('../datavis/gradients');
+var Rainbow = require('rainbowvis.js');
 
 router.route('','overview', function () {
 
@@ -10168,9 +10479,16 @@ router.route('','overview', function () {
   
   function render () {
     $('.page-content').html(views['overview']);
+    /*
+    d3.select('#dropdown').on("change", function () {
+      
+      setTimeout(buildmap(d3.select("#dropdown").node().value, gradients[d3.select("#dropdown").node().value]),10000);
+      
+    });
+    */
+    buildmap(d3.select("#dropdown").node().value, gradients[d3.select("#dropdown").node().value]);
     
     
-    buildmap();
     //linechart(".trend-1");
     //linechart(".trend-2");
   }
@@ -10180,7 +10498,7 @@ router.route('','overview', function () {
 });
 
 
-},{"../datavis/buildmap":8,"../datavis/linechart":9,"../datavis/mapdata":10,"../router":13,"d3":1,"jquery":"jquery","queue-async":2,"topojson":3,"underscore":"underscore","views":"views"}],7:[function(require,module,exports){
+},{"../datavis/buildmap":10,"../datavis/gradients":11,"../datavis/linechart":12,"../datavis/mapdata":13,"../router":16,"d3":1,"jquery":"jquery","queue-async":2,"rainbowvis.js":3,"topojson":4,"underscore":"underscore","views":"views"}],8:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -10193,16 +10511,39 @@ router.route('scoring', function () {
   $('.page-content').html(views['scoring']);
   
 });
-},{"../router":13,"jquery":"jquery","underscore":"underscore","views":"views"}],8:[function(require,module,exports){
-module.exports =  function () {
-   var topojson = require('topojson');
-   var queue = require("queue-async");
+},{"../router":16,"jquery":"jquery","underscore":"underscore","views":"views"}],9:[function(require,module,exports){
+module.exports = function (color1, color2) {
+
+var Rainbow = require('rainbowvis.js');
+
+var gradientCreator = new Rainbow();
+
+gradientCreator.setSpectrum(color1,color2).setNumberRange(0,10);
+
+var gradient = [];
+
+for (var index = 0; index < 11; index++) {
+	gradient.push('#'+gradientCreator.colourAt(index));	
+}
+
+return gradient;
+
+}
+},{"rainbowvis.js":3}],10:[function(require,module,exports){
+module.exports =  function (descriptor, gradient) {
    var d3 = require('d3');
    var $ = require('jquery');
-   console.log('buildmap');
+   var gradients = require('../datavis/gradients');
+ //  console.log('buildmap');
 
    var width = 960,
    height = 500;
+   
+   var legendDomain = [0.0,0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9];
+   
+   var legendTextLabels = ['< 0.01','0.01+','.02+', '.04+', '.06+', '.08+', '.10+', '.25+', '.50+', '.75+', '0.9+'];
+   
+   var colorDomain = [0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9];
    
    var projection = d3.geo.albersUsa()
         .translate([width/2, height/2])
@@ -10211,38 +10552,33 @@ module.exports =  function () {
    var path = d3.geo.path()
         .projection(projection);
                 
-   var color = d3.scale.quantize()
-        .domain([0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9])
-        .range(["#C1F7DD","#B5EFCE", "#A9E8C0", "#9DE1B2", "#92DAA4", "#86D396", "#7ACB88", "#6FC47A", "#63BD6C", "#57B65E", "#4CAF50"]);
+   var color = d3.scale.threshold()
+        .domain(colorDomain)
+        .range(gradient);
 
    var svg = d3.select(".map").append("svg")
         .attr("width", width)
         .attr("height", height);
         
-   $.ajax({
-    url: '/api/us/',
-      method: 'GET'
-    })
-    .then(function (data) {
+   var legend = svg.selectAll("g.legend")
+        .data(legendDomain)
+        .enter().append("g");
         
-        color.domain([
-                d3.min(data, function(d) { return d.number_of_projects; }),
-                d3.max(data, function(d) { return d.number_of_projects; })
-        ]);
-        
+   var ls_w = 20, ls_h = 20;
+
+     
+   d3.json("/api/us", function (data) {
+        //console.log(d3.max(data, function(d) { return d.number_of_projects; }));
+
         d3.json("/static/data/us.json", function(json) {
         //console.log(data[0].name);
-        
-        
-        //Merge the ag. data and GeoJSON
-        //Loop through once for each ag. data value
+        //console.log(data);
         for (var i = 0; i < data.length; i++) {
-
             //Grab state name
             var dataState = data[i].name;
-   
+            //console.log(data[i][descriptor]);
             //Grab data value, and convert from string to float
-            var dataValue = parseFloat(data[i].number_of_projects);
+            var dataValue = parseFloat(data[i][descriptor]);
             
             //Find the corresponding state inside the GeoJSON
             for (var j = 0; j < json.features.length; j++) {
@@ -10252,7 +10588,7 @@ module.exports =  function () {
             if (dataState == jsonState) {
 
                 //Copy the data value into the JSON
-                json.features[j].properties.value = dataValue;
+                json.features[j].properties.value = dataValue/d3.max(data, function(d) { return d[descriptor]; });
 
                 //Stop looking through the JSON
                 break;
@@ -10268,7 +10604,7 @@ module.exports =  function () {
                    .attr("d", path)
                    .style("fill", function(d) {
                     //Get data value
-                    console.log(d.properties.value);
+                    //console.log(d.properties.value);
                     var value = d.properties.value;
 
                     if (value) {
@@ -10281,38 +10617,98 @@ module.exports =  function () {
                     
                    })
                    .style("stroke", "#fff");
+                   
+       legend.append("rect")
+        .attr("x", 20)
+        .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+        .attr("width", ls_w)
+        .attr("height", ls_h)
+        .style("fill", function(d, i) { return color(d); })
+        .style("opacity", 0.8);     
+   
+       legend.append("text")
+        .attr("x", 50)
+        .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
+        .text(function(d, i){ return legendTextLabels[i]; });  
+          
+            d3.select('#dropdown').on('change', function () {
+                
+                
+                color = d3.scale.threshold()
+                    .domain([0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9])
+                    .range(gradients[d3.select("#dropdown").node().value]);
+                    
+                legend.select('rect').style("fill", function(d, i) { return color(d); }); 
+                
+                 for (var i = 0; i < data.length; i++) {
+                    //Grab state name
+                    var dataState = data[i].name;
+                    //console.log(data[i][d3.select('#dropdown').node().val]);
+                    //Grab data value, and convert from string to float
+                    var dataValue = parseFloat(data[i][d3.select('#dropdown').node().value]);
+                    
+                    //Find the corresponding state inside the GeoJSON
+                    for (var j = 0; j < json.features.length; j++) {
+        
+                    var jsonState = json.features[j].properties.name;
+        
+                    if (dataState == jsonState) {
+        
+                        //Copy the data value into the JSON
+                        json.features[j].properties.value = dataValue/d3.max(data, function(d) { return d[d3.select('#dropdown').node().value]; });
+        
+                        //Stop looking through the JSON
+                        break;
+        
+                        }
+                }
+                
+                 }
+                
+                  svg.selectAll("path")
+                   .data(json.features)
+                   
+                   .attr("d", path)
+                   .style("fill", function(d) {
+                    //Get data value
+                    //console.log(d.properties.value);
+                    var value = d.properties.value;
+
+                    if (value) {
+                            //If value exists…
+                            return color(value);
+                    } else {
+                            //If value is undefined…
+                            return "#ccc";
+                    }
+                    
+                   })
+                   .style("stroke", "#fff");
+                 
+             });
                     
        });
       
     }); 
   }
-   
-   /*
-   var projection = d3.geo.albersUsa()
-        .scale(1000)
-        .translate([width / 2, height / 2]);
-    
-   var path = d3.geo.path()
-        .projection(projection);
-    
-   d3.json('/static/data/us.json', function(error, us) {
-      if (error) throw error;
-    
-   svg.insert("path", ".graticule")
-          .datum(topojson.feature(us, us.objects.land))
-          .attr("class", "land")
-          .attr("d", path);
-    
-   svg.insert("path", ".graticule")
-          .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-          .attr("class", "state-boundary")
-          .attr("d", path);
-   });
-    
-   d3.select(self.frameElement).style("height", height + "px");
-*/
 
-},{"d3":1,"jquery":"jquery","queue-async":2,"topojson":3}],9:[function(require,module,exports){
+
+
+},{"../datavis/gradients":11,"d3":1,"jquery":"jquery"}],11:[function(require,module,exports){
+var buildgradient = require('./buildgradient');
+
+var numberCertified = buildgradient('#FFCDD2', '#B71C1C');
+var numberProjects = buildgradient('#C8E6C9','#1B5E20');
+var avgLEED = buildgradient('#FFF9C4','#F57F17');
+var gold = buildgradient('#FFCCBC','#BF360C');
+var silver = buildgradient('#E1BEE7','#4A148C');
+var platinum = buildgradient('#B3E5FC','#01579B');
+//console.log(numberCertified);
+
+module.exports = {"number_of_projects":numberProjects,"number_certified": numberCertified
+	, "average_of_scored_leed_projects_all": avgLEED, 'number_gold': gold, "number_silver": silver,
+	"number_platinum": platinum};
+},{"./buildgradient":9}],12:[function(require,module,exports){
 module.exports = function (domLocation) {
 	var margin = {top: 20, right: 80, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
@@ -10405,9 +10801,9 @@ module.exports = function (domLocation) {
       .text(function(d) { return d.name; });
   });
 }
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var material = require('./material.js');
@@ -10419,7 +10815,7 @@ var router = require('./router');
 
 // Start the router
 router.init();
-},{"./controllers/about.js":4,"./controllers/leedvs.js":5,"./controllers/overview.js":6,"./controllers/scoring.js":7,"./material.js":12,"./router":13}],12:[function(require,module,exports){
+},{"./controllers/about.js":5,"./controllers/leedvs.js":6,"./controllers/overview.js":7,"./controllers/scoring.js":8,"./material.js":15,"./router":16}],15:[function(require,module,exports){
 /**
  * material-design-lite - Material Design Components in CSS, JS and HTML
  * @version v1.0.0
@@ -10431,13 +10827,13 @@ function MaterialButton(e){"use strict";this.element_=e,this.init()}function Mat
 
 var s=document.createElement("div");s.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE_CLIPPER),s.classList.add(this.CssClasses_.MDL_SPINNER_LEFT);var i=document.createElement("div");i.classList.add(this.CssClasses_.MDL_SPINNER_GAP_PATCH);var n=document.createElement("div");n.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE_CLIPPER),n.classList.add(this.CssClasses_.MDL_SPINNER_RIGHT);for(var a=[s,i,n],l=0;l<a.length;l++){var r=document.createElement("div");r.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE),a[l].appendChild(r)}t.appendChild(s),t.appendChild(i),t.appendChild(n),this.element_.appendChild(t)},MaterialSpinner.prototype.stop=function(){"use strict";this.element_.classList.remove("is-active")},MaterialSpinner.prototype.start=function(){"use strict";this.element_.classList.add("is-active")},MaterialSpinner.prototype.init=function(){"use strict";if(this.element_){for(var e=1;e<=this.Constant_.MDL_SPINNER_LAYER_COUNT;e++)this.createLayer(e);this.element_.classList.add("is-upgraded")}},componentHandler.register({constructor:MaterialSpinner,classAsString:"MaterialSpinner",cssClass:"mdl-js-spinner"}),MaterialSwitch.prototype.Constant_={TINY_TIMEOUT:.001},MaterialSwitch.prototype.CssClasses_={INPUT:"mdl-switch__input",TRACK:"mdl-switch__track",THUMB:"mdl-switch__thumb",FOCUS_HELPER:"mdl-switch__focus-helper",RIPPLE_EFFECT:"mdl-js-ripple-effect",RIPPLE_IGNORE_EVENTS:"mdl-js-ripple-effect--ignore-events",RIPPLE_CONTAINER:"mdl-switch__ripple-container",RIPPLE_CENTER:"mdl-ripple--center",RIPPLE:"mdl-ripple",IS_FOCUSED:"is-focused",IS_DISABLED:"is-disabled",IS_CHECKED:"is-checked"},MaterialSwitch.prototype.onChange_=function(e){"use strict";this.updateClasses_()},MaterialSwitch.prototype.onFocus_=function(e){"use strict";this.element_.classList.add(this.CssClasses_.IS_FOCUSED)},MaterialSwitch.prototype.onBlur_=function(e){"use strict";this.element_.classList.remove(this.CssClasses_.IS_FOCUSED)},MaterialSwitch.prototype.onMouseUp_=function(e){"use strict";this.blur_()},MaterialSwitch.prototype.updateClasses_=function(){"use strict";this.inputElement_.disabled?this.element_.classList.add(this.CssClasses_.IS_DISABLED):this.element_.classList.remove(this.CssClasses_.IS_DISABLED),this.inputElement_.checked?this.element_.classList.add(this.CssClasses_.IS_CHECKED):this.element_.classList.remove(this.CssClasses_.IS_CHECKED)},MaterialSwitch.prototype.blur_=function(e){"use strict";window.setTimeout(function(){this.inputElement_.blur()}.bind(this),this.Constant_.TINY_TIMEOUT)},MaterialSwitch.prototype.disable=function(){"use strict";this.inputElement_.disabled=!0,this.updateClasses_()},MaterialSwitch.prototype.enable=function(){"use strict";this.inputElement_.disabled=!1,this.updateClasses_()},MaterialSwitch.prototype.on=function(){"use strict";this.inputElement_.checked=!0,this.updateClasses_()},MaterialSwitch.prototype.off=function(){"use strict";this.inputElement_.checked=!1,this.updateClasses_()},MaterialSwitch.prototype.init=function(){"use strict";if(this.element_){this.inputElement_=this.element_.querySelector("."+this.CssClasses_.INPUT);var e=document.createElement("div");e.classList.add(this.CssClasses_.TRACK);var t=document.createElement("div");t.classList.add(this.CssClasses_.THUMB);var s=document.createElement("span");if(s.classList.add(this.CssClasses_.FOCUS_HELPER),t.appendChild(s),this.element_.appendChild(e),this.element_.appendChild(t),this.boundMouseUpHandler=this.onMouseUp_.bind(this),this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)){this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS),this.rippleContainerElement_=document.createElement("span"),this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CONTAINER),this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_EFFECT),this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CENTER),this.rippleContainerElement_.addEventListener("mouseup",this.boundMouseUpHandler);var i=document.createElement("span");i.classList.add(this.CssClasses_.RIPPLE),this.rippleContainerElement_.appendChild(i),this.element_.appendChild(this.rippleContainerElement_)}this.boundChangeHandler=this.onChange_.bind(this),this.boundFocusHandler=this.onFocus_.bind(this),this.boundBlurHandler=this.onBlur_.bind(this),this.inputElement_.addEventListener("change",this.boundChangeHandler),this.inputElement_.addEventListener("focus",this.boundFocusHandler),this.inputElement_.addEventListener("blur",this.boundBlurHandler),this.element_.addEventListener("mouseup",this.boundMouseUpHandler),this.updateClasses_(),this.element_.classList.add("is-upgraded")}},MaterialSwitch.prototype.mdlDowngrade_=function(){"use strict";this.rippleContainerElement_&&this.rippleContainerElement_.removeEventListener("mouseup",this.boundMouseUpHandler),this.inputElement_.removeEventListener("change",this.boundChangeHandler),this.inputElement_.removeEventListener("focus",this.boundFocusHandler),this.inputElement_.removeEventListener("blur",this.boundBlurHandler),this.element_.removeEventListener("mouseup",this.boundMouseUpHandler)},componentHandler.register({constructor:MaterialSwitch,classAsString:"MaterialSwitch",cssClass:"mdl-js-switch"}),MaterialTabs.prototype.Constant_={},MaterialTabs.prototype.CssClasses_={TAB_CLASS:"mdl-tabs__tab",PANEL_CLASS:"mdl-tabs__panel",ACTIVE_CLASS:"is-active",UPGRADED_CLASS:"is-upgraded",MDL_JS_RIPPLE_EFFECT:"mdl-js-ripple-effect",MDL_RIPPLE_CONTAINER:"mdl-tabs__ripple-container",MDL_RIPPLE:"mdl-ripple",MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS:"mdl-js-ripple-effect--ignore-events"},MaterialTabs.prototype.initTabs_=function(e){"use strict";this.element_.classList.contains(this.CssClasses_.MDL_JS_RIPPLE_EFFECT)&&this.element_.classList.add(this.CssClasses_.MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS),this.tabs_=this.element_.querySelectorAll("."+this.CssClasses_.TAB_CLASS),this.panels_=this.element_.querySelectorAll("."+this.CssClasses_.PANEL_CLASS);for(var t=0;t<this.tabs_.length;t++)new MaterialTab(this.tabs_[t],this);this.element_.classList.add(this.CssClasses_.UPGRADED_CLASS)},MaterialTabs.prototype.resetTabState_=function(){"use strict";for(var e=0;e<this.tabs_.length;e++)this.tabs_[e].classList.remove(this.CssClasses_.ACTIVE_CLASS)},MaterialTabs.prototype.resetPanelState_=function(){"use strict";for(var e=0;e<this.panels_.length;e++)this.panels_[e].classList.remove(this.CssClasses_.ACTIVE_CLASS)},MaterialTabs.prototype.init=function(){"use strict";this.element_&&this.initTabs_()},componentHandler.register({constructor:MaterialTabs,classAsString:"MaterialTabs",cssClass:"mdl-js-tabs"}),MaterialTextfield.prototype.Constant_={NO_MAX_ROWS:-1,MAX_ROWS_ATTRIBUTE:"maxrows"},MaterialTextfield.prototype.CssClasses_={LABEL:"mdl-textfield__label",INPUT:"mdl-textfield__input",IS_DIRTY:"is-dirty",IS_FOCUSED:"is-focused",IS_DISABLED:"is-disabled",IS_INVALID:"is-invalid",IS_UPGRADED:"is-upgraded"},MaterialTextfield.prototype.onKeyDown_=function(e){"use strict";var t=e.target.value.split("\n").length;13===e.keyCode&&t>=this.maxRows&&e.preventDefault()},MaterialTextfield.prototype.onFocus_=function(e){"use strict";this.element_.classList.add(this.CssClasses_.IS_FOCUSED)},MaterialTextfield.prototype.onBlur_=function(e){"use strict";this.element_.classList.remove(this.CssClasses_.IS_FOCUSED)},MaterialTextfield.prototype.updateClasses_=function(){"use strict";this.input_.disabled?this.element_.classList.add(this.CssClasses_.IS_DISABLED):this.element_.classList.remove(this.CssClasses_.IS_DISABLED),this.input_.validity.valid?this.element_.classList.remove(this.CssClasses_.IS_INVALID):this.element_.classList.add(this.CssClasses_.IS_INVALID),this.input_.value&&this.input_.value.length>0?this.element_.classList.add(this.CssClasses_.IS_DIRTY):this.element_.classList.remove(this.CssClasses_.IS_DIRTY)},MaterialTextfield.prototype.disable=function(){"use strict";this.input_.disabled=!0,this.updateClasses_()},MaterialTextfield.prototype.enable=function(){"use strict";this.input_.disabled=!1,this.updateClasses_()},MaterialTextfield.prototype.change=function(e){"use strict";e&&(this.input_.value=e),this.updateClasses_()},MaterialTextfield.prototype.init=function(){"use strict";this.element_&&(this.label_=this.element_.querySelector("."+this.CssClasses_.LABEL),this.input_=this.element_.querySelector("."+this.CssClasses_.INPUT),this.input_&&(this.input_.hasAttribute(this.Constant_.MAX_ROWS_ATTRIBUTE)&&(this.maxRows=parseInt(this.input_.getAttribute(this.Constant_.MAX_ROWS_ATTRIBUTE),10),isNaN(this.maxRows)&&(this.maxRows=this.Constant_.NO_MAX_ROWS)),this.boundUpdateClassesHandler=this.updateClasses_.bind(this),this.boundFocusHandler=this.onFocus_.bind(this),this.boundBlurHandler=this.onBlur_.bind(this),this.input_.addEventListener("input",this.boundUpdateClassesHandler),this.input_.addEventListener("focus",this.boundFocusHandler),this.input_.addEventListener("blur",this.boundBlurHandler),this.maxRows!==this.Constant_.NO_MAX_ROWS&&(this.boundKeyDownHandler=this.onKeyDown_.bind(this),this.input_.addEventListener("keydown",this.boundKeyDownHandler)),this.updateClasses_(),this.element_.classList.add(this.CssClasses_.IS_UPGRADED)))},MaterialTextfield.prototype.mdlDowngrade_=function(){"use strict";this.input_.removeEventListener("input",this.boundUpdateClassesHandler),this.input_.removeEventListener("focus",this.boundFocusHandler),this.input_.removeEventListener("blur",this.boundBlurHandler),this.boundKeyDownHandler&&this.input_.removeEventListener("keydown",this.boundKeyDownHandler)},componentHandler.register({constructor:MaterialTextfield,classAsString:"MaterialTextfield",cssClass:"mdl-js-textfield"}),MaterialTooltip.prototype.Constant_={},MaterialTooltip.prototype.CssClasses_={IS_ACTIVE:"is-active"},MaterialTooltip.prototype.handleMouseEnter_=function(e){"use strict";e.stopPropagation();var t=e.target.getBoundingClientRect();this.element_.style.left=t.left+t.width/2+"px",this.element_.style.marginLeft=-1*(this.element_.offsetWidth/2)+"px",this.element_.style.top=t.top+t.height+10+"px",this.element_.classList.add(this.CssClasses_.IS_ACTIVE)},MaterialTooltip.prototype.handleMouseLeave_=function(e){"use strict";e.stopPropagation(),this.element_.classList.remove(this.CssClasses_.IS_ACTIVE)},MaterialTooltip.prototype.init=function(){"use strict";if(this.element_){var e=this.element_.getAttribute("for");e&&(this.forElement_=document.getElementById(e)),this.forElement_&&(this.boundMouseEnterHandler=this.handleMouseEnter_.bind(this),this.boundMouseLeaveHandler=this.handleMouseLeave_.bind(this),this.forElement_.addEventListener("mouseenter",this.boundMouseEnterHandler,!1),this.forElement_.addEventListener("click",this.boundMouseEnterHandler,!1),this.forElement_.addEventListener("mouseleave",this.boundMouseLeaveHandler))}},MaterialTooltip.prototype.mdlDowngrade_=function(){"use strict";this.forElement_&&(this.forElement_.removeEventListener("mouseenter",this.boundMouseEnterHandler,!1),this.forElement_.removeEventListener("click",this.boundMouseEnterHandler,!1),this.forElement_.removeEventListener("mouseleave",this.boundMouseLeaveHandler))},componentHandler.register({constructor:MaterialTooltip,classAsString:"MaterialTooltip",cssClass:"mdl-tooltip"}),MaterialLayout.prototype.Constant_={MAX_WIDTH:"(max-width: 850px)",TAB_SCROLL_PIXELS:100,MENU_ICON:"menu",CHEVRON_LEFT:"chevron_left",CHEVRON_RIGHT:"chevron_right"},MaterialLayout.prototype.Mode_={STANDARD:0,SEAMED:1,WATERFALL:2,SCROLL:3},MaterialLayout.prototype.CssClasses_={CONTAINER:"mdl-layout__container",HEADER:"mdl-layout__header",DRAWER:"mdl-layout__drawer",CONTENT:"mdl-layout__content",DRAWER_BTN:"mdl-layout__drawer-button",ICON:"material-icons",JS_RIPPLE_EFFECT:"mdl-js-ripple-effect",RIPPLE_CONTAINER:"mdl-layout__tab-ripple-container",RIPPLE:"mdl-ripple",RIPPLE_IGNORE_EVENTS:"mdl-js-ripple-effect--ignore-events",HEADER_SEAMED:"mdl-layout__header--seamed",HEADER_WATERFALL:"mdl-layout__header--waterfall",HEADER_SCROLL:"mdl-layout__header--scroll",FIXED_HEADER:"mdl-layout--fixed-header",OBFUSCATOR:"mdl-layout__obfuscator",TAB_BAR:"mdl-layout__tab-bar",TAB_CONTAINER:"mdl-layout__tab-bar-container",TAB:"mdl-layout__tab",TAB_BAR_BUTTON:"mdl-layout__tab-bar-button",TAB_BAR_LEFT_BUTTON:"mdl-layout__tab-bar-left-button",TAB_BAR_RIGHT_BUTTON:"mdl-layout__tab-bar-right-button",PANEL:"mdl-layout__tab-panel",HAS_DRAWER:"has-drawer",HAS_TABS:"has-tabs",HAS_SCROLLING_HEADER:"has-scrolling-header",CASTING_SHADOW:"is-casting-shadow",IS_COMPACT:"is-compact",IS_SMALL_SCREEN:"is-small-screen",IS_DRAWER_OPEN:"is-visible",IS_ACTIVE:"is-active",IS_UPGRADED:"is-upgraded",IS_ANIMATING:"is-animating"},MaterialLayout.prototype.contentScrollHandler_=function(){"use strict";this.header_.classList.contains(this.CssClasses_.IS_ANIMATING)||(this.content_.scrollTop>0&&!this.header_.classList.contains(this.CssClasses_.IS_COMPACT)?(this.header_.classList.add(this.CssClasses_.CASTING_SHADOW),this.header_.classList.add(this.CssClasses_.IS_COMPACT),this.header_.classList.add(this.CssClasses_.IS_ANIMATING)):this.content_.scrollTop<=0&&this.header_.classList.contains(this.CssClasses_.IS_COMPACT)&&(this.header_.classList.remove(this.CssClasses_.CASTING_SHADOW),this.header_.classList.remove(this.CssClasses_.IS_COMPACT),this.header_.classList.add(this.CssClasses_.IS_ANIMATING)))},MaterialLayout.prototype.screenSizeHandler_=function(){"use strict";this.screenSizeMediaQuery_.matches?this.element_.classList.add(this.CssClasses_.IS_SMALL_SCREEN):(this.element_.classList.remove(this.CssClasses_.IS_SMALL_SCREEN),this.drawer_&&this.drawer_.classList.remove(this.CssClasses_.IS_DRAWER_OPEN))},MaterialLayout.prototype.drawerToggleHandler_=function(){"use strict";this.drawer_.classList.toggle(this.CssClasses_.IS_DRAWER_OPEN)},MaterialLayout.prototype.headerTransitionEndHandler=function(){"use strict";this.header_.classList.remove(this.CssClasses_.IS_ANIMATING)},MaterialLayout.prototype.headerClickHandler=function(){"use strict";this.header_.classList.contains(this.CssClasses_.IS_COMPACT)&&(this.header_.classList.remove(this.CssClasses_.IS_COMPACT),this.header_.classList.add(this.CssClasses_.IS_ANIMATING))},MaterialLayout.prototype.resetTabState_=function(e){"use strict";for(var t=0;t<e.length;t++)e[t].classList.remove(this.CssClasses_.IS_ACTIVE)},MaterialLayout.prototype.resetPanelState_=function(e){"use strict";for(var t=0;t<e.length;t++)e[t].classList.remove(this.CssClasses_.IS_ACTIVE)},MaterialLayout.prototype.init=function(){"use strict";if(this.element_){var e=document.createElement("div");e.classList.add(this.CssClasses_.CONTAINER),this.element_.parentElement.insertBefore(e,this.element_),this.element_.parentElement.removeChild(this.element_),e.appendChild(this.element_);for(var t=this.element_.childNodes,s=0;s<t.length;s++){var i=t[s];i.classList&&i.classList.contains(this.CssClasses_.HEADER)&&(this.header_=i),i.classList&&i.classList.contains(this.CssClasses_.DRAWER)&&(this.drawer_=i),i.classList&&i.classList.contains(this.CssClasses_.CONTENT)&&(this.content_=i)}this.header_&&(this.tabBar_=this.header_.querySelector("."+this.CssClasses_.TAB_BAR));var n=this.Mode_.STANDARD;if(this.screenSizeMediaQuery_=window.matchMedia(this.Constant_.MAX_WIDTH),this.screenSizeMediaQuery_.addListener(this.screenSizeHandler_.bind(this)),this.screenSizeHandler_(),this.header_&&(this.header_.classList.contains(this.CssClasses_.HEADER_SEAMED)?n=this.Mode_.SEAMED:this.header_.classList.contains(this.CssClasses_.HEADER_WATERFALL)?(n=this.Mode_.WATERFALL,this.header_.addEventListener("transitionend",this.headerTransitionEndHandler.bind(this)),this.header_.addEventListener("click",this.headerClickHandler.bind(this))):this.header_.classList.contains(this.CssClasses_.HEADER_SCROLL)&&(n=this.Mode_.SCROLL,e.classList.add(this.CssClasses_.HAS_SCROLLING_HEADER)),n===this.Mode_.STANDARD?(this.header_.classList.add(this.CssClasses_.CASTING_SHADOW),this.tabBar_&&this.tabBar_.classList.add(this.CssClasses_.CASTING_SHADOW)):n===this.Mode_.SEAMED||n===this.Mode_.SCROLL?(this.header_.classList.remove(this.CssClasses_.CASTING_SHADOW),this.tabBar_&&this.tabBar_.classList.remove(this.CssClasses_.CASTING_SHADOW)):n===this.Mode_.WATERFALL&&(this.content_.addEventListener("scroll",this.contentScrollHandler_.bind(this)),this.contentScrollHandler_())),this.drawer_){var a=document.createElement("div");a.classList.add(this.CssClasses_.DRAWER_BTN);var l=document.createElement("i");l.classList.add(this.CssClasses_.ICON),l.textContent=this.Constant_.MENU_ICON,a.appendChild(l),a.addEventListener("click",this.drawerToggleHandler_.bind(this)),this.element_.classList.add(this.CssClasses_.HAS_DRAWER),this.element_.classList.contains(this.CssClasses_.FIXED_HEADER)?this.header_.insertBefore(a,this.header_.firstChild):this.element_.insertBefore(a,this.content_);var r=document.createElement("div");r.classList.add(this.CssClasses_.OBFUSCATOR),this.element_.appendChild(r),r.addEventListener("click",this.drawerToggleHandler_.bind(this))}if(this.header_&&this.tabBar_){this.element_.classList.add(this.CssClasses_.HAS_TABS);var o=document.createElement("div");o.classList.add(this.CssClasses_.TAB_CONTAINER),this.header_.insertBefore(o,this.tabBar_),this.header_.removeChild(this.tabBar_);var _=document.createElement("div");_.classList.add(this.CssClasses_.TAB_BAR_BUTTON),_.classList.add(this.CssClasses_.TAB_BAR_LEFT_BUTTON);var d=document.createElement("i");d.classList.add(this.CssClasses_.ICON),d.textContent=this.Constant_.CHEVRON_LEFT,_.appendChild(d),_.addEventListener("click",function(){this.tabBar_.scrollLeft-=this.Constant_.TAB_SCROLL_PIXELS}.bind(this));var h=document.createElement("div");h.classList.add(this.CssClasses_.TAB_BAR_BUTTON),h.classList.add(this.CssClasses_.TAB_BAR_RIGHT_BUTTON);var c=document.createElement("i");c.classList.add(this.CssClasses_.ICON),c.textContent=this.Constant_.CHEVRON_RIGHT,h.appendChild(c),h.addEventListener("click",function(){this.tabBar_.scrollLeft+=this.Constant_.TAB_SCROLL_PIXELS}.bind(this)),o.appendChild(_),o.appendChild(this.tabBar_),o.appendChild(h);var u=function(){this.tabBar_.scrollLeft>0?_.classList.add(this.CssClasses_.IS_ACTIVE):_.classList.remove(this.CssClasses_.IS_ACTIVE),this.tabBar_.scrollLeft<this.tabBar_.scrollWidth-this.tabBar_.offsetWidth?h.classList.add(this.CssClasses_.IS_ACTIVE):h.classList.remove(this.CssClasses_.IS_ACTIVE)}.bind(this);this.tabBar_.addEventListener("scroll",u),u(),this.tabBar_.classList.contains(this.CssClasses_.JS_RIPPLE_EFFECT)&&this.tabBar_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);for(var p=this.tabBar_.querySelectorAll("."+this.CssClasses_.TAB),C=this.content_.querySelectorAll("."+this.CssClasses_.PANEL),m=0;m<p.length;m++)new MaterialLayoutTab(p[m],p,C,this)}this.element_.classList.add(this.CssClasses_.IS_UPGRADED)}},componentHandler.register({constructor:MaterialLayout,classAsString:"MaterialLayout",cssClass:"mdl-js-layout"}),MaterialDataTable.prototype.Constant_={},MaterialDataTable.prototype.CssClasses_={DATA_TABLE:"mdl-data-table",SELECTABLE:"mdl-data-table--selectable",IS_SELECTED:"is-selected",IS_UPGRADED:"is-upgraded"},MaterialDataTable.prototype.selectRow_=function(e,t,s){"use strict";return t?function(){e.checked?t.classList.add(this.CssClasses_.IS_SELECTED):t.classList.remove(this.CssClasses_.IS_SELECTED)}.bind(this):s?function(){var t,i;if(e.checked)for(t=0;t<s.length;t++)i=s[t].querySelector("td").querySelector(".mdl-checkbox"),i.MaterialCheckbox.check(),s[t].classList.add(this.CssClasses_.IS_SELECTED);else for(t=0;t<s.length;t++)i=s[t].querySelector("td").querySelector(".mdl-checkbox"),i.MaterialCheckbox.uncheck(),s[t].classList.remove(this.CssClasses_.IS_SELECTED)}.bind(this):void 0},MaterialDataTable.prototype.createCheckbox_=function(e,t){"use strict";var s=document.createElement("label");s.classList.add("mdl-checkbox"),s.classList.add("mdl-js-checkbox"),s.classList.add("mdl-js-ripple-effect"),s.classList.add("mdl-data-table__select");var i=document.createElement("input");return i.type="checkbox",i.classList.add("mdl-checkbox__input"),e?i.addEventListener("change",this.selectRow_(i,e)):t&&i.addEventListener("change",this.selectRow_(i,null,t)),s.appendChild(i),componentHandler.upgradeElement(s,"MaterialCheckbox"),s},MaterialDataTable.prototype.init=function(){"use strict";if(this.element_){var e=this.element_.querySelector("th"),t=this.element_.querySelector("tbody").querySelectorAll("tr");if(this.element_.classList.contains(this.CssClasses_.SELECTABLE)){var s=document.createElement("th"),i=this.createCheckbox_(null,t);s.appendChild(i),e.parentElement.insertBefore(s,e);for(var n=0;n<t.length;n++){var a=t[n].querySelector("td");if(a){var l=document.createElement("td"),r=this.createCheckbox_(t[n]);l.appendChild(r),t[n].insertBefore(l,a)}}}this.element_.classList.add(this.CssClasses_.IS_UPGRADED)}},componentHandler.register({constructor:MaterialDataTable,classAsString:"MaterialDataTable",cssClass:"mdl-js-data-table"}),MaterialRipple.prototype.Constant_={INITIAL_SCALE:"scale(0.0001, 0.0001)",INITIAL_SIZE:"1px",INITIAL_OPACITY:"0.4",FINAL_OPACITY:"0",FINAL_SCALE:""},MaterialRipple.prototype.CssClasses_={RIPPLE_CENTER:"mdl-ripple--center",RIPPLE_EFFECT_IGNORE_EVENTS:"mdl-js-ripple-effect--ignore-events",RIPPLE:"mdl-ripple",IS_ANIMATING:"is-animating",IS_VISIBLE:"is-visible"},MaterialRipple.prototype.downHandler_=function(e){"use strict";if(!this.rippleElement_.style.width&&!this.rippleElement_.style.height){var t=this.element_.getBoundingClientRect();this.boundHeight=t.height,this.boundWidth=t.width,this.rippleSize_=2*Math.sqrt(t.width*t.width+t.height*t.height)+2,this.rippleElement_.style.width=this.rippleSize_+"px",this.rippleElement_.style.height=this.rippleSize_+"px"}if(this.rippleElement_.classList.add(this.CssClasses_.IS_VISIBLE),"mousedown"===e.type&&this.ignoringMouseDown_)this.ignoringMouseDown_=!1;else{"touchstart"===e.type&&(this.ignoringMouseDown_=!0);var s=this.getFrameCount();if(s>0)return;this.setFrameCount(1);var i,n,a=e.currentTarget.getBoundingClientRect();if(0===e.clientX&&0===e.clientY)i=Math.round(a.width/2),n=Math.round(a.height/2);else{var l=e.clientX?e.clientX:e.touches[0].clientX,r=e.clientY?e.clientY:e.touches[0].clientY;i=Math.round(l-a.left),n=Math.round(r-a.top)}this.setRippleXY(i,n),this.setRippleStyles(!0),window.requestAnimationFrame(this.animFrameHandler.bind(this))}},MaterialRipple.prototype.upHandler_=function(e){"use strict";e&&2!==e.detail&&this.rippleElement_.classList.remove(this.CssClasses_.IS_VISIBLE)},MaterialRipple.prototype.init=function(){"use strict";if(this.element_){var e=this.element_.classList.contains(this.CssClasses_.RIPPLE_CENTER);this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT_IGNORE_EVENTS)||(this.rippleElement_=this.element_.querySelector("."+this.CssClasses_.RIPPLE),this.frameCount_=0,this.rippleSize_=0,this.x_=0,this.y_=0,this.ignoringMouseDown_=!1,this.boundDownHandler=this.downHandler_.bind(this),this.element_.addEventListener("mousedown",this.boundDownHandler),this.element_.addEventListener("touchstart",this.boundDownHandler),this.boundUpHandler=this.upHandler_.bind(this),this.element_.addEventListener("mouseup",this.boundUpHandler),this.element_.addEventListener("mouseleave",this.boundUpHandler),this.element_.addEventListener("touchend",this.boundUpHandler),this.element_.addEventListener("blur",this.boundUpHandler),this.getFrameCount=function(){return this.frameCount_},this.setFrameCount=function(e){this.frameCount_=e},this.getRippleElement=function(){return this.rippleElement_},this.setRippleXY=function(e,t){this.x_=e,this.y_=t},this.setRippleStyles=function(t){if(null!==this.rippleElement_){var s,i,n,a="translate("+this.x_+"px, "+this.y_+"px)";t?(i=this.Constant_.INITIAL_SCALE,n=this.Constant_.INITIAL_SIZE):(i=this.Constant_.FINAL_SCALE,n=this.rippleSize_+"px",e&&(a="translate("+this.boundWidth/2+"px, "+this.boundHeight/2+"px)")),s="translate(-50%, -50%) "+a+i,this.rippleElement_.style.webkitTransform=s,this.rippleElement_.style.msTransform=s,this.rippleElement_.style.transform=s,t?this.rippleElement_.classList.remove(this.CssClasses_.IS_ANIMATING):this.rippleElement_.classList.add(this.CssClasses_.IS_ANIMATING)}},this.animFrameHandler=function(){this.frameCount_-->0?window.requestAnimationFrame(this.animFrameHandler.bind(this)):this.setRippleStyles(!1)})}},MaterialRipple.prototype.mdlDowngrade_=function(){"use strict";this.element_.removeEventListener("mousedown",this.boundDownHandler),this.element_.removeEventListener("touchstart",this.boundDownHandler),this.element_.removeEventListener("mouseup",this.boundUpHandler),this.element_.removeEventListener("mouseleave",this.boundUpHandler),this.element_.removeEventListener("touchend",this.boundUpHandler),this.element_.removeEventListener("blur",this.boundUpHandler)},componentHandler.register({constructor:MaterialRipple,classAsString:"MaterialRipple",cssClass:"mdl-js-ripple-effect",widget:!1});
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var SortedRouter = require('./sorted-router');
 
 module.exports = new SortedRouter();
-},{"./sorted-router":14}],14:[function(require,module,exports){
+},{"./sorted-router":17}],17:[function(require,module,exports){
 'use strict';
  
 var Backbone = require('backbone');
@@ -10484,7 +10880,7 @@ var SortedRouter = Backbone.Router.extend({
 });
  
 module.exports = SortedRouter;
-},{"backbone":"backbone","underscore":"underscore"}]},{},[11])
+},{"backbone":"backbone","underscore":"underscore"}]},{},[14])
 
 
 //# sourceMappingURL=app.js.map

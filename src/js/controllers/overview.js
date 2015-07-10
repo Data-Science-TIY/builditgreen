@@ -10,7 +10,8 @@ var d3 = require('d3');
 var mapdata = require('../datavis/mapdata');
 var buildmap = require('../datavis/buildmap');
 var linechart = require('../datavis/linechart');
-
+var gradients = require('../datavis/gradients');
+var Rainbow = require('rainbowvis.js');
 
 router.route('','overview', function () {
 
@@ -18,9 +19,16 @@ router.route('','overview', function () {
   
   function render () {
     $('.page-content').html(views['overview']);
+    /*
+    d3.select('#dropdown').on("change", function () {
+      
+      setTimeout(buildmap(d3.select("#dropdown").node().value, gradients[d3.select("#dropdown").node().value]),10000);
+      
+    });
+    */
+    buildmap(d3.select("#dropdown").node().value, gradients[d3.select("#dropdown").node().value]);
     
     
-    buildmap();
     //linechart(".trend-1");
     //linechart(".trend-2");
   }
