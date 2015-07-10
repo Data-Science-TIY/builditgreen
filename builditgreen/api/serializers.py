@@ -3,7 +3,10 @@ from .models import Project, State
 from django.db.models import Avg
 
 class ProjectSerializer(serializers.ModelSerializer):
-    pass
+
+    class Meta:
+        model = Project
+        fields = ('certification_date', 'gross_square_foot', 'points_achieved', 'leed_version', 'certification_level')
 
 
 # class GoldTrendSerializer(serializers.ModelSerializer):
