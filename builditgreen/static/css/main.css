@@ -5373,6 +5373,9 @@ iframe.heightSet {
 body {
   background-color: #FEFFFE; }
 
+.mdl-layout__header {
+  background-color: #FEFFFE; }
+
 .page-content {
   margin: 0 auto; }
 
@@ -5390,15 +5393,21 @@ body {
   width: 100%;
   box-sizing: border-box; }
 
-.mdl-layout__header-row .mdl-navigation__link {
-  color: #FEFFFE; }
-
-.mdl-layout__header-row > * {
-  color: #FEFFFE; }
-
-.material-icons {
-  color: #FEFFFE; }
-
 svg {
   display: block;
   margin: 0 auto; }
+
+.btn {
+  margin: 0.5em 0;
+  display: block; }
+
+.btn.on {
+  background-color: #777;
+  color: white; }
+
+#dropdown {
+  display: inline-block; }
+
+.map {
+  display: inline-block;
+  float: right; }
