@@ -34,7 +34,7 @@ def pull_score_card(id):
     return scores_dict
 
 def scraper():
-    with open('public_project_ids1.csv', encoding='ISO-8859-1') as infile:
+    with open('public_project_ids3.csv', encoding='ISO-8859-1') as infile:
         ids = csv.reader(infile)
         for id in ids:
             print(id)
