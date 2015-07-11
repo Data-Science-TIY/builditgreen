@@ -192,12 +192,34 @@ class ScoreVersion2009Trends(APIView):
                       .aggregate(Avg(score))['{}__avg'.format(score)])) for score in version_2009_score_list}
         trends_dict["average_scores_and_possible_2009_certified"] = score_dict
 
-        # year_dict = {year}
-        #
-        #         projects_certified_dict = {i: Project.objects.filter
-        #     (certification_date__gte=datetime(i, 1, 1)).filter(certification_date__lte=datetime(i, 12, 31))
-        #     .count() for i in year_list}
-        # trends_dict["total_certifications"] = projects_certified_dict
+        score_dict = {score: float("{0:.2f}".format(Score2009.objects
+                                                    .filter(project__certification_date__gte=datetime(2014, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2014, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2009_score_list}
+        trends_dict["average_scores_and_possible_2009_2014"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(Score2009.objects
+                                                    .filter(project__certification_date__gte=datetime(2013, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2013, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2009_score_list}
+        trends_dict["average_scores_and_possible_2009_2013"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(Score2009.objects
+                                                    .filter(project__certification_date__gte=datetime(2012, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2012, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2009_score_list}
+        trends_dict["average_scores_and_possible_2009_2012"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(Score2009.objects
+                                                    .filter(project__certification_date__gte=datetime(2011, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2011, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2009_score_list}
+        trends_dict["average_scores_and_possible_2009_2011"] = score_dict
+
 
         return Response(trends_dict)
 
@@ -238,6 +260,8 @@ class ScoreVersion21Trends(APIView):
                       for score in version_2_1_score_list}
         trends_dict["average_scores_and_possible_v2_1_certified"] = score_dict
 
+
+
         return Response(trends_dict)
 
 
@@ -275,6 +299,55 @@ class ScoreVersion22Trends(APIView):
                                                                                     "Certified").aggregate(Avg(score))
                                                     ['{}__avg'.format(score)])) for score in version_2_2_score_list}
         trends_dict["average_scores_and_possible_v2_2_certified"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2009, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2009, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2_2_score_list}
+        trends_dict["average_scores_and_possible_v2_2_2009"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2010, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2010, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2_2_score_list}
+        trends_dict["average_scores_and_possible_v2_2_2010"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2012, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2012, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2_2_score_list}
+        trends_dict["average_scores_and_possible_v2_2_2012"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2011, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2011, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2_2_score_list}
+        trends_dict["average_scores_and_possible_2_2_2011"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2008, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2008, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2_2_score_list}
+        trends_dict["average_scores_and_possible_2_2_2008"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2007, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2007, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2_2_score_list}
+        trends_dict["average_scores_and_possible_2_2_2007"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2013, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2013, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2_2_score_list}
+        trends_dict["average_scores_and_possible_v2_2_2013"] = score_dict
 
         # projects_certified_dict = {i: Project.objects.filter
         #     (certification_date__gte=datetime(i, 1, 1)).filter(certification_date__lte=datetime(i, 12, 31))
