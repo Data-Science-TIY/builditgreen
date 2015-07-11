@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^api/score2009/$', api_views.Score2009ListView.as_view(), name="score_2009"),
     url(r'^api/score2-2/$', api_views.ScoreTwoPointTwoListView.as_view(), name="score_2_2"),
     url(r'^api/score2-1/$', api_views.ScoreTwoPointOneListView.as_view(), name="score_2_1"),
+    url(r'^api/score_trends/$', api_views.ScoreTrends.as_view(), name="score_trends"),
 ]
