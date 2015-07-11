@@ -162,11 +162,11 @@ class AllTrends(APIView):
         return Response(trends_dict)
 
 
-class ScoreTrends(APIView):
+class ScoreVersion2009Trends(APIView):
 
     def get(self, request, format=None):
         """
-        Return trends by year.
+        Return trends by certification level and overall.
         """
         trends_dict = {}
         year_list = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014]
@@ -191,6 +191,25 @@ class ScoreTrends(APIView):
         score_dict = {score: float("{0:.2f}".format(Score2009.objects.filter(project__certification_level="Certified")
                       .aggregate(Avg(score))['{}__avg'.format(score)])) for score in version_2009_score_list}
         trends_dict["average_scores_and_possible_2009_certified"] = score_dict
+
+        # year_dict = {year}
+        #
+        #         projects_certified_dict = {i: Project.objects.filter
+        #     (certification_date__gte=datetime(i, 1, 1)).filter(certification_date__lte=datetime(i, 12, 31))
+        #     .count() for i in year_list}
+        # trends_dict["total_certifications"] = projects_certified_dict
+
+        return Response(trends_dict)
+
+
+class ScoreVersion21Trends(APIView):
+
+    def get(self, request, format=None):
+        """
+        Return trends by certification level and overall.
+        """
+        trends_dict = {}
+        year_list = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014]
 
         version_2_1_score_list = sorted([score for score in ScoreTwoPointOne._meta.get_all_field_names()])
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects.all().aggregate(Avg(score))['{}__avg'
@@ -218,6 +237,18 @@ class ScoreTrends(APIView):
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in version_2_1_score_list}
         trends_dict["average_scores_and_possible_v2_1_certified"] = score_dict
+
+        return Response(trends_dict)
+
+
+class ScoreVersion22Trends(APIView):
+
+    def get(self, request, format=None):
+        """
+        Return trends by certification level and overall.
+        """
+        trends_dict = {}
+        year_list = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014]
 
         version_2_2_score_list = sorted([score for score in ScoreTwoPointTwo._meta.get_all_field_names()])
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects.all().aggregate(Avg(score))['{}__avg'
@@ -252,13 +283,5 @@ class ScoreTrends(APIView):
 
         return Response(trends_dict)
 
-
-
-
-
-#
-# class GoldYearlyTrendListView(generics.ListAPIView):
-#     serializer_class = GoldTrendSerializer
-#     queryset = Project.objects.all()
 
 
