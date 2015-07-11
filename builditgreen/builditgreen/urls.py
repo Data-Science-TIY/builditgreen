@@ -30,4 +30,7 @@ urlpatterns = [
     url(r'^api/score2009/$', api_views.Score2009ListView.as_view(), name="score_2009"),
     url(r'^api/score2-2/$', api_views.ScoreTwoPointTwoListView.as_view(), name="score_2_2"),
     url(r'^api/score2-1/$', api_views.ScoreTwoPointOneListView.as_view(), name="score_2_1"),
+    url(r'^api/score-trends-2009/$', api_views.ScoreVersion2009Trends.as_view(), name="score_trends_2009"),
+    url(r'^api/score-trends-2-2/$', api_views.ScoreVersion22Trends.as_view(), name="score_trends_2_2"),
+    url(r'^api/score-trends-2-1/$', api_views.ScoreVersion21Trends.as_view(), name="score_trends_2_2"),
 ]
