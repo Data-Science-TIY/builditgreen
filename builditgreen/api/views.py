@@ -22,17 +22,20 @@ class ProjectListView(generics.ListAPIView):
 
 class Project2009ListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
-    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC v2009")
+    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC v2009")\
+        .filter(certification_date__gte=datetime(2000, 12, 31))
 
 
 class Project2Point1ListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
-    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC 2.1")
+    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC 2.1")\
+        .filter(certification_date__gte=datetime(2000, 12, 31))
 
 
 class Project2Point2ListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
-    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC 2.2")
+    queryset = Project.objects.filter(points_achieved__gte=1).filter(leed_version="LEED-NC 2.2")\
+        .filter(certification_date__gte=datetime(2000, 12, 31))
 
 
 class Score2009ListView(generics.ListAPIView):
