@@ -193,6 +193,13 @@ class ScoreVersion2009Trends(APIView):
         trends_dict["average_scores_and_possible_2009_certified"] = score_dict
 
         score_dict = {score: float("{0:.2f}".format(Score2009.objects
+                                                    .filter(project__certification_date__gte=datetime(2015, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2015, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in version_2009_score_list}
+        trends_dict["average_scores_and_possible_2009_2015"] = score_dict
+
+        score_dict = {score: float("{0:.2f}".format(Score2009.objects
                                                     .filter(project__certification_date__gte=datetime(2014, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2014, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
