@@ -5397,17 +5397,28 @@ svg {
   display: block;
   margin: 0 auto; }
 
-.btn {
+.btn-map, .btn-trend1, .btn-trend2, .btn-trend3 {
   margin: 0.5em 0;
   display: block; }
 
-.btn.on {
+.btn-map.on, .btn-trend1.on, .btn-trend2.on, .btn-trend3.on {
   background-color: #777;
   color: white; }
 
-#dropdown {
+#map-dropdown, #trend1-dropdown, #trend2-dropdown, #trend3-dropdown {
   display: inline-block; }
 
-.map {
+.map, .trend-1, .trend-2, .trend-3 {
   display: inline-block;
   float: right; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges; }
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px; }

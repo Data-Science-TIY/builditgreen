@@ -2,7 +2,7 @@ module.exports =  function (descriptor, gradient) {
    var d3 = require('d3');
    var $ = require('jquery');
    var gradients = require('../datavis/gradients');
-   console.log('buildmap');
+   console.log('building a map');
 
    var width = 960,
    height = 500;
@@ -38,7 +38,7 @@ module.exports =  function (descriptor, gradient) {
 
         d3.json("/static/data/us.json", function(json) {
             
-        console.log(data);
+        //console.log(data);
         for (var i = 0; i < data.results.length; i++) {
             //Grab state name
             var dataState = data.results[i].name;
@@ -100,7 +100,7 @@ module.exports =  function (descriptor, gradient) {
                     return d[descriptor];
                     });
        
-       console.log(dF);
+       //console.log(dF);
        
        var legendTextLabels = ['< ' + Math.floor(0.01*dF), Math.floor(0.01*dF)+'+', Math.floor(.02*dF)+'+', 
            Math.floor(.04*dF)+'+', Math.floor(.06*dF)+'+'
@@ -112,7 +112,7 @@ module.exports =  function (descriptor, gradient) {
         .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
         .text(function(d, i){ return legendTextLabels[i]; });  
           
-       d3.selectAll('.btn').on('click', function () {
+       d3.selectAll('.btn-map').on('click', function () {
            //alert('yay');
              //  console.log(d3.select(".on").node().value); 
            setTimeout( function() {  
@@ -142,7 +142,7 @@ module.exports =  function (descriptor, gradient) {
                 
                  for (var i = 0; i < data.results.length; i++) {
                     //Grab state name
-                    console.log(data.results);
+                    //console.log(data.results);
                     var dataState = data.results[i].name;
                     //console.log(data[i][d3.select('#dropdown').node().val]);
                     //Grab data value, and convert from string to float

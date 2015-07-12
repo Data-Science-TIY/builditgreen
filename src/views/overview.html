@@ -1,19 +1,45 @@
 <div class="mdl-grid">
-  <h2 class="section-header">LEED Implementation by State</h2>
   <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
-    <div name="descriptor" id="dropdown">
-      <h5>Choose A Trend</h5>
+    <h2 class="section-header">LEED Implementation by State</h2>
+    <div name="descriptor" id="map-dropdown">
+      <h5>Select a Trend</h5>
       <div value="number_of_projects" checked="checked">Total LEED Projects</div>
       <div value="number_certified">Certified Projects</div>
       <div value="number_gold">Gold Level Projects</div>
       <div value="number_silver">Silver Level Projects</div>
       <div value="number_platinum">Platinum Level Projects</div>
-      <div value="number_of_projects_population_corrected">Total Projects Per 10K Residents</div>
+      <div value="number_of_projects_population_corrected">Projects Per 100K Residents</div>
     </div>
     <div class="map"></div>
   </div>
   <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
+    <h2 class="section-header">LEED Implementation over Time</h2>
+    <div name="descriptor" id="trend1-dropdown">
+      <h5 id="line-chart-title">Select a Trend</h5>
+      <div value="" checked="checked">Certification Levels</div>
+      <div value="">Registered vs. Certified</div>
+      <div value="">Certification by Building Type</div>
+    </div>
     <div class="trend-1"></div>
-	  <div class="trend-2"></div>
+  </div>
+  <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
+    <h2 class="section-header">Certification Level & Square Footage</h2>
+    <div name="descriptor" id="trend2-dropdown">
+      <h5 id="line-chart-title">Select a LEED Version</h5>
+      <div value="" checked="checked">LEED 2009</div>
+      <div value="">LEED 2.2</div>
+      <div value="">LEED 2.1</div>
+    </div>
+    <div class="trend-2"></div>
+  </div>
+  <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
+    <h2 class="section-header">LEED Certification Cluster Analysis</h2>
+    <div name="descriptor" id="trend3-dropdown">
+      <h5 id="line-chart-title">Select a LEED Version</h5>
+      <div value="" checked="checked">LEED 2009</div>
+      <div value="">LEED 2.2</div>
+      <div value="">LEED 2.1</div>
+    </div>
+    <div class="trend-3"></div>
   </div>
 </div>
