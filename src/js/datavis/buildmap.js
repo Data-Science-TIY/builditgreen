@@ -118,11 +118,11 @@ module.exports =  function (descriptor, gradient) {
            setTimeout( function() {  
                 color = d3.scale.threshold()
                     .domain([0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9])
-                    .range(gradients[d3.select(".on").node().value]);
+                    .range(gradients[d3.select(".btn-map-on").node().value]);
                 
                 dF = d3.max(data.results, function(d) { 
                     //console.log(d);
-                    return d[d3.select(".on").node().value];
+                    return d[d3.select(".btn-map-on").node().value];
                     });
                 
                 //console.log(dF);
@@ -146,7 +146,7 @@ module.exports =  function (descriptor, gradient) {
                     var dataState = data.results[i].name;
                     //console.log(data[i][d3.select('#dropdown').node().val]);
                     //Grab data value, and convert from string to float
-                    var dataValue = parseFloat(data.results[i][d3.select('.on').node().value]);
+                    var dataValue = parseFloat(data.results[i][d3.select('.btn-map-on').node().value]);
                     
                     //Find the corresponding state inside the GeoJSON
                     for (var j = 0; j < json.features.length; j++) {
@@ -156,7 +156,7 @@ module.exports =  function (descriptor, gradient) {
                     if (dataState == jsonState) {
         
                         //Copy the data value into the JSON
-                        json.features[j].properties.value = dataValue/d3.max(data.results, function(d) { return d[d3.select('.on').node().value]; });
+                        json.features[j].properties.value = dataValue/d3.max(data.results, function(d) { return d[d3.select('.btn-map-on').node().value]; });
         
                         //Stop looking through the JSON
                         break;
