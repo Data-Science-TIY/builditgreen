@@ -1,56 +1,85 @@
 module.exports =  function (domLocation) {
   var d3 = require('d3');
   var $ = require('jquery');
+
+  var w = 960,
+    h = 500,
+    pad = 20,
+    left_pad = 100,
+    Data_url = '/api/projects/2009/';
   
-    console.log('making scatterplot');
-    
-    var margin = {top: 20, right: 80, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-    
-    var parseDate = d3.time.format("%Y%m%d").parse;
-    
-    var svg = d3.select(domLocation).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	
-    var x = d3.scale.linear()
-        .range([0, width]);
-
-    var y = d3.scale.linear()
-        .range([height, 0]);
-    
-    var yAxis = d3.svg.axis().scale(y).orient("left");
-
-    var xAxis = d3.svg.axis().scale(x).orient("bottom");
-    
-    var line = d3.svg.line()
-        .interpolate("basis")
-        .x(function(d) { return x(d.date); })
-        .y(function(d) { return y(d.temperature); });
-    
-	d3.json("/api/trends/", function(error, data) {
-	  if (error) throw error;
-    
-    console.log(data);
-    
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+  var parseDate = d3.time.format("%Y-%m-%d").parse;
+  
+  var svg = d3.select(domLocation)
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h);
+   
+  var x = d3.scale.linear().range([left_pad, w-pad]),
+      y = d3.scale.linear().range([pad, h-pad*2]);
+   
+  var xAxis = d3.svg.axis().scale(x).orient("bottom"),
+      yAxis = d3.svg.axis().scale(y).orient("left");
+   
+  d3.json(Data_url, function (data) {
+      //console.log(data.results);
+      
+      var dataSet = data.results;
+      
+      //console.log(dataSet);
+      
+      svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0, "+(h-pad)+")")
       .call(xAxis);
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end");
-    
-        
+   
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate("+(left_pad-pad)+", 0)")
+        .call(yAxis);
+      
+      /*
+      var max_r = d3.max(data.results.map(
+                         function (d) { return d[2]; })),
+          r = d3.scale.linear()
+              .domain([0, d3.max(data, function (d) { return d[2]; })])
+              .range([0, 12]);
+      */
+      
+      
+      dataSet.forEach(function(d) {
+        console.log(d);
+        return d.certification_date = parseDate(d.certification_date);
+      });
+      
+      dataSet.forEach(function(d) {
+        console.log(d);
+      });
+      
+      x.domain(d3.extent(dataSet, function (d) { 
+          return d.certification_date; }));
+      
+      svg.selectAll("circle")
+          .data(dataSet)
+          .enter()
+          .append("circle")
+          .attr("class", "circle")
+          .attr("cx", function (d) {
+             var output = d.certification_date;
+             console.log(output);
+             return x(output); })
+          /*
+          .attr("cy", function (d) { 
+            //console.log(d);
+            return y(d['points_achieved']); })
+          .transition()
+          .duration(800)
+          .attr("r", function (d) { 
+            //console.log(d);
+            return r(d['gross_square_foot']); });
+            
+          */
   });
+
 }
 
