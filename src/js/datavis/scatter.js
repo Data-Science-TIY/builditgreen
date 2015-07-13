@@ -11,6 +11,8 @@ module.exports =  function (domLocation) {
   var parseDate = d3.time.format("%Y-%m-%d").parse;
   
   var color = d3.scale.category10();
+  
+  console.log(d3.scale.category10());
    
   var x = d3.time.scale()
     .range([0, width]);
@@ -35,28 +37,27 @@ module.exports =  function (domLocation) {
   d3.json(dataUrl[0], function (data0) {
     d3.json(dataUrl[1], function(data1) {
       d3.json(dataUrl[2], function(data2) {
-      //console.log(data.results);
+      //console.log(data);
       
       var data = data0;
+      console.log(data);
       
-      var dataSet = data.results;
-      
-      var maxR = d3.max(dataSet, function(d) { 
+      var maxR = d3.max(data, function(d) { 
                     //console.log(d);
                     return d.gross_square_foot;
                     });
                     
       //console.log(maxR);
       
-      dataSet.forEach(function(d) {
+      data.forEach(function(d) {
         //console.log(d);
         return d.certification_date = parseDate(d.certification_date);
       });
       
-      x.domain(d3.extent(dataSet, function (d) { 
+      x.domain(d3.extent(data, function (d) { 
           return d.certification_date; }));
       
-      y.domain(d3.extent(dataSet, function (d) { 
+      y.domain(d3.extent(data, function (d) { 
           return d.points_achieved; }));
       
       svg.append("g")
@@ -80,7 +81,7 @@ module.exports =  function (domLocation) {
           .text("Points Achieved");
       
       var circles = svg.selectAll("circle")
-          .data(dataSet)
+          .data(data)
           .enter()
           .append("circle")
           .attr("class", "circle")
@@ -136,18 +137,15 @@ module.exports =  function (domLocation) {
        //console.log(d3.select(".btn-trend2-on").node().value);
      
        data = eval('data'+d3.select(".btn-trend2-on").node().value);
-       
-       //console.log('data'+d3.select(".btn-trend2-on").node().value);
-       dataSet = data.results;
       
-       maxR = d3.max(dataSet, function(d) { 
+       maxR = d3.max(data, function(d) { 
                       //console.log(d);
                       return d.gross_square_foot;
                       });
                       
         //console.log(maxR);
         
-        dataSet.forEach(function(d) {
+        data.forEach(function(d) {
           console.log(d);
           console.log(d.certification_date.length)
           if (d.certification_date.length<=10) {
@@ -155,10 +153,10 @@ module.exports =  function (domLocation) {
           }
         });
         
-        x.domain(d3.extent(dataSet, function (d) { 
+        x.domain(d3.extent(data, function (d) { 
             return d.certification_date; }));
         
-        y.domain(d3.extent(dataSet, function (d) { 
+        y.domain(d3.extent(data, function (d) { 
             return d.points_achieved; }));
         
         svg.selectAll('.x').remove();
@@ -188,7 +186,7 @@ module.exports =  function (domLocation) {
         svg.selectAll('.circle').remove();
         
         circles = svg.selectAll("circle")
-            .data(dataSet)
+            .data(data)
             .enter()
             .append("circle")
             .attr("class", "circle")

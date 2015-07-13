@@ -27062,12 +27062,12 @@ module.exports =  function (descriptor, gradient) {
         d3.json("/static/data/us.json", function(json) {
             
         //console.log(data);
-        for (var i = 0; i < data.results.length; i++) {
+        for (var i = 0; i < data.length; i++) {
             //Grab state name
-            var dataState = data.results[i].name;
+            var dataState = data[i].name;
             //console.log(dataState);
             //Grab data value, and convert from string to float
-            var dataValue = parseFloat(data.results[i][descriptor]);
+            var dataValue = parseFloat(data[i][descriptor]);
             //console.log(dataValue);
             //Find the corresponding state inside the GeoJSON
             for (var j = 0; j < json.features.length; j++) {
@@ -27077,7 +27077,7 @@ module.exports =  function (descriptor, gradient) {
             if (dataState == jsonState) {
                 //console.log(dataState == jsonState);
                 //Copy the data value into the JSON
-                json.features[j].properties.value = dataValue/d3.max(data.results, function(d) { 
+                json.features[j].properties.value = dataValue/d3.max(data, function(d) { 
                     //console.log(d);
                     return d[descriptor];
                     });
@@ -27118,7 +27118,7 @@ module.exports =  function (descriptor, gradient) {
         .style("fill", function(d, i) { return color(d); })
         .style("opacity", 0.8);     
        
-       var dF = d3.max(data.results, function(d) { 
+       var dF = d3.max(data, function(d) { 
                     //console.log(d);
                     return d[descriptor];
                     });
@@ -27143,7 +27143,7 @@ module.exports =  function (descriptor, gradient) {
                     .domain([0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9])
                     .range(gradients[d3.select(".btn-map-on").node().value]);
                 
-                dF = d3.max(data.results, function(d) { 
+                dF = d3.max(data, function(d) { 
                     //console.log(d);
                     return d[d3.select(".btn-map-on").node().value];
                     });
@@ -27163,13 +27163,13 @@ module.exports =  function (descriptor, gradient) {
                 legend.select('text').transition().text(function(d, i){ return legendTextLabels[i]; });
                       
                 
-                 for (var i = 0; i < data.results.length; i++) {
+                 for (var i = 0; i < data.length; i++) {
                     //Grab state name
-                    //console.log(data.results);
-                    var dataState = data.results[i].name;
+                    //console.log(data);
+                    var dataState = data[i].name;
                     //console.log(data[i][d3.select('#dropdown').node().val]);
                     //Grab data value, and convert from string to float
-                    var dataValue = parseFloat(data.results[i][d3.select('.btn-map-on').node().value]);
+                    var dataValue = parseFloat(data[i][d3.select('.btn-map-on').node().value]);
                     
                     //Find the corresponding state inside the GeoJSON
                     for (var j = 0; j < json.features.length; j++) {
@@ -27179,7 +27179,7 @@ module.exports =  function (descriptor, gradient) {
                     if (dataState == jsonState) {
         
                         //Copy the data value into the JSON
-                        json.features[j].properties.value = dataValue/d3.max(data.results, function(d) { return d[d3.select('.btn-map-on').node().value]; });
+                        json.features[j].properties.value = dataValue/d3.max(data, function(d) { return d[d3.select('.btn-map-on').node().value]; });
         
                         //Stop looking through the JSON
                         break;
@@ -27275,9 +27275,9 @@ module.exports =  function (domLocation) {
       
       //console.log(data);
       
-      var dataSet = data.results;
+      var dataSet = data;
          
-      //console.log(data.results);   
+      //console.log(data);   
       
       x.domain(d3.extent(dataSet, function (d) { 
           return d.points_achieved; }));
@@ -27329,6 +27329,9 @@ module.exports =  function (domLocation) {
             else if (d.x>=50&&d.x<=59) {
               output = 'Silver';
             }
+            else if (d.x<40) {
+              output = 'Denied';
+            }
             else if (d.x>=60&&d.x<=79) {
               output = 'Gold';
             }
@@ -27352,7 +27355,7 @@ module.exports =  function (domLocation) {
           .call(yAxis)
         .append("text")
           .attr("y", 220)
-          .attr("x", -17)
+          .attr("x", -30)
           .attr("dy", ".71em")
           .style("text-anchor", "end")
           .text("Count");
@@ -27383,9 +27386,9 @@ module.exports =  function (domLocation) {
         
         data = eval('data'+d3.select(".btn-trend3-on").node().value);
         
-        console.log(data);
+        console.log(data.length);
         
-        dataSet = data.results;
+        dataSet = data;
         
         x.domain(d3.extent(dataSet, function (d) { 
           return d.points_achieved; }));
@@ -27436,24 +27439,12 @@ module.exports =  function (domLocation) {
             .style("fill", function(d) {
               var output;
               console.log(histo.length);
-              if (histo.length===50) { 
-                if (d.x>=40&&d.x<=49) {
-                  output = 'Certified';
-                }
-                else if (d.x>=50&&d.x<=59) {
-                  output = 'Silver';
-                }
-                else if (d.x>=60&&d.x<=79) {
-                  output = 'Gold';
-                }
-                else if (d.x>=80) {
-                  output = 'Platinum';
-                }
-               return color(output);
-              }
-              if (histo.length===30) { 
+              if (histo.length<84) { 
                 if (d.x>=26&&d.x<=32) {
                   output = 'Certified';
+                }
+                else if (d.x<26) {
+                  output = 'Denied';
                 }
                 else if (d.x>=33&&d.x<=38) {
                   output = 'Silver';
@@ -27465,7 +27456,25 @@ module.exports =  function (domLocation) {
                   output = 'Platinum';
                 }
                return color(output);
-              }                  
+              }
+               if (histo.length>=84) { 
+                if (d.x>=40&&d.x<=49) {
+                  output = 'Certified';
+                }
+                else if (d.x>=50&&d.x<=59) {
+                  output = 'Silver';
+                }
+                else if (d.x<40) {
+                  output = 'Denied';
+                }
+                else if (d.x>=60&&d.x<=79) {
+                  output = 'Gold';
+                }
+                else if (d.x>=80) {
+                  output = 'Platinum';
+                }
+                return color(output); 
+                }                 
             });
             
         svg.selectAll('.x').remove();
@@ -27487,7 +27496,7 @@ module.exports =  function (domLocation) {
             .call(yAxis)
           .append("text")
             .attr("y", 220)
-            .attr("x", -17)
+            .attr("x", -30)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text("Count");
@@ -27790,6 +27799,8 @@ module.exports =  function (domLocation) {
   var parseDate = d3.time.format("%Y-%m-%d").parse;
   
   var color = d3.scale.category10();
+  
+  console.log(d3.scale.category10());
    
   var x = d3.time.scale()
     .range([0, width]);
@@ -27814,28 +27825,27 @@ module.exports =  function (domLocation) {
   d3.json(dataUrl[0], function (data0) {
     d3.json(dataUrl[1], function(data1) {
       d3.json(dataUrl[2], function(data2) {
-      //console.log(data.results);
+      //console.log(data);
       
       var data = data0;
+      console.log(data);
       
-      var dataSet = data.results;
-      
-      var maxR = d3.max(dataSet, function(d) { 
+      var maxR = d3.max(data, function(d) { 
                     //console.log(d);
                     return d.gross_square_foot;
                     });
                     
       //console.log(maxR);
       
-      dataSet.forEach(function(d) {
+      data.forEach(function(d) {
         //console.log(d);
         return d.certification_date = parseDate(d.certification_date);
       });
       
-      x.domain(d3.extent(dataSet, function (d) { 
+      x.domain(d3.extent(data, function (d) { 
           return d.certification_date; }));
       
-      y.domain(d3.extent(dataSet, function (d) { 
+      y.domain(d3.extent(data, function (d) { 
           return d.points_achieved; }));
       
       svg.append("g")
@@ -27859,7 +27869,7 @@ module.exports =  function (domLocation) {
           .text("Points Achieved");
       
       var circles = svg.selectAll("circle")
-          .data(dataSet)
+          .data(data)
           .enter()
           .append("circle")
           .attr("class", "circle")
@@ -27915,18 +27925,15 @@ module.exports =  function (domLocation) {
        //console.log(d3.select(".btn-trend2-on").node().value);
      
        data = eval('data'+d3.select(".btn-trend2-on").node().value);
-       
-       //console.log('data'+d3.select(".btn-trend2-on").node().value);
-       dataSet = data.results;
       
-       maxR = d3.max(dataSet, function(d) { 
+       maxR = d3.max(data, function(d) { 
                       //console.log(d);
                       return d.gross_square_foot;
                       });
                       
         //console.log(maxR);
         
-        dataSet.forEach(function(d) {
+        data.forEach(function(d) {
           console.log(d);
           console.log(d.certification_date.length)
           if (d.certification_date.length<=10) {
@@ -27934,10 +27941,10 @@ module.exports =  function (domLocation) {
           }
         });
         
-        x.domain(d3.extent(dataSet, function (d) { 
+        x.domain(d3.extent(data, function (d) { 
             return d.certification_date; }));
         
-        y.domain(d3.extent(dataSet, function (d) { 
+        y.domain(d3.extent(data, function (d) { 
             return d.points_achieved; }));
         
         svg.selectAll('.x').remove();
@@ -27967,7 +27974,7 @@ module.exports =  function (domLocation) {
         svg.selectAll('.circle').remove();
         
         circles = svg.selectAll("circle")
-            .data(dataSet)
+            .data(data)
             .enter()
             .append("circle")
             .attr("class", "circle")
