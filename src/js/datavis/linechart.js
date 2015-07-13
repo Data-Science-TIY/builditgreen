@@ -21,6 +21,7 @@ console.log('making line chart');
     var svg = d3.select(domLocation).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+      .attr('class', 'linechart')
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
