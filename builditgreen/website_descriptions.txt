@@ -1,0 +1,110 @@
+HOMEPAGE
+<Top>
+LEED/Project Overview 
+
+Data Science and Visualizations for Green Building Design
+
+Buildings consume a lot of energy (roughly 40% in the US)! More thoughtful design of buildings can help reduce energy consumption, cut CO2 emissions and improve overall air quality. A framework for sustainable design, called LEED (Leadership in Energy and Environmental Design), is helping improve building performance. Over the last 15 years, LEED has become main stream with more than 80,000 buildings and ** sqft designed and certified.  
+
+We analyzed the data for all LEED buildings and found LEED is making a big dent in the building industry but there is room for improvement. Checkout the stats below, or dive deeper, of the Scoring System and LEED vs Non-LEED tabs. 
+
+<Map>
+How does each state perform on LEED? 
+<Map Title>
+map
+<Map Description>
+Explore the map above to find out the total number of and type of LEED projects built in each state.
+
+<Line trends>
+Has LEED usage grown over time? 
+<Trends Title>
+trends
+<Trends Descriptions>
+Do version implementations affect registrations and certifications?  Use this line chart to explore the yearly history of LEED.
+
+<Scatterplot>
+How might you classify LEED projects? 
+<Scatter Title>
+scatter
+<Scatter Description>
+Has project size and certification changed over time?  Does the size of the project correlate with certification levels?  Explore these scatterplots to visualize the all LEED certified projects.
+
+<Score histogram>
+How are builders and developers using the LEED system?
+<Histogram Title>
+historam
+<Hist Description>
+  A histogram of the number of projects by score shows that the system encourages users to do the minimum to attain a certification level.
+
+<Bottom> 
+We used free and openly available data provided by USGBC.  The graphs and figures show the positive impact of LEED in the building industry and insights to areas for future improvement.  
+The USBGC website includes many articles and in-depth analysis. The information here is organized into a cohesive view, specific to the data and visualization of green building trends. 
+
+
+
+ABOUT LEED PAGE
+
+LEED (Leadership in Energy and Environmental Design) provides a framework and rating system for sustainable design, construction, operations, and maintenance of new and existing buildings (and, more recently, neighborhoods and communities, but we stuck to analyzing the individual building data). Our focus is the Building and Construction rating system, New Construction versions 2.1, 2.2. and 2009. 
+
+LEED-NC 
+Year Published 
+Maximum Points
+Version 2.0
+2000
+69
+Version 2.1
+2002
+69
+Version 2.2
+2005
+69
+Version 2009 (also called v3)
+2009
+110
+
+
+Versions of LEED we analyzed:
+There is currently a LEED v4, but recently released and very few datasets are available, LEED 2009 can still be used until October 2016. We used the last three versions LEED 2009 (also referred to as v3) and LEED v.2.1 and v2.2 for our analysis. 
+
+LEED 2009 
+LEED 2009 was built using the previous LEED 2.2 version. The fundamental change to LEED 2009 was the revised credit ratings to reflect significant technological advancements in the industry. Also, Regional Priority (RP) extra points were added. Projects can earn up to 10 bonus points for credits based on location (e.g. in dry a climate reducing water consumption is worth an additional point) and Innovation and Design. Different regions of the country recognize different credits as extra points. 
+
+Under LEED 2009, there are 100 possible base points distributed across six credit categories: Sustainable Sites, Water Efficiency, Energy and Atmosphere, Materials and Resources, Indoor Environmental Quality, Innovation in Design. 
+
+LEED versions 2.1 and 2.2
+The major difference between LEED 2.1 and 2.2 is the Energy and Atmosphere, Credit 2. Originally, in LEED 2.1, the credit was subdivided into three credits Renewable Energy 5%, 10% and 20%. LEED 2.2 grouped the credits into one and offered three points for each of the levels. 
+
+Summary of the Total Points allowed towards certification and the levels of certification in the LEED versions we analyzed.  
+
+
+v.2009
+v2.x
+Base Point
+100
+64
+Innovation in Design 
+6
+5
+Regional Priority
+4
+0
+Total Possible Points
+110
+69
+
+
+
+Certified
+40-49
+26-32
+Silver
+50-59
+39-51
+Gold
+60-79
+36-51
+Platinum
+80+
+52-69
+
+
