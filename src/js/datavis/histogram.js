@@ -39,9 +39,9 @@ module.exports =  function (domLocation) {
       
       //console.log(data);
       
-      var dataSet = data.results;
+      var dataSet = data;
          
-      //console.log(data.results);   
+      //console.log(data);   
       
       x.domain(d3.extent(dataSet, function (d) { 
           return d.points_achieved; }));
@@ -93,6 +93,9 @@ module.exports =  function (domLocation) {
             else if (d.x>=50&&d.x<=59) {
               output = 'Silver';
             }
+            else if (d.x<40) {
+              output = 'Denied';
+            }
             else if (d.x>=60&&d.x<=79) {
               output = 'Gold';
             }
@@ -116,7 +119,7 @@ module.exports =  function (domLocation) {
           .call(yAxis)
         .append("text")
           .attr("y", 220)
-          .attr("x", -17)
+          .attr("x", -30)
           .attr("dy", ".71em")
           .style("text-anchor", "end")
           .text("Count");
@@ -147,9 +150,9 @@ module.exports =  function (domLocation) {
         
         data = eval('data'+d3.select(".btn-trend3-on").node().value);
         
-        console.log(data);
+        console.log(data.length);
         
-        dataSet = data.results;
+        dataSet = data;
         
         x.domain(d3.extent(dataSet, function (d) { 
           return d.points_achieved; }));
@@ -200,24 +203,12 @@ module.exports =  function (domLocation) {
             .style("fill", function(d) {
               var output;
               console.log(histo.length);
-              if (histo.length===50) { 
-                if (d.x>=40&&d.x<=49) {
-                  output = 'Certified';
-                }
-                else if (d.x>=50&&d.x<=59) {
-                  output = 'Silver';
-                }
-                else if (d.x>=60&&d.x<=79) {
-                  output = 'Gold';
-                }
-                else if (d.x>=80) {
-                  output = 'Platinum';
-                }
-               return color(output);
-              }
-              if (histo.length===30) { 
+              if (histo.length<84) { 
                 if (d.x>=26&&d.x<=32) {
                   output = 'Certified';
+                }
+                else if (d.x<26) {
+                  output = 'Denied';
                 }
                 else if (d.x>=33&&d.x<=38) {
                   output = 'Silver';
@@ -229,7 +220,25 @@ module.exports =  function (domLocation) {
                   output = 'Platinum';
                 }
                return color(output);
-              }                  
+              }
+               if (histo.length>=84) { 
+                if (d.x>=40&&d.x<=49) {
+                  output = 'Certified';
+                }
+                else if (d.x>=50&&d.x<=59) {
+                  output = 'Silver';
+                }
+                else if (d.x<40) {
+                  output = 'Denied';
+                }
+                else if (d.x>=60&&d.x<=79) {
+                  output = 'Gold';
+                }
+                else if (d.x>=80) {
+                  output = 'Platinum';
+                }
+                return color(output); 
+                }                 
             });
             
         svg.selectAll('.x').remove();
@@ -251,7 +260,7 @@ module.exports =  function (domLocation) {
             .call(yAxis)
           .append("text")
             .attr("y", 220)
-            .attr("x", -17)
+            .attr("x", -30)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text("Count");
