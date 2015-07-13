@@ -33,14 +33,14 @@ router.route('','overview', function () {
     
     toggle("#map-dropdown div", 'btn-map');
     toggle("#trend1-dropdown div", 'btn-trend1');
-    //toggle("#trend2-dropdown div", 'btn-trend2');
+    toggle("#trend2-dropdown div", 'btn-trend2');
     //toggle("#trend3-dropdown div", 'btn-trend3');
     
     //console.log(d3.select(".on").node().value);
     buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);
     
     linechart(".trend-1");
-    //scatter(".trend-2");
+    scatter(".trend-2");
     //histo('.trend-3');
 
     
