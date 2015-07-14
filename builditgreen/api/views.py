@@ -293,36 +293,6 @@ class ScoreVersion21Trends(APIView):
         Return trends by certification level and overall.
         """
         trends_dict = {}
-        year_list = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014]
-
-        version_2_1_score_list = sorted([score for score in ScoreTwoPointOne._meta.get_all_field_names()])
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects.all().aggregate(Avg(score))['{}__avg'
-                                                    .format(score)])) for score in version_2_1_score_list}
-        trends_dict["average_scores_and_possible_v2_1"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
-                                                    .filter(project__certification_level="Platinum")
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in version_2_1_score_list}
-        trends_dict["average_scores_and_possible_v2_1_platinum"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects.filter(project__certification_level="Gold")
-                      .aggregate(Avg(score))['{}__avg'.format(score)])) for score in version_2_1_score_list}
-        trends_dict["average_scores_and_possible_v2_1_gold"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
-                                                    .filter(project__certification_level="Silver")
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in version_2_1_score_list}
-        trends_dict["average_scores_and_possible_v2_1_silver"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
-                                                    .filter(project__certification_level="Certified")
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in version_2_1_score_list}
-        trends_dict["average_scores_and_possible_v2_1_certified"] = score_dict
-
-        trends_dict = {}
         scores_2_1_possible = ['eac1_possible', 'ssc5_1_possible', 'ssc4_1_possible', 'eqc4_1_possible',
                                'ssc1_possible', 'eac5_possible', 'eqc3_2_possible', 'mrc1_3_possible',
                                'wec1_1_possible', 'eqc4_3_possible', 'mrc7_possible', 'wec2_possible',
@@ -354,85 +324,114 @@ class ScoreVersion21Trends(APIView):
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects.all().aggregate(Avg(score))['{}__avg'
                                                     .format(score)])) for score in scores_2_1}
-        trends_dict["average_scores_v2_1"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_level="Platinum")
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_platinum"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_platinum"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects.filter(project__certification_level="Gold")
                       .aggregate(Avg(score))['{}__avg'.format(score)])) for score in scores_2_1}
-        trends_dict["average_scores_v2_1_gold"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_gold"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_level="Silver")
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_silver"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_silver"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_level="Certified")
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_certified"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
-                                                    .filter(project__certification_date__gte=datetime(2005, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2005, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2005"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_certified"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_date__gte=datetime(2006, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2006, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2006"] = score_dict
-        #
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_2006"] = normalized_dict
+
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_date__gte=datetime(2007, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2007, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2007"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_2007"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_date__gte=datetime(2008, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2008, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2008"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_2008"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_date__gte=datetime(2009, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2009, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2009"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_2009"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_date__gte=datetime(2010, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2010, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2010"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_2010"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_date__gte=datetime(2011, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2011, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2011"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_2011"] = normalized_dict
 
         score_dict = {score: float("{0:.2f}".format(ScoreTwoPointOne.objects
                                                     .filter(project__certification_date__gte=datetime(2012, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(2012, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in scores_2_1}
-        trends_dict["average_scores_v2_1_2012"] = score_dict
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_1"][score]))
+                                        for score
+                           in scores_2_1}
+        trends_dict["average_normal_scores_v2_1_2012"] = normalized_dict
 
         return Response(trends_dict)
 
@@ -519,90 +518,7 @@ class ScoreVersion22Trends(APIView):
         #                                             .aggregate(Avg(score))['{}__avg'.format(score)]))
         #               for score in version_2_2_score_list}
         # trends_dict["average_scores_and_possible_v2_2_2013"] = score_dict
-
-        score_2_2_list = ['wec2', 'eqc3_2', 'ssc2', 'eqc2', 'eac1', 'eqc6_2', 'ssc8', 'mrc3_2', 'eqc6_1', 'mrc2_2',
-                          'mrc1_2', 'ssc4_4', 'ssc7_2', 'mrc1_3', 'eqc4_3', 'eac4', 'ssc1', 'eqc4_2', 'eqc8_2',
-                          'mrc1_1', 'eqc4_1', 'eqc5', 'wec3_1', 'mrc4_2', 'eqc4_4', 'wec3_2', 'ssc6_1', 'mrc3_1',
-                          'ssc4_3', 'ssc6_2', 'wec1_1', 'ssc5_2', 'eqc7_2', 'eac6', 'eqc7_1', 'eac5', 'eqc3_1',
-                          'wec1_2', 'ssc7_1', 'mrc5_2', 'mrc2_1', 'idc1', 'ssc4_1', 'ssc5_1', 'mrc6', 'eqc1',
-                          'mrc4_1', 'ssc4_2', 'eqc8_1', 'mrc5_1', 'idc2', 'ssc3', 'mrc7', 'eac3', 'eac2']
-
         trends_dict = {}
-
-        # version_2_2_score_list = sorted([score for score in ScoreTwoPointTwo._meta.get_all_field_names()])
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects.all().aggregate(Avg(score))['{}__avg'
-                                                    .format(score)])) for score in score_2_2_list}
-        trends_dict["average_scores_v2_2"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_level="Platinum")
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_platinum"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects.filter(project__certification_level="Gold")
-                      .aggregate(Avg(score))['{}__avg'.format(score)])) for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_gold"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_level="Silver")
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_silver"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects.filter(project__certification_level=\
-                                                                                    "Certified").aggregate(Avg(score))
-                                                    ['{}__avg'.format(score)])) for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_certified"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_date__gte=datetime(2009, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2009, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_2009"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_date__gte=datetime(2010, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2010, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_2010"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_date__gte=datetime(2012, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2012, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_2012"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_date__gte=datetime(2011, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2011, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_2_2_2011"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_date__gte=datetime(2008, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2008, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_2_2_2008"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_date__gte=datetime(2007, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2007, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_2_2_2007"] = score_dict
-
-        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
-                                                    .filter(project__certification_date__gte=datetime(2013, 1, 1))
-                                                    .filter(project__certification_date__lte=datetime(2013, 12, 31))
-                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
-                      for score in score_2_2_list}
-        trends_dict["average_scores_v2_2_2013"] = score_dict
 
         score_2_2_possible = ['mrc2_1_possible', 'mrc6_possible', 'eac6_possible', 'mrc5_2_possible', 'mrc3_2_possible',
                               'ssc5_1_possible', 'eqc6_2_possible', 'mrc7_possible', 'ssc4_4_possible',
@@ -623,7 +539,125 @@ class ScoreVersion22Trends(APIView):
                                                     .filter(project__certification_date__lte=datetime(2013, 12, 31))
                                                     .aggregate(Avg(score))['{}__avg'.format(score)]))
                       for score in score_2_2_possible}
+        score_dict['mrc4_1'] = 2
         trends_dict["scores_possible_v2_2"] = score_dict
+
+        score_2_2_list = ['wec2', 'eqc3_2', 'ssc2', 'eqc2', 'eac1', 'eqc6_2', 'ssc8', 'mrc3_2', 'eqc6_1', 'mrc2_2',
+                          'mrc1_2', 'ssc4_4', 'ssc7_2', 'mrc1_3', 'eqc4_3', 'eac4', 'ssc1', 'eqc4_2', 'eqc8_2',
+                          'mrc1_1', 'eqc4_1', 'eqc5', 'wec3_1', 'mrc4_2', 'eqc4_4', 'wec3_2', 'ssc6_1', 'mrc3_1',
+                          'ssc4_3', 'ssc6_2', 'wec1_1', 'ssc5_2', 'eqc7_2', 'eac6', 'eqc7_1', 'eac5', 'eqc3_1',
+                          'wec1_2', 'ssc7_1', 'mrc5_2', 'mrc2_1', 'idc1', 'ssc4_1', 'ssc5_1', 'mrc6', 'eqc1',
+                          'mrc4_1', 'ssc4_2', 'eqc8_1', 'mrc5_1', 'idc2', 'ssc3', 'mrc7', 'eac3', 'eac2']
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects.all().aggregate(Avg(score))['{}__avg'
+                                                    .format(score)])) for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_level="Platinum")
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_platinum"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects.filter(project__certification_level="Gold")
+                      .aggregate(Avg(score))['{}__avg'.format(score)])) for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_gold"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_level="Silver")
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_silver"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects.filter(project__certification_level=\
+                                                                                    "Certified").aggregate(Avg(score))
+                                                    ['{}__avg'.format(score)])) for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_certified"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2009, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2009, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_2009"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2010, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2010, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_2010"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2012, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2012, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_2012"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2011, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2011, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_2011"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2008, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2008, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_2008"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2007, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2007, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_2007"] = normalized_dict
+
+        score_dict = {score: float("{0:.2f}".format(ScoreTwoPointTwo.objects
+                                                    .filter(project__certification_date__gte=datetime(2013, 1, 1))
+                                                    .filter(project__certification_date__lte=datetime(2013, 12, 31))
+                                                    .aggregate(Avg(score))['{}__avg'.format(score)]))
+                      for score in score_2_2_list}
+        normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["scores_possible_v2_2"][score]))
+                                        for score
+                           in score_2_2_list}
+        trends_dict["average_normal_scores_v2_2_2013"] = normalized_dict
 
         return Response(trends_dict)
 
