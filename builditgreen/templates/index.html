@@ -4,48 +4,58 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Build It Green</title>
+  <title>B I G</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu:700' rel='stylesheet' type='text/css'>
+  <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 </head>
 
 <body>
-     <!-- Always shows a header, even in smaller screens. -->
+  
+  
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <span class="mdl-layout-title">Build It Green</span>
-        <!-- Add spacer, to align navigation to the right -->
-        <div class="mdl-layout-spacer"></div>
-        <!-- Navigation. We hide it in small screens. -->
+        <span class="mdl-layout-title">B  I  G</span>     
+        <div class="mdl-layout-spacer"></div>      
         <nav class="mdl-navigation mdl-layout--large-screen-only">
-          <a class="mdl-navigation__link" href="#overview">Overview</a>
-          <a class="mdl-navigation__link" href="#scoring">Scoring System</a>
-          <a class="mdl-navigation__link" href="#leedvs">LEED vs. Non-LEED</a>
-          <a class="mdl-navigation__link" href="#about">About</a>
-          <a class="mdl-navigation__link" href="http://data-science-tiy.github.io/blog/">Blog</a>
+          <a class="mdl-navigation__link ov-btn">Overview</a>
+          <a class="mdl-navigation__link sc-btn">Scoring System</a>
+          <a class="mdl-navigation__link leed-btn">LEED vs. Non-LEED</a>
+          <a class="mdl-navigation__link abt-btn">What is LEED?</a>
+          <a class="mdl-navigation__link blog-btn" href="http://data-science-tiy.github.io/blog/">Blog</a>
         </nav>
       </div>
     </header>
     <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Build It Green</span>
+      <span class="mdl-layout-title">B I G</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link drawer-link" href="#overview">Overview</a>
-        <a class="mdl-navigation__link drawer-link" href="#scoring">Scoring System</a>
-        <a class="mdl-navigation__link drawer-link" href="#leedvs">LEED vs. Non-LEED</a>
-        <a class="mdl-navigation__link drawer-link" href="#about">About</a>
-        <a class="mdl-navigation__link drawer-link" href="http://data-science-tiy.github.io/blog/">Blog</a>
+        <a class="mdl-navigation__link ov-btn">Overview</a>
+        <a class="mdl-navigation__link sc-btn">Scoring System</a>
+        <a class="mdl-navigation__link leed-btn">LEED vs. Non-LEED</a>
+        <a class="mdl-navigation__link abt-btn">What is LEED?</a>
+        <a class="mdl-navigation__link blog-btn" href="http://data-science-tiy.github.io/blog/">Blog</a>
       </nav>
     </div>
     <main class="mdl-layout__content">
-      <div class="page-content">
+      <div class="overview">
+        
+      </div>
+      <div class="scoring">
+        
+      </div>
+      <div class="leedvs">
+        
+      </div>
+      <div class="about">
         
       </div>
     </main>
   </div>
+ 
 
   <script src="{% static 'js/vendor.js' %}"></script>
   <script src="{% static 'js/views.js' %}"></script>

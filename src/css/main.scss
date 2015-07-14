@@ -76,3 +76,113 @@ svg {
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.scoring, .leedvs, .about {
+ display: none;
+}
+
+.overview {
+  display: block;
+}
+
+.ov-btn, .abt-btn, .sc-btn, .leed-btn {
+  cursor: pointer;
+}
+
+.abt-container {
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 2em;
+}
+
+.abt-content {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.abt-table {
+  margin: 0 auto;
+}
+
+.abt-summary-table-and-content {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.abt-summary-table-header {
+  margin: 30px 0 24px;
+}
+
+.abt-summary-table-content-container {
+  width: 50%;
+}
+
+.abt-summary-table-container {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.intro-container {
+  width: 100%;
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ), url(/static/img/2015-06-Life-of-Pix-free-stock-photos-new-york-buildings-city-desiree.jpg);
+  background-size: cover;
+  box-sizing: border-box;
+  margin: 0 0 0 0;
+  padding: 2em;
+}
+
+.intro-text {
+  height: 100%;
+  color: white;
+  width: 43em;
+  margin: 50px auto 70px;
+}
+
+.intro-text p {
+  font-size: 1.2em;
+}
+
+.intro-header {
+  margin: 80px auto;
+  width: 50%;
+  text-align: center;
+  color: white
+}
+
+.style-intro-header {
+  color: #00F07B;
+  font-weight: 700;
+}
+
+.mdl-layout-title {
+  font-family: 'Ubuntu', sans-serif;
+  color: #00F07B;
+  font-size: 2em;
+  letter-spacing: 0.3em;
+}
+
+.mdl-navigation__link {
+  font-size: 1.1em;
+}
+
+.mdl-navigation__link:hover {
+  background-color: #00F07B;
+  color: white;
+  font-size: 1.1em;
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+  font-size: 1.1em;
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link:hover {
+  background-color: #00F07B;
+  color: white;
+  font-size: 1.1em;  
+}
+

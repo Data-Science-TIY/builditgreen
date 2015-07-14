@@ -10,9 +10,8 @@ module.exports =  function (domLocation) {
   
   var parseDate = d3.time.format("%Y-%m-%d").parse;
   
-  var color = d3.scale.category10();
-  
-  console.log(d3.scale.category10());
+  var color = d3.scale.ordinal()
+              .range(['#00F8B1', '#327EFF', '#3E5A65', '#FFDB00']);
    
   var x = d3.time.scale()
     .range([0, width]);
@@ -40,7 +39,7 @@ module.exports =  function (domLocation) {
       //console.log(data);
       
       var data = data0;
-      console.log(data);
+      //console.log(data);
       
       var maxR = d3.max(data, function(d) { 
                     //console.log(d);
@@ -49,7 +48,10 @@ module.exports =  function (domLocation) {
                     
       //console.log(maxR);
       
-      data.forEach(function(d) {
+      data.forEach(function(d, index) {
+        if (d.certification_level=='Denied') {
+          data.splice(index,1);
+        };
         //console.log(d);
         return d.certification_date = parseDate(d.certification_date);
       });
@@ -99,6 +101,8 @@ module.exports =  function (domLocation) {
           .style("fill", function(d) { return color(d.certification_level); })
           .style("opacity", 1);
        
+       
+       
        var legend = svg.selectAll(".legend")
           .data(color.domain())
         .enter().append("g")
@@ -145,9 +149,12 @@ module.exports =  function (domLocation) {
                       
         //console.log(maxR);
         
-        data.forEach(function(d) {
-          console.log(d);
-          console.log(d.certification_date.length)
+        data.forEach(function(d, index) {
+          if (d.certification_level=='Denied') {
+            data.splice(index,1);
+          };
+          //console.log(d);
+          //console.log(d.certification_date.length)
           if (d.certification_date.length<=10) {
           return d.certification_date = parseDate(d.certification_date);
           }
@@ -210,7 +217,9 @@ module.exports =  function (domLocation) {
             .data(color.domain())
           .enter().append("g")
             .attr("class", "legend")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+            .attr("transform", function(d, i) { 
+              console.log(color.domain());
+              return "translate(0," + i * 20 + ")"; });
   
          legend.append("rect")
             .attr("x", width - 18)
