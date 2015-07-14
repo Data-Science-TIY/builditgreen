@@ -16,7 +16,7 @@ console.log('making line chart');
     var newConst = ['leed_nc_2_1_certifications', 'leed_nc_2_0_certifications', 'leed_nc_2_2_certifications', 
       'leed_nc_2009_certifications'];
     
-    var color = d3.scale.category10();
+    var color = d3.scale.ordinal().range(['#327EFF', '#FFDB00', '#3E5A65', '#00F8B1', '#FF3C41']);
     
     var svg = d3.select(domLocation).append("svg")
       .attr("width", width + margin.left + margin.right)
