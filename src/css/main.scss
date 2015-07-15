@@ -45,21 +45,32 @@ svg {
 }
 
 .btn-map, .btn-trend1, .btn-trend2, .btn-trend3,
-.btn-overall {
+.btn-overall, .btn-sc1-version, .btn-sc2-version,
+.btn-sc1-category, .btn-sc2-category {
     margin: 0.5em 0;
     display: block;
     width: 9em;
 }
 
 .btn-map-on, .btn-trend1-on, .btn-trend2-on, .btn-trend3-on,
-.btn-overall-on {
+.btn-overall-on, .btn-sc1-version-on, .btn-sc2-version-on,
+.btn-sc1-category-on, .btn-sc2-category-on {
     background-color: #777;
     color: white;  
 }
 
 #map-dropdown, #trend1-dropdown, #trend2-dropdown, 
-#trend3-dropdown, #scoring1-dropdown {
+#trend3-dropdown, #scoring1-dropdown, #scoring-version1-dropdown,
+#scoring-version2-dropdown, #scoring-category1-dropdown,
+#scoring-category2-dropdown {
   display: inline-block;
+}
+
+#scoring-version1-dropdown,
+#scoring-version2-dropdown, #scoring-category1-dropdown,
+#scoring-category2-dropdown {
+  float: left;
+  margin: 0 1em;
 }
 
 .map, .trend-1, .trend-2, .trend-3,
@@ -194,3 +205,10 @@ svg {
   font-size: 1.1em;  
 }
 
+.plotly-total {
+  display: block;
+}
+
+.plotly-adjusted {
+  display: none;
+}

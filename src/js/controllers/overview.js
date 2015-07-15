@@ -7,8 +7,6 @@ var router = require('../router');
 var topojson = require('topojson');
 var queue = require("queue-async");
 var d3 = require('d3');
-var c3 = require('c3');
-var mapdata = require('../datavis/mapdata');
 var buildmap = require('../datavis/buildmap');
 var linechart = require('../datavis/linechart');
 var gradients = require('../datavis/gradients');
@@ -36,11 +34,12 @@ router.route('','overview', function () {
     // toggle("#trend1-dropdown div", 'btn-trend1');
     // toggle("#trend2-dropdown div", 'btn-trend2');
     // toggle("#trend3-dropdown div", 'btn-trend3');
+    // toggle('#plotly-dropdown div', 'btn-plotly');
     
     // buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);  
     // linechart(".trend-1");
     // scatter(".trend-2");
-    // histo('.trend-3');
+    // histo('.trend-3'); 
   
   }
   
@@ -48,6 +47,10 @@ router.route('','overview', function () {
     
     $('.scoring').html(views['scoring']);
     toggle("#scoring1-dropdown div", 'btn-overall');
+    toggle("#scoring-version1-dropdown div", 'btn-sc1-version');
+    toggle("#scoring-category1-dropdown div", 'btn-sc1-category');
+    toggle("#scoring-version2-dropdown div", 'btn-sc2-version');
+    toggle("#scoring-category2-dropdown div", 'btn-sc2-category');
     overbar('.overallbar');
     
   }
