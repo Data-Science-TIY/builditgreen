@@ -27885,8 +27885,8 @@ module.exports =  function (domLocation) {
       height = 500 - margin.top - margin.bottom,
       dataUrl = ['/api/score-trends-2009/','/api/score-trends-2-2/','/api/score-trends-2-1/'],
       endPoint2009 = "average_normal_scores_2009",
-      endPoint22 = "average_scores_v2_2",
-      endPoint21 = "average_scores_v2_1";
+      endPoint22 = "average_normal_scores_v2_2",
+      endPoint21 = "average_normal_scores_v2_1";
   
   var color = d3.scale.ordinal().range(['#327EFF', '#FFDB00', '#3E5A65', '#00F8B1', '#FF3C41', '#00943E', '#5D00A9']);
   
@@ -27917,7 +27917,8 @@ module.exports =  function (domLocation) {
     
     //console.log('getting data');
     
-
+    // console.log(data1);
+    // console.log(data2);
     
     //console.log(endPoint[3]);
     
@@ -28067,7 +28068,7 @@ module.exports =  function (domLocation) {
         
         addUnderscore(data);
         
-        console.log(data);
+        //console.log(data);
         
         if (data===data0) {
            data = data[endPoint2009];
@@ -28080,7 +28081,7 @@ module.exports =  function (domLocation) {
         }
         
         
-    console.log(data);    
+    //console.log(data);    
     
     //console.log(data);
     
@@ -28114,7 +28115,7 @@ module.exports =  function (domLocation) {
       //console.log(d);
       return d; }));
     
-    y.domain([0, d3.max(_.values(data), function(d) { return d; })]);
+    // y.domain([0, d3.max(_.values(data), function(d) { return d; })]);
     
     svg.append("g")
         .attr("class", "x axis")
