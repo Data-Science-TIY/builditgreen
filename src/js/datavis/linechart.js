@@ -56,7 +56,7 @@ console.log('making line chart');
     
     //console.log(dateDomain);
     
-    console.log(d3.select(".btn-trend1-on").node().value);
+    //console.log(d3.select(".btn-trend1-on").node().value);
     
     var trendValues = _.pick(data, eval(d3.select(".btn-trend1-on").node().value));
     
@@ -64,7 +64,7 @@ console.log('making line chart');
     
     color.domain(_.keys(_.pick(data, eval(d3.select(".btn-trend1-on").node().value))));
    
-   console.log(d3.select(".btn-trend1-on").node().value);
+   //console.log(d3.select(".btn-trend1-on").node().value);
    
     //console.log(_.pick(data, 'platinum_certifications', 'gold_certifications'));
    
@@ -123,7 +123,7 @@ console.log('making line chart');
         //console.log(d);
         return line(d.values); })
       .style("stroke", function(d) { 
-        console.log(d.name);
+        //console.log(d.name);
         return color(d.name); });
       
      trend.append("text")
