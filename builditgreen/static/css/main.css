@@ -5544,19 +5544,23 @@ svg {
   padding-bottom: 2em;
   padding-left: 1em; }
 
-.btn-map, .btn-trend1, .btn-trend2, .btn-trend3 {
+.btn-map, .btn-trend1, .btn-trend2, .btn-trend3,
+.btn-overall {
   margin: 0.5em 0;
   display: block;
   width: 9em; }
 
-.btn-map-on, .btn-trend1-on, .btn-trend2-on, .btn-trend3-on {
+.btn-map-on, .btn-trend1-on, .btn-trend2-on, .btn-trend3-on,
+.btn-overall-on {
   background-color: #777;
   color: white; }
 
-#map-dropdown, #trend1-dropdown, #trend2-dropdown, #trend3-dropdown {
+#map-dropdown, #trend1-dropdown, #trend2-dropdown,
+#trend3-dropdown, #scoring1-dropdown {
   display: inline-block; }
 
-.map, .trend-1, .trend-2, .trend-3 {
+.map, .trend-1, .trend-2, .trend-3,
+.overallbar {
   display: inline-block;
   float: right; }
 

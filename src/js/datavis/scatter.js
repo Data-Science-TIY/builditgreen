@@ -39,7 +39,7 @@ module.exports =  function (domLocation) {
       //console.log(data);
       
       var data = data0;
-      //console.log(data);
+      console.log(data);
       
       var maxR = d3.max(data, function(d) { 
                     //console.log(d);
@@ -50,12 +50,18 @@ module.exports =  function (domLocation) {
       
       data.forEach(function(d, index) {
         if (d.certification_level=='Denied') {
-          data.splice(index,1);
-        };
-        //console.log(d);
+          
+          //console.log(d);
+          data.splice(index,1); 
+      };
+      });
+      
+      data.forEach(function(d, index) {
+        
         return d.certification_date = parseDate(d.certification_date);
       });
       
+      console.log(data);
       x.domain(d3.extent(data, function (d) { 
           return d.certification_date; }));
       
@@ -87,7 +93,8 @@ module.exports =  function (domLocation) {
           .enter()
           .append("circle")
           .attr("class", "circle")
-          .attr("id", function (d) { return d.certification_level })
+          .attr("id", function (d) { 
+            return d.certification_level })
           .attr("cx", function (d) {
              var output = d.certification_date;
              //console.log(output);
@@ -150,9 +157,15 @@ module.exports =  function (domLocation) {
         //console.log(maxR);
         
         data.forEach(function(d, index) {
-          if (d.certification_level=='Denied') {
-            data.splice(index,1);
-          };
+        if (d.certification_level=='Denied') {
+          
+          //console.log(d);
+          data.splice(index,1); 
+        };
+        });
+        
+        data.forEach(function(d, index) {
+          
           //console.log(d);
           //console.log(d.certification_date.length)
           if (d.certification_date.length<=10) {

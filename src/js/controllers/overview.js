@@ -17,29 +17,54 @@ var toggle = require('../datavis/toggle-creator');
 var scatter = require('../datavis/scatter');
 var histo = require('../datavis/histogram');
 var hero = require('../datavis/heroimage');
+var overbar = require('../datavis/overallbar');
 
 router.route('','overview', function () {
 
-  render();
+  renderOverview();
+  renderCredit();
+  renderAbout();
+  renderLeedvs();
+  renderNav();
   
   
-  function render () {
+  function renderOverview () {
     
     $('.overview').html(views['overview']);
-    $('.about').html(views['about']);
+    
+    // toggle("#map-dropdown div", 'btn-map');
+    // toggle("#trend1-dropdown div", 'btn-trend1');
+    // toggle("#trend2-dropdown div", 'btn-trend2');
+    // toggle("#trend3-dropdown div", 'btn-trend3');
+    
+    // buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);  
+    // linechart(".trend-1");
+    // scatter(".trend-2");
+    // histo('.trend-3');
+  
+  }
+  
+  function renderCredit () {
+    
     $('.scoring').html(views['scoring']);
+    toggle("#scoring1-dropdown div", 'btn-overall');
+    overbar('.overallbar');
+    
+  }
+  
+  function renderAbout () {
+    
+    $('.about').html(views['about']);
+    
+  }
+  
+  function renderLeedvs () {
+  
     $('.leedvs').html(views['leedvs']);
-    
-    toggle("#map-dropdown div", 'btn-map');
-    toggle("#trend1-dropdown div", 'btn-trend1');
-    toggle("#trend2-dropdown div", 'btn-trend2');
-    toggle("#trend3-dropdown div", 'btn-trend3');
-    
-    buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);  
-    linechart(".trend-1");
-    scatter(".trend-2");
-    histo('.trend-3');
-    
+  
+  }
+  
+  function renderNav () {
     $('.ov-btn').click(function () {
       $('.scoring').css('display', 'none');
       $('.about').css('display', 'none');
@@ -64,9 +89,7 @@ router.route('','overview', function () {
       $('.leedvs').css('display', 'none');
       $('.overview').css('display', 'none');
     });
-    
-    //hero();
-    
   }
+  
 });
 
