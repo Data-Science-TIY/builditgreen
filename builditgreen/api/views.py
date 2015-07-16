@@ -209,6 +209,7 @@ class ScoreVersion2009Trends(APIView):
         wec_list =  ['wec1', 'wec2', 'wec3']
 
         year_list = [2011, 2012, 2013, 2014, 2015]
+        cert_list = ["Platinum", "Gold", "Silver", "Certified"]
 
         eac_dict = {}
         for credit in eac_list:
@@ -217,8 +218,13 @@ class ScoreVersion2009Trends(APIView):
                 eac_dict[credit][year] = float("{0:.2f}".format((Score2009.objects
                                                     .filter(project__certification_date__gte=datetime(year, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(year, 12, 31))
-                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)])/
+                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
                                                possible_dict[credit]))
+            for cert in cert_list:
+                eac_dict[credit][cert] = float("{0:.2f}".format((Score2009.objects
+                                                                .filter(project__certification_level=cert)
+                                                                .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
+                                                                possible_dict[credit]))
         trends_dict["eac"] = eac_dict
 
         eqc_dict = {}
@@ -228,8 +234,13 @@ class ScoreVersion2009Trends(APIView):
                 eqc_dict[credit][year] = float("{0:.2f}".format((Score2009.objects
                                                     .filter(project__certification_date__gte=datetime(year, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(year, 12, 31))
-                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)])/
+                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
                                                possible_dict[credit]))
+            for cert in cert_list:
+                eqc_dict[credit][cert] = float("{0:.2f}".format((Score2009.objects
+                                                                .filter(project__certification_level=cert)
+                                                                .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
+                                                                possible_dict[credit]))
         trends_dict["eqc"] = eqc_dict
 
         extra_dict = {}
@@ -239,8 +250,14 @@ class ScoreVersion2009Trends(APIView):
                 extra_dict[credit][year] = float("{0:.2f}".format((Score2009.objects
                                                     .filter(project__certification_date__gte=datetime(year, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(year, 12, 31))
-                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)])/
+                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
                                                possible_dict[credit]))
+
+            for cert in cert_list:
+                extra_dict[credit][cert] = float("{0:.2f}".format((Score2009.objects
+                                                                .filter(project__certification_level=cert)
+                                                                .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
+                                                                possible_dict[credit]))
         trends_dict["extra"] = extra_dict
 
         idc_dict = {}
@@ -250,8 +267,13 @@ class ScoreVersion2009Trends(APIView):
                 idc_dict[credit][year] = float("{0:.2f}".format((Score2009.objects
                                                     .filter(project__certification_date__gte=datetime(year, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(year, 12, 31))
-                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)])/
+                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
                                                possible_dict[credit]))
+            for cert in cert_list:
+                idc_dict[credit][cert] = float("{0:.2f}".format((Score2009.objects
+                                                                .filter(project__certification_level=cert)
+                                                                .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
+                                                                possible_dict[credit]))
         trends_dict["idc"] = idc_dict
 
         mrc_dict = {}
@@ -263,6 +285,11 @@ class ScoreVersion2009Trends(APIView):
                                                     .filter(project__certification_date__lte=datetime(year, 12, 31))
                                                     .aggregate(Avg(credit))['{}__avg'.format(credit)])/
                                                possible_dict[credit]))
+            for cert in cert_list:
+                mrc_dict[credit][cert] = float("{0:.2f}".format((Score2009.objects
+                                                                .filter(project__certification_level=cert)
+                                                                .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
+                                                                possible_dict[credit]))
         trends_dict["mrc"] = mrc_dict
 
         ssc_dict = {}
@@ -274,6 +301,11 @@ class ScoreVersion2009Trends(APIView):
                                                     .filter(project__certification_date__lte=datetime(year, 12, 31))
                                                     .aggregate(Avg(credit))['{}__avg'.format(credit)])/
                                                possible_dict[credit]))
+                for cert in cert_list:
+                    ssc_dict[credit][cert] = float("{0:.2f}".format((Score2009.objects
+                                                                .filter(project__certification_level=cert)
+                                                                .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
+                                                                possible_dict[credit]))
         trends_dict["ssc"] = ssc_dict
 
         wec_dict = {}
@@ -283,9 +315,22 @@ class ScoreVersion2009Trends(APIView):
                 wec_dict[credit][year] = float("{0:.2f}".format((Score2009.objects
                                                     .filter(project__certification_date__gte=datetime(year, 1, 1))
                                                     .filter(project__certification_date__lte=datetime(year, 12, 31))
-                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)])/
+                                                    .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
                                                possible_dict[credit]))
+            for cert in cert_list:
+                wec_dict[credit][cert] = float("{0:.2f}".format((Score2009.objects
+                                                                .filter(project__certification_level=cert)
+                                                                .aggregate(Avg(credit))['{}__avg'.format(credit)]) /
+                                                                possible_dict[credit]))
+
         trends_dict["wec"] = wec_dict
+
+        # score_dict = {score: float("{0:.2f}".format(Score2009.objects.filter(project__certification_level="Platinum")
+        #               .aggregate(Avg(score))['{}__avg'.format(score)])) for score in scores_2009_list}
+        # normalized_dict = {score: float("{0:.2f}".format(score_dict[score]/trends_dict["possible_scores_2009"][score]))
+        #                                 for score
+        #                    in scores_2009_list}
+        # trends_dict["average_normal_scores_2009_platinum"] = normalized_dict
 
         # score_dict = {score: float("{0:.2f}".format(Score2009.objects
         #                                             .filter(project__certification_date__gte=datetime(2011, 1, 1))
