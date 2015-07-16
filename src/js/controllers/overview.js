@@ -30,17 +30,30 @@ router.route('','overview', function () {
     
     $('.overview').html(views['overview']);
     
-    // toggle("#map-dropdown div", 'btn-map');
-    // toggle("#trend1-dropdown div", 'btn-trend1');
-    // toggle("#trend2-dropdown div", 'btn-trend2');
-    // toggle("#trend3-dropdown div", 'btn-trend3');
-    // toggle('#plotly-dropdown div', 'btn-plotly');
+    toggle("#map-dropdown div", 'btn-map');
+    toggle("#trend1-dropdown div", 'btn-trend1');
+    toggle("#trend2-dropdown div", 'btn-trend2');
+    toggle("#trend3-dropdown div", 'btn-trend3');
+    toggle('#plotly-dropdown div', 'btn-plotly');
     
-    // buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);  
-    // linechart(".trend-1");
-    // scatter(".trend-2");
-    // histo('.trend-3'); 
-  
+    buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);  
+    linechart(".trend-1");
+    scatter(".trend-2");
+    histo('.trend-3'); 
+    
+    d3.selectAll('.btn-plotly').on('click', function() {
+      setTimeout(function () {
+        if (d3.select(".btn-plotly-on").node().value==='total') {
+          $('.plotly-total').css('display','block');
+          $('.plotly-adjusted').css('display','none');
+        }
+        else if (d3.select(".btn-plotly-on").node().value==='adjusted') {
+          $('.plotly-adjusted').css('display','block');
+          $('.plotly-total').css('display','none');
+        }
+      });
+    });
+    
   }
   
   function renderCredit () {
@@ -51,7 +64,7 @@ router.route('','overview', function () {
     toggle("#scoring-category1-dropdown div", 'btn-sc1-category');
     toggle("#scoring-version2-dropdown div", 'btn-sc2-version');
     toggle("#scoring-category2-dropdown div", 'btn-sc2-category');
-    overbar('.overallbar');
+    overbar('.overallbar', '.cc-by-year', '.cc-by-category');
     
   }
   
