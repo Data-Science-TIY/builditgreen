@@ -10464,17 +10464,30 @@ router.route('','overview', function () {
     
     $('.overview').html(views['overview']);
     
-    // toggle("#map-dropdown div", 'btn-map');
-    // toggle("#trend1-dropdown div", 'btn-trend1');
-    // toggle("#trend2-dropdown div", 'btn-trend2');
-    // toggle("#trend3-dropdown div", 'btn-trend3');
-    // toggle('#plotly-dropdown div', 'btn-plotly');
+    toggle("#map-dropdown div", 'btn-map');
+    toggle("#trend1-dropdown div", 'btn-trend1');
+    toggle("#trend2-dropdown div", 'btn-trend2');
+    toggle("#trend3-dropdown div", 'btn-trend3');
+    toggle('#plotly-dropdown div', 'btn-plotly');
     
-    // buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);  
-    // linechart(".trend-1");
-    // scatter(".trend-2");
-    // histo('.trend-3'); 
-  
+    buildmap(d3.select(".btn-map-on").node().value, gradients[d3.select(".btn-map-on").node().value]);  
+    linechart(".trend-1");
+    scatter(".trend-2");
+    histo('.trend-3'); 
+    
+    d3.selectAll('.btn-plotly').on('click', function() {
+      setTimeout(function () {
+        if (d3.select(".btn-plotly-on").node().value==='total') {
+          $('.plotly-total').css('display','block');
+          $('.plotly-adjusted').css('display','none');
+        }
+        else if (d3.select(".btn-plotly-on").node().value==='adjusted') {
+          $('.plotly-adjusted').css('display','block');
+          $('.plotly-total').css('display','none');
+        }
+      });
+    });
+    
   }
   
   function renderCredit () {
@@ -10485,7 +10498,7 @@ router.route('','overview', function () {
     toggle("#scoring-category1-dropdown div", 'btn-sc1-category');
     toggle("#scoring-version2-dropdown div", 'btn-sc2-version');
     toggle("#scoring-category2-dropdown div", 'btn-sc2-category');
-    overbar('.overallbar');
+    overbar('.overallbar', '.cc-by-year', '.cc-by-category');
     
   }
   
@@ -11429,48 +11442,15 @@ console.log('making line chart');
   
    
 },{"d3":1,"jquery":"jquery","underscore":"underscore"}],12:[function(require,module,exports){
-module.exports = function(domLocation) {
+module.exports = function(domLocation, domLocation2, domLocation3) {
     var d3 = require('d3');
     var $ = require('jquery');
     var _ = require('underscore');
-
-    console.log('making overall score bar chart');
-
-    var margin = {
-            top: 20,
-            right: 20,
-            bottom: 30,
-            left: 40
-        },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        dataUrl = ['/api/score-trends-2009/', '/api/score-trends-2-2/', '/api/score-trends-2-1/'],
-        endPoint2009 = "average_normal_scores_2009",
-        endPoint22 = "average_normal_scores_v2_2",
-        endPoint21 = "average_normal_scores_v2_1";
-
+    
+    var dataUrl = ['/api/score-trends-2009/', '/api/score-trends-2-2/', '/api/score-trends-2-1/'];
     var color = d3.scale.ordinal().range(['#327EFF', '#FFDB00', '#3E5A65', '#00F8B1', '#FF3C41', '#00943E', '#5D00A9']);
 
-    var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .1);
-
-    var y = d3.scale.linear()
-        .range([height, 0]);
-
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left")
-        .ticks(10);
-
-    var svg = d3.select(domLocation).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    console.log('making overall score bar chart');
         
     function removeUnderscore(y) {
                     for (var x in y) {
@@ -11481,13 +11461,68 @@ module.exports = function(domLocation) {
                         }
                     }
                 };
+                
+    Array.prototype.alphanumSort = function(caseInsensitive) {
+      for (var z = 0, t; t = this[z]; z++) {
+        this[z] = [];
+        var x = 0, y = -1, n = 0, i, j;
+    
+        while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+          var m = (i == 46 || (i >=48 && i <= 57));
+          if (m !== n) {
+            this[z][++y] = "";
+            n = m;
+          }
+          this[z][y] += j;
+        }
+      }
+    
+      this.sort(function(a, b) {
+        for (var x = 0, aa, bb; (aa = a[x]) && (bb = b[x]); x++) {
+          if (caseInsensitive) {
+            aa = aa.toLowerCase();
+            bb = bb.toLowerCase();
+          }
+          if (aa !== bb) {
+            var c = Number(aa), d = Number(bb);
+            if (c == aa && d == bb) {
+              return c - d;
+            } else return (aa > bb) ? 1 : -1;
+          }
+        }
+        return a.length - b.length;
+      });
+    
+      for (var z = 0; z < this.length; z++)
+        this[z] = this[z].join("");
+    }
+    
+    function sortObject(o) {
+                        var sorted = {},
+                            key, a = [];
+
+                        for (key in o) {
+                            if (o.hasOwnProperty(key)) {
+                                a.push(key);
+                            }
+                        }
+
+                        a.sort();
+
+                        for (key = 0; key < a.length; key++) {
+                            sorted[a[key]] = o[a[key]];
+                        }
+                        return sorted;
+                    }
 
     d3.json(dataUrl[0], function(data0) {
         d3.json(dataUrl[1], function(data1) {
             d3.json(dataUrl[2], function(data2) {
 
                 var dataSource = data0;
-                var category = 'ea';
+                var category = 'eac';
+                var dataSource2 = data0;
+                var category2 = 'eac';
 
                 d3.selectAll('.btn-sc1-version').on('click', function() {
 
@@ -11512,53 +11547,131 @@ module.exports = function(domLocation) {
                     });
 
                 });
+                
+                d3.selectAll('.btn-sc2-version').on('click', function() {
 
+                    setTimeout(function() {
+
+                        dataSource = eval('data' + d3.select(".btn-sc2-version-on").node().value);
+                        category = d3.select(".btn-sc2-category-on").node().value;
+                        buildYearPlot(dataSource2, category2);
+
+                    });
+
+                });
+
+                d3.selectAll('.btn-sc2-category').on('click', function() {
+
+                    setTimeout(function() {
+
+                        dataSource = eval('data' + d3.select(".btn-sc2-version-on").node().value);
+                        category = d3.select(".btn-sc2-category-on").node().value;
+                        buildYearPlot(dataSource2, category2);
+
+                    });
+
+                });
+                
+                buildCategoryPlot(dataSource2, category2);
                 buildYearPlot(dataSource, category);
-                //buildOverallPlot();
+                buildOverallPlot();
 
                 function buildYearPlot(data, cat) {
+                    
+                    var margin = {
+                        top: 15,
+                        right: 15,
+                        bottom: 23,
+                        left: 30
+                    },
+                    width = 890 - margin.left - margin.right,
+                    height = 464 - margin.top - margin.bottom;
+                    
+                    var svg = d3.select(domLocation2).append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    
+                    var y = d3.scale.linear()
+                        .range([height, 0]);
                     
                     var x0 = d3.scale.ordinal()
                         .rangeRoundBands([0, width], .1);
                         
                     var x1 = d3.scale.ordinal();
-
-                    console.log(data);
-
-                    console.log(cat);
                     
-                    data = data.cat;
+                    var xAxis = d3.svg.axis()
+                        .scale(x0)
+                        .orient("bottom");
+                    
+                    var yAxis = d3.svg.axis()
+                        .scale(y)
+                        .orient("left")
+                        .tickFormat(d3.format(".2s"));
+                        
+                    var credits = [];
+                    
+                    // console.log(data);
 
-                    var creditNames = d3.keys(data).filter(function(key) {
-                        return removeUnderscore(key);
+                    // console.log(cat);
+                    
+                    data = data[cat];
+                    
+                    //console.log(data);
+                    
+                    var years = d3.keys(data.eac1).filter(function(key) {
+                        //console.log(key); 
+                        if (key.match(/\d{4}/)) {
+                            return key;    
+                        }
                     });
-
-                    data.forEach(function(d) {
-                        d.credits = creditNames.map(function(name) {
+                    
+                    //console.log(years);
+                    
+                    var creditNames = d3.keys(data).filter(function(key) {
+                        removeUnderscore(key);
+                        return key;
+                    });
+                    
+                    creditNames.alphanumSort();
+                    
+                    //console.log(creditNames);
+                    
+                    _.keys(data).forEach(function(d, index) {
+                        console.log(d);
+                        d.years = creditNames.map(function(credit) {
+                            console.log(d.years);
                             return {
-                                credit: name,
-                                value: +d[name]
+                                credit: credit,
+                                value: data[_.values(data[credit])[index]]
                             };
                         });
                     });
-
-                    x0.domain(data.map(function(d) {
-                        return d.State;
+                    
+                    console.log(data);
+                    
+                    x0.domain(creditNames.map(function(d) {
+                        //console.log(d);
+                        return d;
                     }));
                     
-                    x1.domain(creditNames).rangeRoundBands([0, x0.rangeBand()]);
+                    x1.domain(years).rangeRoundBands([0, x0.rangeBand()]);
+                    
                     
                     y.domain([0, d3.max(data, function(d) {
-                        return d3.max(d.ages, function(d) {
+                        return d3.max(d.years, function(d) {
                             return d.value;
                         });
                     })]);
-
+                    
+                    svg.selectAll('.x').remove();
+                    
                     svg.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + height + ")")
                         .call(xAxis);
-
+                    
                     svg.append("g")
                         .attr("class", "y axis")
                         .call(yAxis)
@@ -11568,7 +11681,7 @@ module.exports = function(domLocation) {
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
                         .text("Average");
-
+                    /*
                     var state = svg.selectAll(".state")
                         .data(data)
                         .enter().append("g")
@@ -11595,9 +11708,9 @@ module.exports = function(domLocation) {
                         .style("fill", function(d) {
                             return color(d.name);
                         });
-
+                    */
                     var legend = svg.selectAll(".legend")
-                        .data(ageNames.slice().reverse())
+                        .data(years.slice().reverse())
                         .enter().append("g")
                         .attr("class", "legend")
                         .attr("transform", function(d, i) {
@@ -11618,10 +11731,202 @@ module.exports = function(domLocation) {
                         .text(function(d) {
                             return d;
                         });
+                     
+                };
+                
+                function buildCategoryPlot(data, cat) {
+                    
+                    var margin = {
+                        top: 15,
+                        right: 15,
+                        bottom: 23,
+                        left: 30
+                    },
+                    width = 890 - margin.left - margin.right,
+                    height = 464 - margin.top - margin.bottom;
+                    
+                    var svg = d3.select(domLocation3).append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    
+                    var y = d3.scale.linear()
+                        .range([height, 0]);
+                    
+                    var x0 = d3.scale.ordinal()
+                        .rangeRoundBands([0, width], .1);
+                        
+                    var x1 = d3.scale.ordinal();
+                    
+                    var xAxis = d3.svg.axis()
+                        .scale(x0)
+                        .orient("bottom");
+                    
+                    var yAxis = d3.svg.axis()
+                        .scale(y)
+                        .orient("left")
+                        .tickFormat(d3.format(".2s"));
+                        
+                    var credits = [];
+                    
+                    // console.log(data);
 
+                    // console.log(cat);
+                    
+                    data = data[cat];
+                    
+                    //console.log(data);
+                    
+                    var categories = d3.keys(data.eac1).filter(function(key) {
+                        //console.log(key); 
+                        if (key.match(/\d{4}/)) {
+                            return key;    
+                        }
+                    });
+                    
+                    //console.log(years);
+                    
+                    var creditNames = d3.keys(data).filter(function(key) {
+                        removeUnderscore(key);
+                        return key;
+                    });
+                    
+                    creditNames.alphanumSort();
+                    
+                    //console.log(creditNames);
+                    
+                    _.keys(data).forEach(function(d, index) {
+                        console.log(d);
+                        d.categories = creditNames.map(function(category) {
+                            console.log(d.categories);
+                            return {
+                                credit: category,
+                                value: data[_.values(data[category])[index]]
+                            };
+                        });
+                    });
+                    
+                    console.log(data);
+                    
+                    x0.domain(creditNames.map(function(d) {
+                        //console.log(d);
+                        return d;
+                    }));
+                    
+                    x1.domain(categories).rangeRoundBands([0, x0.rangeBand()]);
+                    
+                    
+                    y.domain([0, d3.max(data, function(d) {
+                        return d3.max(d.categories, function(d) {
+                            return d.value;
+                        });
+                    })]);
+                    
+                    svg.selectAll('.x').remove();
+                    
+                    svg.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis);
+                    
+                    svg.append("g")
+                        .attr("class", "y axis")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text("Average");
+                    /*
+                    var state = svg.selectAll(".state")
+                        .data(data)
+                        .enter().append("g")
+                        .attr("class", "g")
+                        .attr("transform", function(d) {
+                            return "translate(" + x0(d.year) + ",0)";
+                        });
+
+                    state.selectAll("rect")
+                        .data(function(d) {
+                            return d.ages;
+                        })
+                        .enter().append("rect")
+                        .attr("width", x1.rangeBand())
+                        .attr("x", function(d) {
+                            return x1(d.name);
+                        })
+                        .attr("y", function(d) {
+                            return y(d.value);
+                        })
+                        .attr("height", function(d) {
+                            return height - y(d.value);
+                        })
+                        .style("fill", function(d) {
+                            return color(d.name);
+                        });
+                    */
+                    var legend = svg.selectAll(".legend")
+                        .data(categories.slice().reverse())
+                        .enter().append("g")
+                        .attr("class", "legend")
+                        .attr("transform", function(d, i) {
+                            return "translate(0," + i * 20 + ")";
+                        });
+
+                    legend.append("rect")
+                        .attr("x", width - 18)
+                        .attr("width", 18)
+                        .attr("height", 18)
+                        .style("fill", color);
+
+                    legend.append("text")
+                        .attr("x", width - 24)
+                        .attr("y", 9)
+                        .attr("dy", ".35em")
+                        .style("text-anchor", "end")
+                        .text(function(d) {
+                            return d;
+                        });
+                     
                 };
 
                 function buildOverallPlot() {
+                    
+                    var margin = {
+                        top: 20,
+                        right: 20,
+                        bottom: 30,
+                        left: 40
+                    },
+                    width = 960 - margin.left - margin.right,
+                    height = 500 - margin.top - margin.bottom,
+                    endPoint2009 = "average_normal_scores_2009",
+                    endPoint22 = "average_normal_scores_v2_2",
+                    endPoint21 = "average_normal_scores_v2_1";
+            
+                var x = d3.scale.ordinal()
+                    .rangeRoundBands([0, width], .1);
+            
+                var y = d3.scale.linear()
+                    .range([height, 0]);
+            
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom");
+            
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left")
+                    .ticks(10);
+            
+                var svg = d3.select(domLocation).append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    
                     //console.log('getting data');
 
                     // console.log(data1);
@@ -11634,24 +11939,6 @@ module.exports = function(domLocation) {
                     console.log(data);
 
                     removeUnderscore(data);
-
-                    function sortObject(o) {
-                        var sorted = {},
-                            key, a = [];
-
-                        for (key in o) {
-                            if (o.hasOwnProperty(key)) {
-                                a.push(key);
-                            }
-                        }
-
-                        a.sort();
-
-                        for (key = 0; key < a.length; key++) {
-                            sorted[a[key]] = o[a[key]];
-                        }
-                        return sorted;
-                    }
 
                     data = sortObject(data);
 
@@ -11887,281 +12174,307 @@ module.exports = function(domLocation) {
 
 }
 },{"d3":1,"jquery":"jquery","underscore":"underscore"}],13:[function(require,module,exports){
-module.exports =  function (domLocation) {
-  var d3 = require('d3');
-  var $ = require('jquery');
-  
-  var margin = {top: 20, right: 80, bottom: 30, left: 50},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom,
-      dataUrl = ['/api/projects/2009/','/api/projects/2-2/','/api/projects/2-1/'];
+module.exports = function(domLocation) {
+    var d3 = require('d3');
+    var $ = require('jquery');
 
-  
-  var parseDate = d3.time.format("%Y-%m-%d").parse;
-  
-  var color = d3.scale.ordinal()
-              .range(['#00F8B1', '#327EFF', '#3E5A65', '#FFDB00']);
-   
-  var x = d3.time.scale()
-    .range([0, width]);
+    var margin = {
+            top: 20,
+            right: 80,
+            bottom: 30,
+            left: 50
+        },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        dataUrl = ['/api/projects/2009/', '/api/projects/2-2/', '/api/projects/2-1/'];
 
-  var y = d3.scale.linear()
-      .range([height, 0]);
-   
-  var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
 
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
-  
-  var svg = d3.select(domLocation).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  
-  d3.json(dataUrl[0], function (data0) {
-    d3.json(dataUrl[1], function(data1) {
-      d3.json(dataUrl[2], function(data2) {
-      //console.log(data);
-      
-      var data = data0;
-      console.log(data);
-      
-      var maxR = d3.max(data, function(d) { 
+    var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+    var color = d3.scale.ordinal()
+        .range(['#00F8B1', '#327EFF', '#3E5A65', '#FFDB00']);
+
+    var x = d3.time.scale()
+        .range([0, width]);
+
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+    var svg = d3.select(domLocation).append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    d3.json(dataUrl[0], function(data0) {
+        d3.json(dataUrl[1], function(data1) {
+            d3.json(dataUrl[2], function(data2) {
+                //console.log(data);
+
+                var data = data0;
+                //console.log(data);
+
+                var maxR = d3.max(data, function(d) {
                     //console.log(d);
                     return d.gross_square_foot;
+                });
+
+                //console.log(maxR);
+
+                data.forEach(function(d, index) {
+                    if (d.certification_level == 'Denied') {
+
+                        //console.log(d);
+                        data.splice(index, 1);
+                    };
+                });
+
+                data.forEach(function(d, index) {
+
+                    return d.certification_date = parseDate(d.certification_date);
+                });
+
+                //console.log(data);
+                x.domain(d3.extent(data, function(d) {
+                    return d.certification_date;
+                }));
+
+                y.domain(d3.extent(data, function(d) {
+                    return d.points_achieved;
+                }));
+
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis)
+                    .append("text")
+                    .attr("x", 415)
+                    .attr("y", 45)
+                    .style("text-anchor", "middle")
+                    .text("Time");
+
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+                    .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Points Achieved");
+
+                var circles = svg.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "circle")
+                    .attr("id", function(d) {
+                        return d.certification_level
+                    })
+                    .attr("cx", function(d) {
+                        var output = d.certification_date;
+                        //console.log(output);
+                        return x(output);
+                    })
+                    .attr("cy", function(d) {
+                        //console.log(d['points_achieved']);
+                        return y(d['points_achieved']);
+                    })
+                    .attr("r", function(d) {
+                        //console.log(d);
+                        return (((d.gross_square_foot / maxR) + 0.15) * 10);
+                    })
+                    .style("fill", function(d) {
+                        return color(d.certification_level);
+                    })
+                    .style("opacity", 1);
+
+
+
+                var legend = svg.selectAll(".legend")
+                    .data(color.domain())
+                    .enter().append("g")
+                    .attr("class", "legend")
+                    .attr("transform", function(d, i) {
+                        return "translate(0," + i * 20 + ")";
                     });
-                    
-      //console.log(maxR);
-      
-      data.forEach(function(d, index) {
-        if (d.certification_level=='Denied') {
-          
-          //console.log(d);
-          data.splice(index,1); 
-      };
-      });
-      
-      data.forEach(function(d, index) {
-        
-        return d.certification_date = parseDate(d.certification_date);
-      });
-      
-      console.log(data);
-      x.domain(d3.extent(data, function (d) { 
-          return d.certification_date; }));
-      
-      y.domain(d3.extent(data, function (d) { 
-          return d.points_achieved; }));
-      
-      svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis)
-        .append("text")
-          .attr("x", 415)
-          .attr("y", 45)
-          .style("text-anchor", "middle")
-          .text("Time");
 
-      svg.append("g")
-          .attr("class", "y axis")
-          .call(yAxis)
-        .append("text")
-          .attr("transform", "rotate(-90)")
-          .attr("y", 6)
-          .attr("dy", ".71em")
-          .style("text-anchor", "end")
-          .text("Points Achieved");
-      
-      var circles = svg.selectAll("circle")
-          .data(data)
-          .enter()
-          .append("circle")
-          .attr("class", "circle")
-          .attr("id", function (d) { 
-            return d.certification_level })
-          .attr("cx", function (d) {
-             var output = d.certification_date;
-             //console.log(output);
-             return x(output); })
-          .attr("cy", function (d) { 
-            //console.log(d['points_achieved']);
-            return y(d['points_achieved']); })
-          .attr("r", function (d) { 
-            //console.log(d);
-            return (((d.gross_square_foot/maxR)+0.15)*10); })
-          .style("fill", function(d) { return color(d.certification_level); })
-          .style("opacity", 1);
-       
-       
-       
-       var legend = svg.selectAll(".legend")
-          .data(color.domain())
-        .enter().append("g")
-          .attr("class", "legend")
-          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+                legend.append("rect")
+                    .attr("x", width - 18)
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", color)
+                    .on("click", function(d) {
+                        circles.filter(function() {
+                                //console.log(d);
+                                //console.log(this.id);
+                                return this.id === d;
+                            })
+                            .transition().duration(750)
+                            .style("opacity", function() {
+                                //console.log(this.style.opacity);
+                                return (parseInt(this.style.opacity)) ? 0 : 1;
+                            });
 
-      legend.append("rect")
-          .attr("x", width - 18)
-          .attr("width", 18)
-          .attr("height", 18)
-          .style("fill", color)
-          .on("click", function (d) {
-          circles.filter(function () {
-               //console.log(d);
-               //console.log(this.id);
-               return this.id===d;
-             })
-             .transition().duration(750)
-             .style("opacity", function () {
-                //console.log(this.style.opacity);
-                return (parseInt(this.style.opacity)) ? 0 : 1;
-             });
+                    });
 
-          });
+                legend.append("text")
+                    .attr("x", width - 24)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "end")
+                    .text(function(d) {
+                        return d;
+                    });
 
-      legend.append("text")
-          .attr("x", width - 24)
-          .attr("y", 9)
-          .attr("dy", ".35em")
-          .style("text-anchor", "end")
-          .text(function(d) { return d; });
-     
-     d3.selectAll('.btn-trend2').on('click', function () {
-       setTimeout(function () {
-         
-       //console.log(d3.select(".btn-trend2-on").node().value);
-     
-       data = eval('data'+d3.select(".btn-trend2-on").node().value);
-      
-       maxR = d3.max(data, function(d) { 
-                      //console.log(d);
-                      return d.gross_square_foot;
-                      });
-                      
-        //console.log(maxR);
-        
-        data.forEach(function(d, index) {
-        if (d.certification_level=='Denied') {
-          
-          //console.log(d);
-          data.splice(index,1); 
-        };
-        });
-        
-        data.forEach(function(d, index) {
-          
-          //console.log(d);
-          //console.log(d.certification_date.length)
-          if (d.certification_date.length<=10) {
-          return d.certification_date = parseDate(d.certification_date);
-          }
-        });
-        
-        x.domain(d3.extent(data, function (d) { 
-            return d.certification_date; }));
-        
-        y.domain(d3.extent(data, function (d) { 
-            return d.points_achieved; }));
-        
-        svg.selectAll('.x').remove();
-        
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
-          .append("text")
-            .attr("x", 415)
-            .attr("y", 45)
-            .style("text-anchor", "middle")
-            .text("Time");
-        
-        svg.selectAll('.y').remove();
-        
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Points Achieved");
-        
-        svg.selectAll('.circle').remove();
-        
-        circles = svg.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("class", "circle")
-            .attr("id", function (d) { return d.certification_level })
-            .attr("cx", function (d) {
-               var output = d.certification_date;
-               //console.log(output);
-               return x(output); })
-            .attr("cy", function (d) { 
-              //console.log(d['points_achieved']);
-              return y(d['points_achieved']); })
-            .attr("r", function (d) { 
-              //console.log(d);
-              return (((d.gross_square_foot/maxR)+0.15)*10); })
-            .style("fill", function(d) { return color(d.certification_level); })
-            .style("opacity", 1);
-         
-         svg.selectAll('.legend').remove();
-         
-         legend = svg.selectAll(".legend")
-            .data(color.domain())
-          .enter().append("g")
-            .attr("class", "legend")
-            .attr("transform", function(d, i) { 
-              console.log(color.domain());
-              return "translate(0," + i * 20 + ")"; });
-  
-         legend.append("rect")
-            .attr("x", width - 18)
-            .attr("width", 18)
-            .attr("height", 18)
-            .style("fill", color)
-            .on("click", function (d) {
-            circles.filter(function () {
-                 //console.log(d);
-                 //console.log(this.id);
-                 return this.id===d;
-               })
-               .transition().duration(750)
-               .style("opacity", function () {
-                  //console.log(this.style.opacity);
-                  return (parseInt(this.style.opacity)) ? 0 : 1;
-               });
-  
+                d3.selectAll('.btn-trend2').on('click', function() {
+                    setTimeout(function() {
+
+                        //console.log(d3.select(".btn-trend2-on").node().value);
+
+                        data = eval('data' + d3.select(".btn-trend2-on").node().value);
+
+                        maxR = d3.max(data, function(d) {
+                            //console.log(d);
+                            return d.gross_square_foot;
+                        });
+
+                        //console.log(maxR);
+
+                        data.forEach(function(d, index) {
+                            if (d.certification_level == 'Denied') {
+
+                                //console.log(d);
+                                data.splice(index, 1);
+                            };
+                        });
+
+                        data.forEach(function(d, index) {
+
+                            //console.log(d);
+                            //console.log(d.certification_date.length)
+                            if (d.certification_date.length <= 10) {
+                                return d.certification_date = parseDate(d.certification_date);
+                            }
+                        });
+
+                        x.domain(d3.extent(data, function(d) {
+                            return d.certification_date;
+                        }));
+
+                        y.domain(d3.extent(data, function(d) {
+                            return d.points_achieved;
+                        }));
+
+                        svg.selectAll('.x').remove();
+
+                        svg.append("g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + height + ")")
+                            .call(xAxis)
+                            .append("text")
+                            .attr("x", 415)
+                            .attr("y", 45)
+                            .style("text-anchor", "middle")
+                            .text("Time");
+
+                        svg.selectAll('.y').remove();
+
+                        svg.append("g")
+                            .attr("class", "y axis")
+                            .call(yAxis)
+                            .append("text")
+                            .attr("transform", "rotate(-90)")
+                            .attr("y", 6)
+                            .attr("dy", ".71em")
+                            .style("text-anchor", "end")
+                            .text("Points Achieved");
+
+                        svg.selectAll('.circle').remove();
+
+                        circles = svg.selectAll("circle")
+                            .data(data)
+                            .enter()
+                            .append("circle")
+                            .attr("class", "circle")
+                            .attr("id", function(d) {
+                                return d.certification_level
+                            })
+                            .attr("cx", function(d) {
+                                var output = d.certification_date;
+                                //console.log(output);
+                                return x(output);
+                            })
+                            .attr("cy", function(d) {
+                                //console.log(d['points_achieved']);
+                                return y(d['points_achieved']);
+                            })
+                            .attr("r", function(d) {
+                                //console.log(d);
+                                return (((d.gross_square_foot / maxR) + 0.15) * 10);
+                            })
+                            .style("fill", function(d) {
+                                return color(d.certification_level);
+                            })
+                            .style("opacity", 1);
+
+                        svg.selectAll('.legend').remove();
+
+                        legend = svg.selectAll(".legend")
+                            .data(color.domain())
+                            .enter().append("g")
+                            .attr("class", "legend")
+                            .attr("transform", function(d, i) {
+                                //console.log(color.domain());
+                                return "translate(0," + i * 20 + ")";
+                            });
+
+                        legend.append("rect")
+                            .attr("x", width - 18)
+                            .attr("width", 18)
+                            .attr("height", 18)
+                            .style("fill", color)
+                            .on("click", function(d) {
+                                circles.filter(function() {
+                                        //console.log(d);
+                                        //console.log(this.id);
+                                        return this.id === d;
+                                    })
+                                    .transition().duration(750)
+                                    .style("opacity", function() {
+                                        //console.log(this.style.opacity);
+                                        return (parseInt(this.style.opacity)) ? 0 : 1;
+                                    });
+
+                            });
+
+                        legend.append("text")
+                            .attr("x", width - 24)
+                            .attr("y", 9)
+                            .attr("dy", ".35em")
+                            .style("text-anchor", "end")
+                            .text(function(d) {
+                                //console.log(d);
+                                return d;
+                            });
+
+
+                    });
+                });
             });
-  
-        legend.append("text")
-            .attr("x", width - 24)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .style("text-anchor", "end")
-            .text(function(d) { 
-              console.log(d);
-              return d; });
-  
+        });
 
-       });
-     });
-      });
     });
-         
-  });
 
 }
-
-
 },{"d3":1,"jquery":"jquery"}],14:[function(require,module,exports){
 module.exports = function (container, buttonListener) {
     var $ = require('jquery');

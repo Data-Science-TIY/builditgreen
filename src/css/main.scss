@@ -46,7 +46,7 @@ svg {
 
 .btn-map, .btn-trend1, .btn-trend2, .btn-trend3,
 .btn-overall, .btn-sc1-version, .btn-sc2-version,
-.btn-sc1-category, .btn-sc2-category {
+.btn-sc1-category, .btn-sc2-category, .btn-plotly {
     margin: 0.5em 0;
     display: block;
     width: 9em;
@@ -54,7 +54,7 @@ svg {
 
 .btn-map-on, .btn-trend1-on, .btn-trend2-on, .btn-trend3-on,
 .btn-overall-on, .btn-sc1-version-on, .btn-sc2-version-on,
-.btn-sc1-category-on, .btn-sc2-category-on {
+.btn-sc1-category-on, .btn-sc2-category-on, .btn-plotly-on {
     background-color: #777;
     color: white;  
 }
@@ -62,7 +62,7 @@ svg {
 #map-dropdown, #trend1-dropdown, #trend2-dropdown, 
 #trend3-dropdown, #scoring1-dropdown, #scoring-version1-dropdown,
 #scoring-version2-dropdown, #scoring-category1-dropdown,
-#scoring-category2-dropdown {
+#scoring-category2-dropdown, #plotly-dropdown {
   display: inline-block;
 }
 
@@ -74,9 +74,19 @@ svg {
 }
 
 .map, .trend-1, .trend-2, .trend-3,
-.overallbar {
+.overallbar, .cc-by-year, .cc-by-category,
+.plotly-total, .plotly-adjusted {
   display: inline-block;
   float: right;
+}
+
+.plotly-total, .plotly-adjusted, 
+iframe {
+  width: 974px;
+  height: 528px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 .axis path,
