@@ -5536,7 +5536,8 @@ svg {
   display: block;
   margin: 0 auto;
   padding-bottom: 2em;
-  padding-left: 3em; }
+  padding-left: 3em;
+  padding-top: 1.1em; }
 
 .linechart {
   display: block;
@@ -5687,8 +5688,5 @@ iframe {
   color: white;
   font-size: 1.1em; }
 
-.plotly-total {
-  display: block; }
-
 .plotly-adjusted {
-  display: none; }
+  display: block; }
