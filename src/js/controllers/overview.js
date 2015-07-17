@@ -41,19 +41,6 @@ router.route('','overview', function () {
     scatter(".trend-2");
     histo('.trend-3'); 
     
-    d3.selectAll('.btn-plotly').on('click', function() {
-      setTimeout(function () {
-        if (d3.select(".btn-plotly-on").node().value==='total') {
-          $('.plotly-total').css('display','block');
-          $('.plotly-adjusted').css('display','none');
-        }
-        else if (d3.select(".btn-plotly-on").node().value==='adjusted') {
-          $('.plotly-adjusted').css('display','block');
-          $('.plotly-total').css('display','none');
-        }
-      });
-    });
-    
   }
   
   function renderCredit () {
@@ -65,6 +52,43 @@ router.route('','overview', function () {
     toggle("#scoring-version2-dropdown div", 'btn-sc2-version');
     toggle("#scoring-category2-dropdown div", 'btn-sc2-category');
     overbar('.overallbar', '.cc-by-year', '.cc-by-category');
+    
+    $('#scoring-version2-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2.1'||$(e.target).parent().text()==='LEED 2.2') {
+        var extra = $('[value="extra"]');
+        console.log(extra);
+        $('#scoring-category2-dropdown').find(extra).attr('disabled', true);
+      }
+      });
+    });
+    
+    $('#scoring-version1-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2.1'||$(e.target).parent().text()==='LEED 2.2') {
+        var extra = $('[value="extra"]');
+        $('#scoring-category1-dropdown').find(extra).attr('disabled', true);
+      }
+      });
+    });
+    
+    $('#scoring-version1-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2009') {
+        var extra = $('[value="extra"]');
+        $('#scoring-category1-dropdown').find(extra).attr('disabled', false);
+      }
+      });
+    });
+    
+    $('#scoring-version2-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2009') {
+        var extra = $('[value="extra"]');
+        $('#scoring-category2-dropdown').find(extra).attr('disabled', false);
+      }
+      });
+    });
     
   }
   

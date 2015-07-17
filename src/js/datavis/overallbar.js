@@ -4,9 +4,18 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
     var _ = require('underscore');
     
     var dataUrl = ['/api/score-trends-2009/', '/api/score-trends-2-2/', '/api/score-trends-2-1/'];
-    var color = d3.scale.ordinal().range(['#327EFF', '#FFDB00', '#3E5A65', '#00F8B1', '#FF3C41', '#00943E', '#5D00A9']);
-
-    console.log('making overall score bar chart');
+    
+    var chosenColors = ['#00F8B1', '#327EFF', '#FFDB00', '#3E5A65', '#5D00A9', '#EB6C48', '#5D00A9'];
+    
+    var color = d3.scale.category10();
+    
+    
+    
+    var svg = d3.select(domLocation).append("svg");
+    
+    var svg2 = d3.select(domLocation2).append("svg");
+    
+    var svg3 = d3.select(domLocation3).append("svg");
         
     function removeUnderscore(y) {
                     for (var x in y) {
@@ -85,6 +94,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     setTimeout(function() {
 
                         dataSource = eval('data' + d3.select(".btn-sc1-version-on").node().value);
+                        console.log(dataSource)
                         category = d3.select(".btn-sc1-category-on").node().value;
                         buildYearPlot(dataSource, category);
 
@@ -108,9 +118,9 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
 
                     setTimeout(function() {
 
-                        dataSource = eval('data' + d3.select(".btn-sc2-version-on").node().value);
-                        category = d3.select(".btn-sc2-category-on").node().value;
-                        buildYearPlot(dataSource2, category2);
+                        dataSource2 = eval('data' + d3.select(".btn-sc2-version-on").node().value);
+                        category2 = d3.select(".btn-sc2-category-on").node().value;
+                        buildCategoryPlot(dataSource2, category2);
 
                     });
 
@@ -120,19 +130,25 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
 
                     setTimeout(function() {
 
-                        dataSource = eval('data' + d3.select(".btn-sc2-version-on").node().value);
-                        category = d3.select(".btn-sc2-category-on").node().value;
-                        buildYearPlot(dataSource2, category2);
+                        dataSource2 = eval('data' + d3.select(".btn-sc2-version-on").node().value);
+                        category2 = d3.select(".btn-sc2-category-on").node().value;
+                        buildCategoryPlot(dataSource2, category2);
 
                     });
 
                 });
                 
-                buildCategoryPlot(dataSource2, category2);
-                buildYearPlot(dataSource, category);
                 buildOverallPlot();
+                buildYearPlot(dataSource, category);
+                buildCategoryPlot(dataSource2, category2);
+                
+                
 
                 function buildYearPlot(data, cat) {
+                    
+                    svg2.selectAll('g').remove();
+                    
+                    console.log('building year plot')
                     
                     var margin = {
                         top: 15,
@@ -143,8 +159,8 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     width = 890 - margin.left - margin.right,
                     height = 464 - margin.top - margin.bottom;
                     
-                    var svg = d3.select(domLocation2).append("svg")
-                        .attr("width", width + margin.left + margin.right)
+                    svg2
+                    .attr("width", width + margin.left + margin.right)
                         .attr("height", height + margin.top + margin.bottom)
                         .append("g")
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -163,10 +179,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     var yAxis = d3.svg.axis()
                         .scale(y)
-                        .orient("left")
-                        .tickFormat(d3.format(".2s"));
-                        
-                    var credits = [];
+                        .orient("left");
                     
                     // console.log(data);
 
@@ -176,15 +189,6 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     //console.log(data);
                     
-                    var years = d3.keys(data.eac1).filter(function(key) {
-                        //console.log(key); 
-                        if (key.match(/\d{4}/)) {
-                            return key;    
-                        }
-                    });
-                    
-                    //console.log(years);
-                    
                     var creditNames = d3.keys(data).filter(function(key) {
                         removeUnderscore(key);
                         return key;
@@ -192,20 +196,45 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     creditNames.alphanumSort();
                     
+                    var years = d3.keys(data[creditNames[0]]).filter(function(key) {
+                        //console.log(key); 
+                        if (key.match(/\d{4}/)) {
+                            return key;    
+                        }
+                    });
+                    
+                    //console.log(years); 
+                   
                     //console.log(creditNames);
                     
+                    var allValues = [];
+                    
+                    var objArr = [];
+                    
+                    //console.log(data);
+                    
                     _.keys(data).forEach(function(d, index) {
-                        console.log(d);
-                        d.years = creditNames.map(function(credit) {
-                            console.log(d.years);
-                            return {
-                                credit: credit,
-                                value: data[_.values(data[credit])[index]]
-                            };
+                        //console.log(data[d]);
+                        data[d].credit = d;
+                        objArr.push(data[d]);
+                        years.forEach(function(year) {
+                           //console.log(year);
+                           //console.log(data[d][year]);
+                           allValues.push(data[d][year]);
+                            
                         });
+                        
+                    });
+                    
+                    objArr.forEach(function(d) {
+                      d.years = years.map(function(year) { return {year: year, value: +d[year]}; });
                     });
                     
                     console.log(data);
+                    
+                    // console.log(data);
+                    console.log(objArr);
+                    // console.log(allValues);
                     
                     x0.domain(creditNames.map(function(d) {
                         //console.log(d);
@@ -214,21 +243,18 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     x1.domain(years).rangeRoundBands([0, x0.rangeBand()]);
                     
+                    console.log(x1.domain());
                     
-                    y.domain([0, d3.max(data, function(d) {
-                        return d3.max(d.years, function(d) {
-                            return d.value;
-                        });
+                    y.domain([0, d3.max(allValues, function(d) {
+                        return d;
                     })]);
                     
-                    svg.selectAll('.x').remove();
-                    
-                    svg.append("g")
+                    svg2.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + height + ")")
                         .call(xAxis);
                     
-                    svg.append("g")
+                    svg2.append("g")
                         .attr("class", "y axis")
                         .call(yAxis)
                         .append("text")
@@ -237,49 +263,44 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
                         .text("Average");
-                    /*
-                    var state = svg.selectAll(".state")
-                        .data(data)
+                    
+                    //console.log(data);
+                    
+                    var year = svg2.selectAll(".year")
+                        .data(objArr)
                         .enter().append("g")
                         .attr("class", "g")
                         .attr("transform", function(d) {
-                            return "translate(" + x0(d.year) + ",0)";
+                            return "translate(" + x0(d.credit) + ",0)";
                         });
-
-                    state.selectAll("rect")
-                        .data(function(d) {
-                            return d.ages;
-                        })
-                        .enter().append("rect")
+                    
+                    year.selectAll("rect")
+                        .data(function(d) { return d.years; })
+                        .enter().append("rect") 
                         .attr("width", x1.rangeBand())
-                        .attr("x", function(d) {
-                            return x1(d.name);
-                        })
-                        .attr("y", function(d) {
-                            return y(d.value);
-                        })
-                        .attr("height", function(d) {
-                            return height - y(d.value);
-                        })
-                        .style("fill", function(d) {
-                            return color(d.name);
-                        });
-                    */
-                    var legend = svg.selectAll(".legend")
+                        .attr("x", function(d) { 
+                            
+                            return x1(d.year); 
+                            })
+                        .attr("y", function(d) { return y(d.value); })
+                        .attr("height", function(d) { return height - y(d.value); })
+                        .style("fill", function(d) { return color(d.year); }); 
+                          
+                    var legend2 = svg2.selectAll(".legend2")
                         .data(years.slice().reverse())
                         .enter().append("g")
-                        .attr("class", "legend")
+                        .attr("class", "legend2")
                         .attr("transform", function(d, i) {
                             return "translate(0," + i * 20 + ")";
                         });
-
-                    legend.append("rect")
+                    
+                    legend2.append("rect")
                         .attr("x", width - 18)
                         .attr("width", 18)
                         .attr("height", 18)
                         .style("fill", color);
 
-                    legend.append("text")
+                    legend2.append("text")
                         .attr("x", width - 24)
                         .attr("y", 9)
                         .attr("dy", ".35em")
@@ -287,10 +308,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .text(function(d) {
                             return d;
                         });
-                     
                 };
                 
                 function buildCategoryPlot(data, cat) {
+                    
+                    svg3.selectAll('g').remove();
+                    
+                    console.log('building category plot');
                     
                     var margin = {
                         top: 15,
@@ -301,11 +325,11 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     width = 890 - margin.left - margin.right,
                     height = 464 - margin.top - margin.bottom;
                     
-                    var svg = d3.select(domLocation3).append("svg")
-                        .attr("width", width + margin.left + margin.right)
-                        .attr("height", height + margin.top + margin.bottom)
-                        .append("g")
-                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    svg3
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                     
                     var y = d3.scale.linear()
                         .range([height, 0]);
@@ -321,10 +345,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     var yAxis = d3.svg.axis()
                         .scale(y)
-                        .orient("left")
-                        .tickFormat(d3.format(".2s"));
-                        
-                    var credits = [];
+                        .orient("left");
                     
                     // console.log(data);
 
@@ -333,15 +354,6 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     data = data[cat];
                     
                     //console.log(data);
-                    
-                    var categories = d3.keys(data.eac1).filter(function(key) {
-                        //console.log(key); 
-                        if (key.match(/\d{4}/)) {
-                            return key;    
-                        }
-                    });
-                    
-                    //console.log(years);
                     
                     var creditNames = d3.keys(data).filter(function(key) {
                         removeUnderscore(key);
@@ -352,18 +364,38 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     //console.log(creditNames);
                     
-                    _.keys(data).forEach(function(d, index) {
-                        console.log(d);
-                        d.categories = creditNames.map(function(category) {
-                            console.log(d.categories);
-                            return {
-                                credit: category,
-                                value: data[_.values(data[category])[index]]
-                            };
-                        });
+                    var categories = d3.keys(data[creditNames[0]]).filter(function(key) {
+                        //console.log(key); 
+                        if (!key.match(/\d{4}/)) {
+                            return key;    
+                        }
                     });
                     
-                    console.log(data);
+                    //console.log(categories);
+                    
+                    var allValues = [];
+                    var objArr = [];
+                    
+                    //console.log(data);
+                    
+                    _.keys(data).forEach(function(d, index) {
+                        //console.log(data[d]);
+                        data[d].credit = d;
+                        objArr.push(data[d]);
+                        categories.forEach(function(category) {
+                           //console.log(year);
+                           //console.log(data[d][year]);
+                           allValues.push(data[d][category]);
+                            
+                        });
+                        
+                    });
+                    
+                    objArr.forEach(function(d) {
+                      d.categories = categories.map(function(category) { return {category: category, value: +d[category]}; });
+                    });
+                    
+                    console.log(allValues);
                     
                     x0.domain(creditNames.map(function(d) {
                         //console.log(d);
@@ -373,20 +405,20 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     x1.domain(categories).rangeRoundBands([0, x0.rangeBand()]);
                     
                     
-                    y.domain([0, d3.max(data, function(d) {
-                        return d3.max(d.categories, function(d) {
-                            return d.value;
-                        });
+                    y.domain([0, d3.max(allValues, function(d) {
+                        return d;
                     })]);
                     
-                    svg.selectAll('.x').remove();
+                    svg3.selectAll('.x').remove();
                     
-                    svg.append("g")
+                    svg3.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + height + ")")
                         .call(xAxis);
                     
-                    svg.append("g")
+                    svg3.selectAll('.y').remove();
+                    
+                    svg3.append("g")
                         .attr("class", "y axis")
                         .call(yAxis)
                         .append("text")
@@ -395,35 +427,28 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
                         .text("Average");
-                    /*
-                    var state = svg.selectAll(".state")
-                        .data(data)
+                    
+                    var category = svg3.selectAll(".category")
+                        .data(objArr)
                         .enter().append("g")
                         .attr("class", "g")
                         .attr("transform", function(d) {
-                            return "translate(" + x0(d.year) + ",0)";
+                            return "translate(" + x0(d.credit) + ",0)";
                         });
-
-                    state.selectAll("rect")
-                        .data(function(d) {
-                            return d.ages;
-                        })
-                        .enter().append("rect")
+                    
+                    category.selectAll("rect")
+                        .data(function(d) { return d.categories; })
+                        .enter().append("rect") 
                         .attr("width", x1.rangeBand())
-                        .attr("x", function(d) {
-                            return x1(d.name);
-                        })
-                        .attr("y", function(d) {
-                            return y(d.value);
-                        })
-                        .attr("height", function(d) {
-                            return height - y(d.value);
-                        })
-                        .style("fill", function(d) {
-                            return color(d.name);
-                        });
-                    */
-                    var legend = svg.selectAll(".legend")
+                        .attr("x", function(d) { 
+                            
+                            return x1(d.category); 
+                            })
+                        .attr("y", function(d) { return y(d.value); })
+                        .attr("height", function(d) { return height - y(d.value); })
+                        .style("fill", function(d) { return color(d.category); }); 
+                    
+                    var legend3 = svg3.selectAll(".legend")
                         .data(categories.slice().reverse())
                         .enter().append("g")
                         .attr("class", "legend")
@@ -431,13 +456,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                             return "translate(0," + i * 20 + ")";
                         });
 
-                    legend.append("rect")
+                    legend3.append("rect")
                         .attr("x", width - 18)
                         .attr("width", 18)
                         .attr("height", 18)
                         .style("fill", color);
 
-                    legend.append("text")
+                    legend3.append("text")
                         .attr("x", width - 24)
                         .attr("y", 9)
                         .attr("dy", ".35em")
@@ -445,10 +470,11 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .text(function(d) {
                             return d;
                         });
-                     
                 };
 
                 function buildOverallPlot() {
+                    
+                    console.log('making overall score bar chart');
                     
                     var margin = {
                         top: 20,
@@ -461,6 +487,12 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     endPoint2009 = "average_normal_scores_2009",
                     endPoint22 = "average_normal_scores_v2_2",
                     endPoint21 = "average_normal_scores_v2_1";
+                    
+                    svg
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             
                 var x = d3.scale.ordinal()
                     .rangeRoundBands([0, width], .1);
@@ -476,12 +508,6 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     .scale(y)
                     .orient("left")
                     .ticks(10);
-            
-                var svg = d3.select(domLocation).append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                     
                     //console.log('getting data');
 

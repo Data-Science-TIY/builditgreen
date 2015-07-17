@@ -10475,19 +10475,6 @@ router.route('','overview', function () {
     scatter(".trend-2");
     histo('.trend-3'); 
     
-    d3.selectAll('.btn-plotly').on('click', function() {
-      setTimeout(function () {
-        if (d3.select(".btn-plotly-on").node().value==='total') {
-          $('.plotly-total').css('display','block');
-          $('.plotly-adjusted').css('display','none');
-        }
-        else if (d3.select(".btn-plotly-on").node().value==='adjusted') {
-          $('.plotly-adjusted').css('display','block');
-          $('.plotly-total').css('display','none');
-        }
-      });
-    });
-    
   }
   
   function renderCredit () {
@@ -10499,6 +10486,43 @@ router.route('','overview', function () {
     toggle("#scoring-version2-dropdown div", 'btn-sc2-version');
     toggle("#scoring-category2-dropdown div", 'btn-sc2-category');
     overbar('.overallbar', '.cc-by-year', '.cc-by-category');
+    
+    $('#scoring-version2-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2.1'||$(e.target).parent().text()==='LEED 2.2') {
+        var extra = $('[value="extra"]');
+        console.log(extra);
+        $('#scoring-category2-dropdown').find(extra).attr('disabled', true);
+      }
+      });
+    });
+    
+    $('#scoring-version1-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2.1'||$(e.target).parent().text()==='LEED 2.2') {
+        var extra = $('[value="extra"]');
+        $('#scoring-category1-dropdown').find(extra).attr('disabled', true);
+      }
+      });
+    });
+    
+    $('#scoring-version1-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2009') {
+        var extra = $('[value="extra"]');
+        $('#scoring-category1-dropdown').find(extra).attr('disabled', false);
+      }
+      });
+    });
+    
+    $('#scoring-version2-dropdown').on('click', function(e) {
+      setTimeout(function() {
+      if ($(e.target).parent().text()==='LEED 2009') {
+        var extra = $('[value="extra"]');
+        $('#scoring-category2-dropdown').find(extra).attr('disabled', false);
+      }
+      });
+    });
     
   }
   
@@ -10545,222 +10569,234 @@ router.route('','overview', function () {
 
 
 },{"../datavis/buildmap":7,"../datavis/gradients":8,"../datavis/heroimage":9,"../datavis/histogram":10,"../datavis/linechart":11,"../datavis/overallbar":12,"../datavis/scatter":13,"../datavis/toggle-creator":14,"../router":17,"d3":1,"jquery":"jquery","queue-async":2,"rainbowvis.js":3,"topojson":4,"underscore":"underscore","views":"views"}],6:[function(require,module,exports){
-module.exports = function (color1, color2) {
+module.exports = function(color1, color2) {
 
-var Rainbow = require('rainbowvis.js');
+    var Rainbow = require('rainbowvis.js');
 
-var gradientCreator = new Rainbow();
+    var gradientCreator = new Rainbow();
 
-gradientCreator.setSpectrum(color1,color2).setNumberRange(0,10);
+    gradientCreator.setSpectrum(color1, color2).setNumberRange(0, 10);
 
-var gradient = [];
+    var gradient = [];
 
-for (var index = 0; index < 11; index++) {
-	gradient.push('#'+gradientCreator.colourAt(index));	
-}
+    for (var index = 0; index < 11; index++) {
+        gradient.push('#' + gradientCreator.colourAt(index));
+    }
 
-return gradient;
+    return gradient;
 
 }
 },{"rainbowvis.js":3}],7:[function(require,module,exports){
-module.exports =  function (descriptor, gradient) {
-   var d3 = require('d3');
-   var $ = require('jquery');
-   var gradients = require('../datavis/gradients');
-   console.log('building a map');
+module.exports = function(descriptor, gradient) {
+    var d3 = require('d3');
+    var $ = require('jquery');
+    var gradients = require('../datavis/gradients');
+    console.log('building a map');
 
-   var width = 960,
-   height = 500;
-   
-   var legendDomain = [0.0,0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9];
-   
-   var colorDomain = [0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9];
-   
-   var projection = d3.geo.albersUsa()
-        .translate([width/2, height/2])
+    var width = 960,
+        height = 500;
+
+    var legendDomain = [0.0, 0.01, .02, .04, .06, .08, .10, .25, .50, .75, 0.9];
+
+    var colorDomain = [0.01, .02, .04, .06, .08, .10, .25, .50, .75, 0.9];
+
+    var projection = d3.geo.albersUsa()
+        .translate([width / 2, height / 2])
         .scale([1000]);
-   
-   var path = d3.geo.path()
+
+    var path = d3.geo.path()
         .projection(projection);
-                
-   var color = d3.scale.threshold()
+
+    var color = d3.scale.threshold()
         .domain(colorDomain)
         .range(gradient);
 
-   var svg = d3.select(".map").append("svg")
+    var svg = d3.select(".map").append("svg")
         .attr("width", width)
         .attr("height", height);
-        
-   var legend = svg.selectAll("g.legend")
+
+    var legend = svg.selectAll("g.legend")
         .data(legendDomain)
         .enter().append("g");
-        
-   var ls_w = 20, ls_h = 20;
 
-     
-   d3.json("/api/us", function (data) {
+    var ls_w = 20,
+        ls_h = 20;
+
+
+    d3.json("/api/us", function(data) {
         //console.log(d3.max(data, function(d) { return d.number_of_projects; }));
 
         d3.json("/static/data/us.json", function(json) {
-            
-        //console.log(data);
-        for (var i = 0; i < data.length; i++) {
-            //Grab state name
-            var dataState = data[i].name;
-            //console.log(dataState);
-            //Grab data value, and convert from string to float
-            var dataValue = parseFloat(data[i][descriptor]);
-            //console.log(dataValue);
-            //Find the corresponding state inside the GeoJSON
-            for (var j = 0; j < json.features.length; j++) {
 
-            var jsonState = json.features[j].properties.name;
-            //console.log(json.features[j].properties.name);
-            if (dataState == jsonState) {
-                //console.log(dataState == jsonState);
-                //Copy the data value into the JSON
-                json.features[j].properties.value = dataValue/d3.max(data, function(d) { 
-                    //console.log(d);
-                    return d[descriptor];
-                    });
+            //console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                //Grab state name
+                var dataState = data[i].name;
+                //console.log(dataState);
+                //Grab data value, and convert from string to float
+                var dataValue = parseFloat(data[i][descriptor]);
+                //console.log(dataValue);
+                //Find the corresponding state inside the GeoJSON
+                for (var j = 0; j < json.features.length; j++) {
 
-                //Stop looking through the JSON
-                break;
-
-                }
-            }
-        }
-       
-       svg.selectAll("path")
-                   .data(json.features)
-                   .enter()
-                   .append("path")
-                   .attr("d", path)
-                   .style("fill", function(d) {
-                    //Get data value
-                    //console.log(d.properties.value);
-                    var value = d.properties.value;
-
-                    if (value) {
-                            //If value exists…
-                            return color(value);
-                    } else {
-                            //If value is undefined…
-                            return "#ccc";
-                    }
-                    
-                   })
-                   .style("stroke", "#fff");
-                   
-       legend.append("rect")
-        .attr("x", 20)
-        .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
-        .attr("width", ls_w)
-        .attr("height", ls_h)
-        .style("fill", function(d, i) { return color(d); })
-        .style("opacity", 0.8);     
-       
-       var dF = d3.max(data, function(d) { 
-                    //console.log(d);
-                    return d[descriptor];
-                    });
-       
-       //console.log(dF);
-       
-       var legendTextLabels = ['< ' + Math.floor(0.01*dF), Math.floor(0.01*dF)+'+', Math.floor(.02*dF)+'+', 
-           Math.floor(.04*dF)+'+', Math.floor(.06*dF)+'+'
-           , Math.floor(.08*dF)+'+', Math.floor(.10*dF)+'+', Math.floor(.25*dF)+'+', Math.floor(.50*dF)+'+',
-            Math.floor(.75*dF)+'+', Math.floor(0.9*dF)+'+'];
-       
-       legend.append("text")
-        .attr("x", 50)
-        .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
-        .text(function(d, i){ return legendTextLabels[i]; });  
-          
-       d3.selectAll('.btn-map').on('click', function () {
-           //alert('yay');
-             //  console.log(d3.select(".on").node().value); 
-           setTimeout( function() {  
-                color = d3.scale.threshold()
-                    .domain([0.01,.02, .04, .06, .08, .10, .25, .50, .75, 0.9])
-                    .range(gradients[d3.select(".btn-map-on").node().value]);
-                
-                dF = d3.max(data, function(d) { 
-                    //console.log(d);
-                    return d[d3.select(".btn-map-on").node().value];
-                    });
-                
-                //console.log(dF);
-                    
-                legendTextLabels = ['< ' + Math.floor(0.01*dF), Math.floor(0.01*dF)+'+', Math.floor(.02*dF)+'+', 
-                    Math.floor(.04*dF)+'+', Math.floor(.06*dF)+'+'
-                    , Math.floor(.08*dF)+'+', Math.floor(.10*dF)+'+', Math.floor(.25*dF)+'+', Math.floor(.50*dF)+'+',
-                    Math.floor(.75*dF)+'+', Math.floor(0.9*dF)+'+'];
-                
-                //console.log(legendTextLabels); 
-                    
-                legend.select('rect').transition().style("fill", function(d, i) { return color(d); });
-                
-                
-                legend.select('text').transition().text(function(d, i){ return legendTextLabels[i]; });
-                      
-                
-                 for (var i = 0; i < data.length; i++) {
-                    //Grab state name
-                    //console.log(data);
-                    var dataState = data[i].name;
-                    //console.log(data[i][d3.select('#dropdown').node().val]);
-                    //Grab data value, and convert from string to float
-                    var dataValue = parseFloat(data[i][d3.select('.btn-map-on').node().value]);
-                    
-                    //Find the corresponding state inside the GeoJSON
-                    for (var j = 0; j < json.features.length; j++) {
-        
                     var jsonState = json.features[j].properties.name;
-        
+                    //console.log(json.features[j].properties.name);
                     if (dataState == jsonState) {
-        
+                        //console.log(dataState == jsonState);
                         //Copy the data value into the JSON
-                        json.features[j].properties.value = dataValue/d3.max(data, function(d) { return d[d3.select('.btn-map-on').node().value]; });
-        
+                        json.features[j].properties.value = dataValue / d3.max(data, function(d) {
+                            //console.log(d);
+                            return d[descriptor];
+                        });
+
                         //Stop looking through the JSON
                         break;
-        
-                        }
+
+                    }
                 }
-                
-                 }
-                
-                  svg.selectAll("path")
-                   .data(json.features)
-                   
-                   .attr("d", path)
-                   .transition()
-                   .style("fill", function(d) {
+            }
+
+            svg.selectAll("path")
+                .data(json.features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .style("fill", function(d) {
                     //Get data value
                     //console.log(d.properties.value);
                     var value = d.properties.value;
 
                     if (value) {
-                            //If value exists…
-                            return color(value);
+                        //If value exists…
+                        return color(value);
                     } else {
-                            //If value is undefined…
-                            return "#ccc";
+                        //If value is undefined…
+                        return "#ccc";
                     }
-                    
-                   })
-                   .style("stroke", "#fff");
-                 
-             });
-       });         
-       });
-      
-    }); 
-  }
+
+                })
+                .style("stroke", "#fff");
+
+            legend.append("rect")
+                .attr("x", 20)
+                .attr("y", function(d, i) {
+                    return height - (i * ls_h) - 2 * ls_h;
+                })
+                .attr("width", ls_w)
+                .attr("height", ls_h)
+                .style("fill", function(d, i) {
+                    return color(d);
+                })
+                .style("opacity", 0.8);
+
+            var dF = d3.max(data, function(d) {
+                //console.log(d);
+                return d[descriptor];
+            });
+
+            //console.log(dF);
+
+            var legendTextLabels = ['< ' + Math.floor(0.01 * dF), Math.floor(0.01 * dF) + '+', Math.floor(.02 * dF) + '+',
+                Math.floor(.04 * dF) + '+', Math.floor(.06 * dF) + '+', Math.floor(.08 * dF) + '+', Math.floor(.10 * dF) + '+', Math.floor(.25 * dF) + '+', Math.floor(.50 * dF) + '+',
+                Math.floor(.75 * dF) + '+', Math.floor(0.9 * dF) + '+'
+            ];
+
+            legend.append("text")
+                .attr("x", 50)
+                .attr("y", function(d, i) {
+                    return height - (i * ls_h) - ls_h - 4;
+                })
+                .text(function(d, i) {
+                    return legendTextLabels[i];
+                });
+
+            d3.selectAll('.btn-map').on('click', function() {
+                //alert('yay');
+                //  console.log(d3.select(".on").node().value); 
+                setTimeout(function() {
+                    color = d3.scale.threshold()
+                        .domain([0.01, .02, .04, .06, .08, .10, .25, .50, .75, 0.9])
+                        .range(gradients[d3.select(".btn-map-on").node().value]);
+
+                    dF = d3.max(data, function(d) {
+                        //console.log(d);
+                        return d[d3.select(".btn-map-on").node().value];
+                    });
+
+                    //console.log(dF);
+
+                    legendTextLabels = ['< ' + Math.floor(0.01 * dF), Math.floor(0.01 * dF) + '+', Math.floor(.02 * dF) + '+',
+                        Math.floor(.04 * dF) + '+', Math.floor(.06 * dF) + '+', Math.floor(.08 * dF) + '+', Math.floor(.10 * dF) + '+', Math.floor(.25 * dF) + '+', Math.floor(.50 * dF) + '+',
+                        Math.floor(.75 * dF) + '+', Math.floor(0.9 * dF) + '+'
+                    ];
+
+                    //console.log(legendTextLabels); 
+
+                    legend.select('rect').transition().style("fill", function(d, i) {
+                        return color(d);
+                    });
 
 
+                    legend.select('text').transition().text(function(d, i) {
+                        return legendTextLabels[i];
+                    });
 
+
+                    for (var i = 0; i < data.length; i++) {
+                        //Grab state name
+                        //console.log(data);
+                        var dataState = data[i].name;
+                        //console.log(data[i][d3.select('#dropdown').node().val]);
+                        //Grab data value, and convert from string to float
+                        var dataValue = parseFloat(data[i][d3.select('.btn-map-on').node().value]);
+
+                        //Find the corresponding state inside the GeoJSON
+                        for (var j = 0; j < json.features.length; j++) {
+
+                            var jsonState = json.features[j].properties.name;
+
+                            if (dataState == jsonState) {
+
+                                //Copy the data value into the JSON
+                                json.features[j].properties.value = dataValue / d3.max(data, function(d) {
+                                    return d[d3.select('.btn-map-on').node().value];
+                                });
+
+                                //Stop looking through the JSON
+                                break;
+
+                            }
+                        }
+
+                    }
+
+                    svg.selectAll("path")
+                        .data(json.features)
+
+                    .attr("d", path)
+                        .transition()
+                        .style("fill", function(d) {
+                            //Get data value
+                            //console.log(d.properties.value);
+                            var value = d.properties.value;
+
+                            if (value) {
+                                //If value exists…
+                                return color(value);
+                            } else {
+                                //If value is undefined…
+                                return "#ccc";
+                            }
+
+                        })
+                        .style("stroke", "#fff");
+
+                });
+            });
+        });
+
+    });
+}
 },{"../datavis/gradients":8,"d3":1,"jquery":"jquery"}],8:[function(require,module,exports){
 var buildgradient = require('./buildgradient');
 
@@ -10887,560 +10923,613 @@ module.exports = function() {
     }
 }
 },{"d3":1,"jquery":"jquery"}],10:[function(require,module,exports){
-module.exports =  function (domLocation) {
-  var d3 = require('d3');
-  var $ = require('jquery');
-  
+module.exports = function(domLocation) {
+    var d3 = require('d3');
+    var $ = require('jquery');
+
     console.log('making histogram');
-    
-    var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom,
-    dataUrl = ['/api/projects/2009/','/api/projects/2-2/','/api/projects/2-1/'];
+
+    var margin = {
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 40
+        },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        dataUrl = ['/api/projects/2009/', '/api/projects/2-2/', '/api/projects/2-1/'];
 
     var color = d3.scale.ordinal().range(['#00F8B1', '#3E5A65', '#FFDB00', '#327EFF']);
 
     var x = d3.scale.linear()
         .range([0, width]);
-        
+
     var y = d3.scale.linear()
         .range([height, 0]);
-    
+
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom");
-        
+
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left");
-    
+
     var svg = d3.select(domLocation).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-      .append("g")
+        .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
+
     d3.json(dataUrl[0], function(data0) {
-      d3.json(dataUrl[1], function(data1) {
-        d3.json(dataUrl[2], function(data2) {
-      
-      var data = data0;
-      
-      data.forEach(function(d, index) {
-        if (d.certification_level=='Denied') {
-          data.splice(index,1);
-        };
-        //console.log(d);
-      });
-      
-      //console.log(data);
-      
-      var dataSet = data;
-         
-      //console.log(data);   
-      
-      x.domain(d3.extent(dataSet, function (d) { 
-          return d.points_achieved; }));
-      
-      var bins = [];
-      for (var i = x.domain()[0]; i <= x.domain()[1]; i++) {
-          bins.push(i);
-      }
-      
-      //console.log(bins);
-      
-      var values = dataSet.map(function (d) {
-        return d.points_achieved;
-      });
-      
-      var histo = d3.layout.histogram()
-          .bins(x.ticks(bins.length))
-          (values);
-          
-      //console.log(values);
-      
-      y.domain(d3.extent(histo, function (d) {
-        //console.log(d.length);
-        return d.length;
-      }));
-      
-      var bar = svg.selectAll(".bar")
-          .data(histo)
-        .enter().append("g")
-          .attr("class", "bar")
-          .attr("transform", function(d) { 
-            //console.log(d);
-            return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+        d3.json(dataUrl[1], function(data1) {
+            d3.json(dataUrl[2], function(data2) {
 
-      bar.append("rect")
-          .attr("x", 1)
-          .attr('class', 'rect')
-          .attr("height", function(d) { 
-            //console.log(d);
-            return height - y(d.y); })
-          .attr("width", function(d) { 
-            //console.log(d);
-            return width/bins.length-1 })
-          .style("fill", function(d) { 
-            var output; 
-            if (d.x>=40&&d.x<=49) {
-              output = 'Certified';
-            }
-            else if (d.x>=50&&d.x<=59) {
-              output = 'Silver';
-            }
-            else if (d.x>=60&&d.x<=79) {
-              output = 'Gold';
-            }
-            else if (d.x>=80) {
-              output = 'Platinum';
-            }
-            return color(output); });
-      
-      svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis)
-        .append("text")
-          .attr("x", 415)
-          .attr("y", 45)
-          .style("text-anchor", "middle")
-          .text("Points Achieved");
-    
-      svg.append("g")
-          .attr("class", "y axis")
-          .call(yAxis)
-        .append("text")
-          .attr("y", 220)
-          .attr("x", -30)
-          .attr("dy", ".71em")
-          .style("text-anchor", "end")
-          .text("Count");
-      
-      var legend = svg.selectAll(".legend")
-          .data(color.domain())
-        .enter().append("g")
-          .attr("class", "legend")
-          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+                var data = data0;
 
-      legend.append("rect")
-          .attr("x", width - 18)
-          .attr("width", 18)
-          .attr("height", 18)
-          .style("fill", color);
+                data.forEach(function(d, index) {
+                    if (d.certification_level == 'Denied') {
+                        data.splice(index, 1);
+                    };
+                    //console.log(d);
+                });
 
-      legend.append("text")
-          .attr("x", width - 24)
-          .attr("y", 9)
-          .attr("dy", ".35em")
-          .style("text-anchor", "end")
-          .text(function(d) { return d; });
-      
-      d3.selectAll('.btn-trend3').on('click', function () {
-       setTimeout(function () {
-        
-        //console.log('click');
-        
-        data = eval('data'+d3.select(".btn-trend3-on").node().value);
-        
-        //console.log(data.length);
-        
-        data.forEach(function(d, index) {
-          if (d.certification_level=='Denied') {
-            data.splice(index,1);
-          };
-        //console.log(d);
-        });
-        
-        dataSet = data;
-        
-        x.domain(d3.extent(dataSet, function (d) { 
-          return d.points_achieved; }));
-      
-        bins = [];
-        for (var i = x.domain()[0]; i <= x.domain()[1]; i++) {
-            bins.push(i);
-        }
-        
-        //console.log(bins);
-        
-        values = dataSet.map(function (d) {
-          //console.log(d);
-          return d.points_achieved;
-        });
-        
-        histo = d3.layout.histogram()
-            .bins(x.ticks(bins.length))
-            (values);
-            
-        //console.log(histo);
-        
-        y.domain(d3.extent(histo, function (d) {
-          //console.log(d.length);
-          return d.length;
-        }));
-        
-        
-        svg.selectAll('.bar').remove();
-        
-        bar = svg.selectAll(".bar")
-            .data(histo)
-          .enter().append("g")
-            .attr("class", "bar")
-            .attr("transform", function(d) { 
-              //console.log(d);
-              return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
-          
-        bar.append("rect")
-            .attr("x", 1)
-            .attr('class', 'rect')
-            .attr("height", function(d) { 
-              //console.log(d);
-              return height - y(d.y); })
-            .attr("width", function(d) { 
-              //console.log(d);
-              return width/bins.length-1 })
-            .style("fill", function(d) {
-              var output;
-              console.log(histo.length);
-              if (histo.length<57) { 
-                if (d.x>=26&&d.x<=32) {
-                  output = 'Certified';
+                //console.log(data);
+
+                var dataSet = data;
+
+                //console.log(data);   
+
+                x.domain(d3.extent(dataSet, function(d) {
+                    return d.points_achieved;
+                }));
+                
+                var bins = [];
+                for (var i = x.domain()[0]; i <= x.domain()[1]; i++) {
+                    bins.push(i);
                 }
-                else if (d.x>=33&&d.x<=38) {
-                  output = 'Silver';
-                }
-                else if (d.x>=39&&d.x<=51) {
-                  output = 'Gold';
-                }
-                else if (d.x>=52) {
-                  output = 'Platinum';
-                }
-               return color(output);
-              }
-               if (histo.length>=57) { 
-                if (d.x>=40&&d.x<=49) {
-                  output = 'Certified';
-                }
-                else if (d.x>=50&&d.x<=59) {
-                  output = 'Silver';
-                }
-                else if (d.x>=60&&d.x<=79) {
-                  output = 'Gold';
-                }
-                else if (d.x>=80) {
-                  output = 'Platinum';
-                }
-                return color(output); 
-                }                 
+
+                //console.log(bins);
+
+                var values = dataSet.map(function(d) {
+                    return d.points_achieved;
+                });
+
+                var histo = d3.layout.histogram()
+                    .bins(x.ticks(bins.length))
+                    (values);
+
+                //console.log(values);
+
+                y.domain(d3.extent(histo, function(d) {
+                    //console.log(d.length);
+                    return d.length;
+                }));
+
+                var bar = svg.selectAll(".bar")
+                    .data(histo)
+                    .enter().append("g")
+                    .attr("class", "bar")
+                    .attr("transform", function(d) {
+                        //console.log(d);
+                        return "translate(" + x(d.x) + "," + y(d.y) + ")";
+                    });
+
+                bar.append("rect")
+                    .attr("x", 1)
+                    .attr('class', 'rect')
+                    .attr("height", function(d) {
+                        //console.log(d);
+                        return height - y(d.y);
+                    })
+                    .attr("width", function(d) {
+                        //console.log(d);
+                        return width / bins.length - 1
+                    })
+                    .style("fill", function(d) {
+                        var output;
+                        if (d.x >= 40 && d.x <= 49) {
+                            output = 'Certified';
+                        } else if (d.x >= 50 && d.x <= 59) {
+                            output = 'Silver';
+                        } else if (d.x >= 60 && d.x <= 79) {
+                            output = 'Gold';
+                        } else if (d.x >= 80) {
+                            output = 'Platinum';
+                        }
+                        return color(output);
+                    });
+
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis)
+                    .append("text")
+                    .attr("x", 415)
+                    .attr("y", 45)
+                    .style("text-anchor", "middle")
+                    .text("Points Achieved");
+
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+                    .append("text")
+                    .attr("y", 220)
+                    .attr("x", -30)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Count");
+
+                var legend = svg.selectAll(".legend")
+                    .data(color.domain())
+                    .enter().append("g")
+                    .attr("class", "legend")
+                    .attr("transform", function(d, i) {
+                        return "translate(0," + i * 20 + ")";
+                    });
+
+                legend.append("rect")
+                    .attr("x", width - 18)
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", color);
+
+                legend.append("text")
+                    .attr("x", width - 24)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "end")
+                    .text(function(d) {
+                        return d;
+                    });
+
+                d3.selectAll('.btn-trend3').on('click', function() {
+                    setTimeout(function() {
+
+                        //console.log('click');
+
+                        data = eval('data' + d3.select(".btn-trend3-on").node().value);
+
+                        //console.log(data.length);
+
+                        data.forEach(function(d, index) {
+                            if (d.certification_level == 'Denied') {
+                                data.splice(index, 1);
+                            };
+                            //console.log(d);
+                        });
+
+                        dataSet = data;
+
+                        x.domain(d3.extent(dataSet, function(d) {
+                            return d.points_achieved;
+                        }));
+
+                        bins = [];
+                        for (var i = x.domain()[0]; i <= x.domain()[1]; i++) {
+                            bins.push(i);
+                        }
+
+                        //console.log(bins);
+
+                        values = dataSet.map(function(d) {
+                            //console.log(d);
+                            return d.points_achieved;
+                        });
+
+                        histo = d3.layout.histogram()
+                            .bins(x.ticks(bins.length))
+                            (values);
+
+                        //console.log(histo);
+
+                        y.domain(d3.extent(histo, function(d) {
+                            //console.log(d.length);
+                            return d.length;
+                        }));
+
+
+                        svg.selectAll('.bar').remove();
+
+                        bar = svg.selectAll(".bar")
+                            .data(histo)
+                            .enter().append("g")
+                            .attr("class", "bar")
+                            .attr("transform", function(d) {
+                                //console.log(d);
+                                return "translate(" + x(d.x) + "," + y(d.y) + ")";
+                            });
+
+                        bar.append("rect")
+                            .attr("x", 1)
+                            .attr('class', 'rect')
+                            .attr("height", function(d) {
+                                //console.log(d);
+                                return height - y(d.y);
+                            })
+                            .attr("width", function(d) {
+                                //console.log(d);
+                                return width / bins.length - 1
+                            })
+                            .style("fill", function(d) {
+                                var output;
+                                console.log(histo.length);
+                                if (histo.length < 57) {
+                                    if (d.x >= 26 && d.x <= 32) {
+                                        output = 'Certified';
+                                    } else if (d.x >= 33 && d.x <= 38) {
+                                        output = 'Silver';
+                                    } else if (d.x >= 39 && d.x <= 51) {
+                                        output = 'Gold';
+                                    } else if (d.x >= 52) {
+                                        output = 'Platinum';
+                                    }
+                                    return color(output);
+                                }
+                                if (histo.length >= 57) {
+                                    if (d.x >= 40 && d.x <= 49) {
+                                        output = 'Certified';
+                                    } else if (d.x >= 50 && d.x <= 59) {
+                                        output = 'Silver';
+                                    } else if (d.x >= 60 && d.x <= 79) {
+                                        output = 'Gold';
+                                    } else if (d.x >= 80) {
+                                        output = 'Platinum';
+                                    }
+                                    return color(output);
+                                }
+                            });
+
+                        svg.selectAll('.x').remove();
+
+                        svg.append("g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + height + ")")
+                            .call(xAxis)
+                            .append("text")
+                            .attr("x", 415)
+                            .attr("y", 45)
+                            .style("text-anchor", "middle")
+                            .text("Points Achieved");
+
+                        svg.selectAll('.y').remove();
+
+                        svg.append("g")
+                            .attr("class", "y axis")
+                            .call(yAxis)
+                            .append("text")
+                            .attr("y", 220)
+                            .attr("x", -30)
+                            .attr("dy", ".71em")
+                            .style("text-anchor", "end")
+                            .text("Count");
+
+                    });
+                });
             });
-            
-        svg.selectAll('.x').remove();
-        
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
-          .append("text")
-            .attr("x", 415)
-            .attr("y", 45)
-            .style("text-anchor", "middle")
-            .text("Points Achieved");
-      
-        svg.selectAll('.y').remove();
-      
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("y", 220)
-            .attr("x", -30)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Count");
-
         });
-       });
-      });
     });
-  });      
 }
-
-
-
 },{"d3":1,"jquery":"jquery"}],11:[function(require,module,exports){
-module.exports =  function (domLocation) {
-  var d3 = require('d3');
-  var _ = require('underscore');
-  var $ = require('jquery');
+module.exports = function(domLocation) {
+    var d3 = require('d3');
+    var _ = require('underscore');
+    var $ = require('jquery');
 
-console.log('making line chart');
-    
-    var margin = {top: 20, right: 80, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-    
+    console.log('making line chart');
+
+    var margin = {
+            top: 20,
+            right: 80,
+            bottom: 30,
+            left: 50
+        },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
     var certLevels = ['platinum_certifications', 'gold_certifications', 'silver_certifications', 'certified_only_certifications'];
-    var buildType = ['leed_for_multi_low_family_certifications', 'leed_for_multi_mid_family_certifications', 
-       'leed_for_single_family_certifications'];
+    var buildType = ['leed_for_multi_low_family_certifications', 'leed_for_multi_mid_family_certifications',
+        'leed_for_single_family_certifications'
+    ];
     var regVsCert = ['total_certifications', 'total_registrations'];
-    var newConst = ['leed_nc_2_1_certifications', 'leed_nc_2_0_certifications', 'leed_nc_2_2_certifications', 
-      'leed_nc_2009_certifications'];
-    
+    var newConst = ['leed_nc_2_1_certifications', 'leed_nc_2_0_certifications', 'leed_nc_2_2_certifications',
+        'leed_nc_2009_certifications'
+    ];
+
     var color = d3.scale.ordinal().range(['#327EFF', '#FFDB00', '#3E5A65', '#00F8B1', '#FF3C41']);
-    
+
     var svg = d3.select(domLocation).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .attr('class', 'linechart')
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr('class', 'linechart')
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
     var x = d3.scale.linear()
         .range([0, width]);
 
     var y = d3.scale.linear()
         .range([height, 0]);
-    
+
     var yAxis = d3.svg.axis().scale(y).orient("left");
 
     var xAxis = d3.svg.axis().scale(x).orient("bottom")
-      .ticks(14)
-      .tickFormat(d3.format("04d"));    
-    
+        .ticks(14)
+        .tickFormat(d3.format("04d"));
+
     var line = d3.svg.line()
         .interpolate("basis")
-        .x(function(d) { 
-          //console.log(x);
-          return x(d.date); })
-        .y(function(d) { 
-          //console.log(y);
-          return y(d.certifications); });  
-    
-       
-	d3.json("/api/trends/", function(error, data) {
-	  if (error) throw error;
-    
-    //console.log(data);
-    
-    var dateDomain = _.keys(_.pick(data, 'platinum_certifications').platinum_certifications);
-    
-    //console.log(dateDomain);
-    
-    //console.log(d3.select(".btn-trend1-on").node().value);
-    
-    var trendValues = _.pick(data, eval(d3.select(".btn-trend1-on").node().value));
-    
-    //console.log(trendValues);
-    
-    color.domain(_.keys(_.pick(data, eval(d3.select(".btn-trend1-on").node().value))));
-   
-   //console.log(d3.select(".btn-trend1-on").node().value);
-   
-    //console.log(_.pick(data, 'platinum_certifications', 'gold_certifications'));
-   
-    var trends = color.domain().map(function(name, index) {
-      //console.log(trendValues);
-      //console.log(name);
-      //console.log(trendValues[(color.domain()[index])]);
-      return {
-        name: name,
-        values: $.map(trendValues[(color.domain()[index])] , function(d, index) {
-          //console.log(d + ' ' + index);
-          return {date: index, certifications: d};
+        .x(function(d) {
+            //console.log(x);
+            return x(d.date);
         })
-      };
-    });
-
-    //console.log(trends);
-
-    x.domain(d3.extent(dateDomain, function(d) { return d; }));
-    
-    y.domain([
-      d3.min(trends, function(c) { return d3.min(c.values, function(v) { return v.certifications; }); }),
-      d3.max(trends, function(c) { return d3.max(c.values, function(v) { return v.certifications; }); })
-    ]);
-    
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-      .append("text")
-        .attr("x", 415)
-        .attr("y", 45)
-        .style("text-anchor", "middle")
-        .text("Year");
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Total Certifications");
-    
-    var trend = svg.selectAll(".trend")
-      .data(trends)
-    .enter().append("g")
-      .attr("class", "trend");
-      
-    //console.log(trend);
-    
-    trend.append("path")
-      .attr("class", "line")
-      .attr("d", function(d) { 
-        //console.log(d);
-        return line(d.values); })
-      .style("stroke", function(d) { 
-        //console.log(d.name);
-        return color(d.name); });
-      
-     trend.append("text")
-      .datum(function(d) { return {name: d.name, values: d.values[d.values.length - 1]}; })
-      .attr("transform", function(d) { 
-        //console.log(d);
-        return "translate(" + x(d.values.date) + "," + y(d.values.certifications) + ")"; })
-      .attr("x", 3)
-      .attr('class', function (d) { return d.name })
-      .attr("dy", ".35em")
-      .text(function(d) { 
-        var label = (d.name).match(/^[^_]+(?=_)/);
-        return label; });
-      
-      d3.select('.certified_only_certifications')
-        .attr('dy', '0.9em');
-        
-      d3.select('.silver_certifications')
-        .attr('dy', '-.1em');  
-      
-        
-     d3.selectAll('.btn-trend1').on('click', function () {
-       setTimeout( function() {
-       //console.log(d3.select(".btn-trend1-on").node().value);
-       /*
-        svg = d3.select(domLocation)
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-       */ 
-        trendValues = _.pick(data, eval(d3.select(".btn-trend1-on").node().value));
-        
-        color.domain(_.keys(_.pick(data, eval(d3.select(".btn-trend1-on").node().value))));
-       
-        trends = color.domain().map(function(name, index) {
-          //console.log(trendValues);
-          //console.log(name);
-          //console.log(trendValues[(color.domain()[index])]);
-          return {
-            name: name,
-            values: $.map(trendValues[(color.domain()[index])] , function(d, index) {
-              //console.log(d + ' ' + index);
-              return {date: index, certifications: d};
-            })
-          };
+        .y(function(d) {
+            //console.log(y);
+            return y(d.certifications);
         });
-        
-        
-       
+
+
+    d3.json("/api/trends/", function(error, data) {
+        if (error) throw error;
+
+        //console.log(data);
+
+        var dateDomain = _.keys(_.pick(data, 'platinum_certifications').platinum_certifications);
+
+        //console.log(dateDomain);
+
+        //console.log(d3.select(".btn-trend1-on").node().value);
+
+        var trendValues = _.pick(data, eval(d3.select(".btn-trend1-on").node().value));
+
+        //console.log(trendValues);
+
+        color.domain(_.keys(_.pick(data, eval(d3.select(".btn-trend1-on").node().value))));
+
+        //console.log(d3.select(".btn-trend1-on").node().value);
+
+        //console.log(_.pick(data, 'platinum_certifications', 'gold_certifications'));
+
+        var trends = color.domain().map(function(name, index) {
+            //console.log(trendValues);
+            //console.log(name);
+            //console.log(trendValues[(color.domain()[index])]);
+            return {
+                name: name,
+                values: $.map(trendValues[(color.domain()[index])], function(d, index) {
+                    //console.log(d + ' ' + index);
+                    return {
+                        date: index,
+                        certifications: d
+                    };
+                })
+            };
+        });
+
+        //console.log(trends);
+
+        x.domain(d3.extent(dateDomain, function(d) {
+            return d;
+        }));
+
         y.domain([
-          d3.min(trends, function(c) { return d3.min(c.values, function(v) { return v.certifications; }); }),
-          d3.max(trends, function(c) { return d3.max(c.values, function(v) { return v.certifications; }); })
+            d3.min(trends, function(c) {
+                return d3.min(c.values, function(v) {
+                    return v.certifications;
+                });
+            }),
+            d3.max(trends, function(c) {
+                return d3.max(c.values, function(v) {
+                    return v.certifications;
+                });
+            })
         ]);
-        
-        svg.select('.y').remove();
-        
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("x", 415)
+            .attr("y", 45)
+            .style("text-anchor", "middle")
+            .text("Year");
+
         svg.append("g")
             .attr("class", "y axis")
             .call(yAxis)
-          .append("text")
+            .append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
             .text("Total Certifications");
-     
-        svg.selectAll('.trend').remove();
-  
-        trend = svg.selectAll(".trend")
-          .data(trends)
-        .enter().append("g")
-          .attr("class", "trend");
-          
-        //console.log(trend);
-        
-        trend.append("path")
-          .attr("class", "line")
-          .attr("d", function(d) { 
-            //console.log(d);
-            return line(d.values); })
-          .style("stroke", function(d) { return color(d.name); });
-        
-        trend.append("text")
-          .datum(function(d) { return {name: d.name, values: d.values[d.values.length - 1]}; })
-          .attr("transform", function(d) { 
-            //console.log(d);
-            return "translate(" + x(d.values.date) + "," + y(d.values.certifications) + ")"; })
-          .attr("x", 3)
-          .attr('class', function (d) { return d.name })
-          .attr("dy", ".35em")
-          .text(function(d) { 
-            var label = (d.name).match(/^[^_]+(?=_)/);
-            
-            if (label=='leed') {
-              if (d.name=='leed_for_single_family_certifications') {
-                label = 'Single';
-              }
-              else if (d.name=='leed_for_multi_low_family_certifications') {
-                label = 'Multi-Low';
-              }
-              else if (d.name=='leed_for_multi_mid_family_certifications') {
-                label = 'Multi-Mid';
-              }
-              else if (d.name=='leed_nc_2_1_certifications') {
-                label = 'NC-2.1';
-              }
-              else if (d.name=='leed_nc_2_0_certifications') {
-                label = 'NC-2.0';
-              }
-              else if (d.name=='leed_nc_2_2_certifications') {
-                label = 'NC-2.2';
-              }
-              else if (d.name=='leed_nc_2009_certifications') {
-                label = 'NC-2009';
-              }
-            }
-            
-            if (label=='total') {
-              if (d.name=='total_registrations') {
-                label = 'Registered';
-              }
-              else if (d.name=='total_certifications') {
-                label = 'Certified';
-              }
-            }
-            
-            return label; });
-            
-            d3.select('.certified_only_certifications')
-              .attr('dy', '0.9em');
-        
-            d3.select('.silver_certifications')
-              .attr('dy', '-.1em'); 
-              
-            d3.select('.leed_nc_2_0_certifications')
-              .attr('dy', '.55em');
-              
-            d3.select('.leed_nc_2_1_certifications')
-              .attr('dy', '-.1em');
-             });
-     });
-  });
 
-} 
-  
-   
+        var trend = svg.selectAll(".trend")
+            .data(trends)
+            .enter().append("g")
+            .attr("class", "trend");
+
+        //console.log(trend);
+
+        trend.append("path")
+            .attr("class", "line")
+            .attr("d", function(d) {
+                //console.log(d);
+                return line(d.values);
+            })
+            .style("stroke", function(d) {
+                //console.log(d.name);
+                return color(d.name);
+            });
+
+        trend.append("text")
+            .datum(function(d) {
+                return {
+                    name: d.name,
+                    values: d.values[d.values.length - 1]
+                };
+            })
+            .attr("transform", function(d) {
+                //console.log(d);
+                return "translate(" + x(d.values.date) + "," + y(d.values.certifications) + ")";
+            })
+            .attr("x", 3)
+            .attr('class', function(d) {
+                return d.name
+            })
+            .attr("dy", ".35em")
+            .text(function(d) {
+                var label = (d.name).match(/^[^_]+(?=_)/);
+                return label;
+            });
+
+        d3.select('.certified_only_certifications')
+            .attr('dy', '0.9em');
+
+        d3.select('.silver_certifications')
+            .attr('dy', '-.1em');
+
+
+        d3.selectAll('.btn-trend1').on('click', function() {
+            setTimeout(function() {
+                //console.log(d3.select(".btn-trend1-on").node().value);
+                /*
+                 svg = d3.select(domLocation)
+                   .attr("width", width + margin.left + margin.right)
+                   .attr("height", height + margin.top + margin.bottom)
+                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                */
+                trendValues = _.pick(data, eval(d3.select(".btn-trend1-on").node().value));
+
+                color.domain(_.keys(_.pick(data, eval(d3.select(".btn-trend1-on").node().value))));
+
+                trends = color.domain().map(function(name, index) {
+                    //console.log(trendValues);
+                    //console.log(name);
+                    //console.log(trendValues[(color.domain()[index])]);
+                    return {
+                        name: name,
+                        values: $.map(trendValues[(color.domain()[index])], function(d, index) {
+                            //console.log(d + ' ' + index);
+                            return {
+                                date: index,
+                                certifications: d
+                            };
+                        })
+                    };
+                });
+
+
+
+                y.domain([
+                    d3.min(trends, function(c) {
+                        return d3.min(c.values, function(v) {
+                            return v.certifications;
+                        });
+                    }),
+                    d3.max(trends, function(c) {
+                        return d3.max(c.values, function(v) {
+                            return v.certifications;
+                        });
+                    })
+                ]);
+
+                svg.select('.y').remove();
+
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+                    .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Total Certifications");
+
+                svg.selectAll('.trend').remove();
+
+                trend = svg.selectAll(".trend")
+                    .data(trends)
+                    .enter().append("g")
+                    .attr("class", "trend");
+
+                //console.log(trend);
+
+                trend.append("path")
+                    .attr("class", "line")
+                    .attr("d", function(d) {
+                        //console.log(d);
+                        return line(d.values);
+                    })
+                    .style("stroke", function(d) {
+                        return color(d.name);
+                    });
+
+                trend.append("text")
+                    .datum(function(d) {
+                        return {
+                            name: d.name,
+                            values: d.values[d.values.length - 1]
+                        };
+                    })
+                    .attr("transform", function(d) {
+                        //console.log(d);
+                        return "translate(" + x(d.values.date) + "," + y(d.values.certifications) + ")";
+                    })
+                    .attr("x", 3)
+                    .attr('class', function(d) {
+                        return d.name
+                    })
+                    .attr("dy", ".35em")
+                    .text(function(d) {
+                        var label = (d.name).match(/^[^_]+(?=_)/);
+
+                        if (label == 'leed') {
+                            if (d.name == 'leed_for_single_family_certifications') {
+                                label = 'Single';
+                            } else if (d.name == 'leed_for_multi_low_family_certifications') {
+                                label = 'Multi-Low';
+                            } else if (d.name == 'leed_for_multi_mid_family_certifications') {
+                                label = 'Multi-Mid';
+                            } else if (d.name == 'leed_nc_2_1_certifications') {
+                                label = 'NC-2.1';
+                            } else if (d.name == 'leed_nc_2_0_certifications') {
+                                label = 'NC-2.0';
+                            } else if (d.name == 'leed_nc_2_2_certifications') {
+                                label = 'NC-2.2';
+                            } else if (d.name == 'leed_nc_2009_certifications') {
+                                label = 'NC-2009';
+                            }
+                        }
+
+                        if (label == 'total') {
+                            if (d.name == 'total_registrations') {
+                                label = 'Registered';
+                            } else if (d.name == 'total_certifications') {
+                                label = 'Certified';
+                            }
+                        }
+
+                        return label;
+                    });
+
+                d3.select('.certified_only_certifications')
+                    .attr('dy', '0.9em');
+
+                d3.select('.silver_certifications')
+                    .attr('dy', '-.1em');
+
+                d3.select('.leed_nc_2_0_certifications')
+                    .attr('dy', '.55em');
+
+                d3.select('.leed_nc_2_1_certifications')
+                    .attr('dy', '-.1em');
+            });
+        });
+    });
+
+}
 },{"d3":1,"jquery":"jquery","underscore":"underscore"}],12:[function(require,module,exports){
 module.exports = function(domLocation, domLocation2, domLocation3) {
     var d3 = require('d3');
@@ -11448,9 +11537,18 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
     var _ = require('underscore');
     
     var dataUrl = ['/api/score-trends-2009/', '/api/score-trends-2-2/', '/api/score-trends-2-1/'];
-    var color = d3.scale.ordinal().range(['#327EFF', '#FFDB00', '#3E5A65', '#00F8B1', '#FF3C41', '#00943E', '#5D00A9']);
-
-    console.log('making overall score bar chart');
+    
+    var chosenColors = ['#00F8B1', '#327EFF', '#FFDB00', '#3E5A65', '#5D00A9', '#EB6C48', '#5D00A9'];
+    
+    var color = d3.scale.category10();
+    
+    
+    
+    var svg = d3.select(domLocation).append("svg");
+    
+    var svg2 = d3.select(domLocation2).append("svg");
+    
+    var svg3 = d3.select(domLocation3).append("svg");
         
     function removeUnderscore(y) {
                     for (var x in y) {
@@ -11529,6 +11627,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     setTimeout(function() {
 
                         dataSource = eval('data' + d3.select(".btn-sc1-version-on").node().value);
+                        console.log(dataSource)
                         category = d3.select(".btn-sc1-category-on").node().value;
                         buildYearPlot(dataSource, category);
 
@@ -11552,9 +11651,9 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
 
                     setTimeout(function() {
 
-                        dataSource = eval('data' + d3.select(".btn-sc2-version-on").node().value);
-                        category = d3.select(".btn-sc2-category-on").node().value;
-                        buildYearPlot(dataSource2, category2);
+                        dataSource2 = eval('data' + d3.select(".btn-sc2-version-on").node().value);
+                        category2 = d3.select(".btn-sc2-category-on").node().value;
+                        buildCategoryPlot(dataSource2, category2);
 
                     });
 
@@ -11564,19 +11663,25 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
 
                     setTimeout(function() {
 
-                        dataSource = eval('data' + d3.select(".btn-sc2-version-on").node().value);
-                        category = d3.select(".btn-sc2-category-on").node().value;
-                        buildYearPlot(dataSource2, category2);
+                        dataSource2 = eval('data' + d3.select(".btn-sc2-version-on").node().value);
+                        category2 = d3.select(".btn-sc2-category-on").node().value;
+                        buildCategoryPlot(dataSource2, category2);
 
                     });
 
                 });
                 
-                buildCategoryPlot(dataSource2, category2);
-                buildYearPlot(dataSource, category);
                 buildOverallPlot();
+                buildYearPlot(dataSource, category);
+                buildCategoryPlot(dataSource2, category2);
+                
+                
 
                 function buildYearPlot(data, cat) {
+                    
+                    svg2.selectAll('g').remove();
+                    
+                    console.log('building year plot')
                     
                     var margin = {
                         top: 15,
@@ -11587,8 +11692,8 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     width = 890 - margin.left - margin.right,
                     height = 464 - margin.top - margin.bottom;
                     
-                    var svg = d3.select(domLocation2).append("svg")
-                        .attr("width", width + margin.left + margin.right)
+                    svg2
+                    .attr("width", width + margin.left + margin.right)
                         .attr("height", height + margin.top + margin.bottom)
                         .append("g")
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -11607,10 +11712,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     var yAxis = d3.svg.axis()
                         .scale(y)
-                        .orient("left")
-                        .tickFormat(d3.format(".2s"));
-                        
-                    var credits = [];
+                        .orient("left");
                     
                     // console.log(data);
 
@@ -11620,15 +11722,6 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     //console.log(data);
                     
-                    var years = d3.keys(data.eac1).filter(function(key) {
-                        //console.log(key); 
-                        if (key.match(/\d{4}/)) {
-                            return key;    
-                        }
-                    });
-                    
-                    //console.log(years);
-                    
                     var creditNames = d3.keys(data).filter(function(key) {
                         removeUnderscore(key);
                         return key;
@@ -11636,20 +11729,45 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     creditNames.alphanumSort();
                     
+                    var years = d3.keys(data[creditNames[0]]).filter(function(key) {
+                        //console.log(key); 
+                        if (key.match(/\d{4}/)) {
+                            return key;    
+                        }
+                    });
+                    
+                    //console.log(years); 
+                   
                     //console.log(creditNames);
                     
+                    var allValues = [];
+                    
+                    var objArr = [];
+                    
+                    //console.log(data);
+                    
                     _.keys(data).forEach(function(d, index) {
-                        console.log(d);
-                        d.years = creditNames.map(function(credit) {
-                            console.log(d.years);
-                            return {
-                                credit: credit,
-                                value: data[_.values(data[credit])[index]]
-                            };
+                        //console.log(data[d]);
+                        data[d].credit = d;
+                        objArr.push(data[d]);
+                        years.forEach(function(year) {
+                           //console.log(year);
+                           //console.log(data[d][year]);
+                           allValues.push(data[d][year]);
+                            
                         });
+                        
+                    });
+                    
+                    objArr.forEach(function(d) {
+                      d.years = years.map(function(year) { return {year: year, value: +d[year]}; });
                     });
                     
                     console.log(data);
+                    
+                    // console.log(data);
+                    console.log(objArr);
+                    // console.log(allValues);
                     
                     x0.domain(creditNames.map(function(d) {
                         //console.log(d);
@@ -11658,21 +11776,18 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     x1.domain(years).rangeRoundBands([0, x0.rangeBand()]);
                     
+                    console.log(x1.domain());
                     
-                    y.domain([0, d3.max(data, function(d) {
-                        return d3.max(d.years, function(d) {
-                            return d.value;
-                        });
+                    y.domain([0, d3.max(allValues, function(d) {
+                        return d;
                     })]);
                     
-                    svg.selectAll('.x').remove();
-                    
-                    svg.append("g")
+                    svg2.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + height + ")")
                         .call(xAxis);
                     
-                    svg.append("g")
+                    svg2.append("g")
                         .attr("class", "y axis")
                         .call(yAxis)
                         .append("text")
@@ -11681,49 +11796,44 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
                         .text("Average");
-                    /*
-                    var state = svg.selectAll(".state")
-                        .data(data)
+                    
+                    //console.log(data);
+                    
+                    var year = svg2.selectAll(".year")
+                        .data(objArr)
                         .enter().append("g")
                         .attr("class", "g")
                         .attr("transform", function(d) {
-                            return "translate(" + x0(d.year) + ",0)";
+                            return "translate(" + x0(d.credit) + ",0)";
                         });
-
-                    state.selectAll("rect")
-                        .data(function(d) {
-                            return d.ages;
-                        })
-                        .enter().append("rect")
+                    
+                    year.selectAll("rect")
+                        .data(function(d) { return d.years; })
+                        .enter().append("rect") 
                         .attr("width", x1.rangeBand())
-                        .attr("x", function(d) {
-                            return x1(d.name);
-                        })
-                        .attr("y", function(d) {
-                            return y(d.value);
-                        })
-                        .attr("height", function(d) {
-                            return height - y(d.value);
-                        })
-                        .style("fill", function(d) {
-                            return color(d.name);
-                        });
-                    */
-                    var legend = svg.selectAll(".legend")
+                        .attr("x", function(d) { 
+                            
+                            return x1(d.year); 
+                            })
+                        .attr("y", function(d) { return y(d.value); })
+                        .attr("height", function(d) { return height - y(d.value); })
+                        .style("fill", function(d) { return color(d.year); }); 
+                          
+                    var legend2 = svg2.selectAll(".legend2")
                         .data(years.slice().reverse())
                         .enter().append("g")
-                        .attr("class", "legend")
+                        .attr("class", "legend2")
                         .attr("transform", function(d, i) {
                             return "translate(0," + i * 20 + ")";
                         });
-
-                    legend.append("rect")
+                    
+                    legend2.append("rect")
                         .attr("x", width - 18)
                         .attr("width", 18)
                         .attr("height", 18)
                         .style("fill", color);
 
-                    legend.append("text")
+                    legend2.append("text")
                         .attr("x", width - 24)
                         .attr("y", 9)
                         .attr("dy", ".35em")
@@ -11731,10 +11841,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .text(function(d) {
                             return d;
                         });
-                     
                 };
                 
                 function buildCategoryPlot(data, cat) {
+                    
+                    svg3.selectAll('g').remove();
+                    
+                    console.log('building category plot');
                     
                     var margin = {
                         top: 15,
@@ -11745,11 +11858,11 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     width = 890 - margin.left - margin.right,
                     height = 464 - margin.top - margin.bottom;
                     
-                    var svg = d3.select(domLocation3).append("svg")
-                        .attr("width", width + margin.left + margin.right)
-                        .attr("height", height + margin.top + margin.bottom)
-                        .append("g")
-                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    svg3
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                     
                     var y = d3.scale.linear()
                         .range([height, 0]);
@@ -11765,10 +11878,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     var yAxis = d3.svg.axis()
                         .scale(y)
-                        .orient("left")
-                        .tickFormat(d3.format(".2s"));
-                        
-                    var credits = [];
+                        .orient("left");
                     
                     // console.log(data);
 
@@ -11777,15 +11887,6 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     data = data[cat];
                     
                     //console.log(data);
-                    
-                    var categories = d3.keys(data.eac1).filter(function(key) {
-                        //console.log(key); 
-                        if (key.match(/\d{4}/)) {
-                            return key;    
-                        }
-                    });
-                    
-                    //console.log(years);
                     
                     var creditNames = d3.keys(data).filter(function(key) {
                         removeUnderscore(key);
@@ -11796,18 +11897,38 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     
                     //console.log(creditNames);
                     
-                    _.keys(data).forEach(function(d, index) {
-                        console.log(d);
-                        d.categories = creditNames.map(function(category) {
-                            console.log(d.categories);
-                            return {
-                                credit: category,
-                                value: data[_.values(data[category])[index]]
-                            };
-                        });
+                    var categories = d3.keys(data[creditNames[0]]).filter(function(key) {
+                        //console.log(key); 
+                        if (!key.match(/\d{4}/)) {
+                            return key;    
+                        }
                     });
                     
-                    console.log(data);
+                    //console.log(categories);
+                    
+                    var allValues = [];
+                    var objArr = [];
+                    
+                    //console.log(data);
+                    
+                    _.keys(data).forEach(function(d, index) {
+                        //console.log(data[d]);
+                        data[d].credit = d;
+                        objArr.push(data[d]);
+                        categories.forEach(function(category) {
+                           //console.log(year);
+                           //console.log(data[d][year]);
+                           allValues.push(data[d][category]);
+                            
+                        });
+                        
+                    });
+                    
+                    objArr.forEach(function(d) {
+                      d.categories = categories.map(function(category) { return {category: category, value: +d[category]}; });
+                    });
+                    
+                    console.log(allValues);
                     
                     x0.domain(creditNames.map(function(d) {
                         //console.log(d);
@@ -11817,20 +11938,20 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     x1.domain(categories).rangeRoundBands([0, x0.rangeBand()]);
                     
                     
-                    y.domain([0, d3.max(data, function(d) {
-                        return d3.max(d.categories, function(d) {
-                            return d.value;
-                        });
+                    y.domain([0, d3.max(allValues, function(d) {
+                        return d;
                     })]);
                     
-                    svg.selectAll('.x').remove();
+                    svg3.selectAll('.x').remove();
                     
-                    svg.append("g")
+                    svg3.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + height + ")")
                         .call(xAxis);
                     
-                    svg.append("g")
+                    svg3.selectAll('.y').remove();
+                    
+                    svg3.append("g")
                         .attr("class", "y axis")
                         .call(yAxis)
                         .append("text")
@@ -11839,35 +11960,28 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
                         .text("Average");
-                    /*
-                    var state = svg.selectAll(".state")
-                        .data(data)
+                    
+                    var category = svg3.selectAll(".category")
+                        .data(objArr)
                         .enter().append("g")
                         .attr("class", "g")
                         .attr("transform", function(d) {
-                            return "translate(" + x0(d.year) + ",0)";
+                            return "translate(" + x0(d.credit) + ",0)";
                         });
-
-                    state.selectAll("rect")
-                        .data(function(d) {
-                            return d.ages;
-                        })
-                        .enter().append("rect")
+                    
+                    category.selectAll("rect")
+                        .data(function(d) { return d.categories; })
+                        .enter().append("rect") 
                         .attr("width", x1.rangeBand())
-                        .attr("x", function(d) {
-                            return x1(d.name);
-                        })
-                        .attr("y", function(d) {
-                            return y(d.value);
-                        })
-                        .attr("height", function(d) {
-                            return height - y(d.value);
-                        })
-                        .style("fill", function(d) {
-                            return color(d.name);
-                        });
-                    */
-                    var legend = svg.selectAll(".legend")
+                        .attr("x", function(d) { 
+                            
+                            return x1(d.category); 
+                            })
+                        .attr("y", function(d) { return y(d.value); })
+                        .attr("height", function(d) { return height - y(d.value); })
+                        .style("fill", function(d) { return color(d.category); }); 
+                    
+                    var legend3 = svg3.selectAll(".legend")
                         .data(categories.slice().reverse())
                         .enter().append("g")
                         .attr("class", "legend")
@@ -11875,13 +11989,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                             return "translate(0," + i * 20 + ")";
                         });
 
-                    legend.append("rect")
+                    legend3.append("rect")
                         .attr("x", width - 18)
                         .attr("width", 18)
                         .attr("height", 18)
                         .style("fill", color);
 
-                    legend.append("text")
+                    legend3.append("text")
                         .attr("x", width - 24)
                         .attr("y", 9)
                         .attr("dy", ".35em")
@@ -11889,10 +12003,11 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .text(function(d) {
                             return d;
                         });
-                     
                 };
 
                 function buildOverallPlot() {
+                    
+                    console.log('making overall score bar chart');
                     
                     var margin = {
                         top: 20,
@@ -11905,6 +12020,12 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     endPoint2009 = "average_normal_scores_2009",
                     endPoint22 = "average_normal_scores_v2_2",
                     endPoint21 = "average_normal_scores_v2_1";
+                    
+                    svg
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             
                 var x = d3.scale.ordinal()
                     .rangeRoundBands([0, width], .1);
@@ -11920,12 +12041,6 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     .scale(y)
                     .orient("left")
                     .ticks(10);
-            
-                var svg = d3.select(domLocation).append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
                     
                     //console.log('getting data');
 
@@ -12476,20 +12591,19 @@ module.exports = function(domLocation) {
 
 }
 },{"d3":1,"jquery":"jquery"}],14:[function(require,module,exports){
-module.exports = function (container, buttonListener) {
+module.exports = function(container, buttonListener) {
     var $ = require('jquery');
-    
-	$(container).each(function() {
+
+    $(container).each(function() {
         //console.log($(this).text());
-        var btn = $('<button class="'+buttonListener+' mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" value="'+$(this).attr('value')
-                    +'">'+$(this).text()+'</button>');       
+        var btn = $('<button class="' + buttonListener + ' mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" value="' + $(this).attr('value') + '">' + $(this).text() + '</button>');
         $(this).replaceWith(btn);
-        if($(this).attr('checked')==='checked') btn.addClass(''+buttonListener+'-on');
+        if ($(this).attr('checked') === 'checked') btn.addClass('' + buttonListener + '-on');
     });
-    
-    $(document).on('click', '.'+buttonListener, function() {
-        $('.'+buttonListener).removeClass(''+buttonListener+'-on');
-        $(this).addClass(''+buttonListener+'-on');
+
+    $(document).on('click', '.' + buttonListener, function() {
+        $('.' + buttonListener).removeClass('' + buttonListener + '-on');
+        $(this).addClass('' + buttonListener + '-on');
     });
 }
 },{"jquery":"jquery"}],15:[function(require,module,exports){
