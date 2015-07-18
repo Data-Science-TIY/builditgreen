@@ -23,6 +23,7 @@ router.route('','overview', function () {
   renderCredit();
   renderAbout();
   renderLeedvs();
+  renderCluster();
   renderNav();
   
   
@@ -104,28 +105,45 @@ router.route('','overview', function () {
   
   }
   
+  function renderCluster () {
+    
+    $('.cluster').html(views['cluster']);
+    
+  }
+  
   function renderNav () {
     $('.ov-btn').click(function () {
       $('.scoring').css('display', 'none');
       $('.about').css('display', 'none');
       $('.leedvs').css('display', 'none');
       $('.overview').css('display', 'block');
+      $('.cluster').css('display', 'none');
     });
     $('.sc-btn').click(function () {
       $('.scoring').css('display', 'block');
       $('.about').css('display', 'none');
       $('.leedvs').css('display', 'none');
       $('.overview').css('display', 'none');
+      $('.cluster').css('display', 'none');
     });
     $('.leed-btn').click(function () {
       $('.scoring').css('display', 'none');
       $('.about').css('display', 'none');
       $('.leedvs').css('display', 'block');
       $('.overview').css('display', 'none');
+      $('.cluster').css('display', 'none');
     });
     $('.abt-btn').click(function () {
       $('.scoring').css('display', 'none');
       $('.about').css('display', 'block');
+      $('.leedvs').css('display', 'none');
+      $('.overview').css('display', 'none');
+      $('.cluster').css('display', 'none');
+    });
+    $('.cluster-btn').click(function () {
+      $('.cluster').css('display', 'block');
+      $('.scoring').css('display', 'none');
+      $('.about').css('display', 'none');
       $('.leedvs').css('display', 'none');
       $('.overview').css('display', 'none');
     });

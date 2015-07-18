@@ -9,54 +9,171 @@
 
         </p>
         <p>
-
+          
         </p>
       </div>  
   </div>
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
-    <h3 class="section-header">Average Normalized Credit Completion</h3>
+    <h3 class="section-header">Normalized Credit Completion</h3>
     <div name="descriptor" id="scoring1-dropdown">
       <div value="0" checked="checked">LEED 2009</div>
       <div value="1">LEED 2.2</div>
       <div value="2">LEED 2.1</div>
     </div>
+    <div class = "description scoring1-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
+        Intersting Findings: Credits vary in achievement. Some are easier or harder to meet. Those hard to meet (average less than 0.2 points) include on-ste renewable energy (EAc2), Daylight views (EQ8.1), Building and material reuse/renewable (MRc1, 3, 8), and innovaitve waste water technologies.
+        Further analysis: analyze the difference between indsutry types (e.g. residential, commerical, retail) or owner type (non-profit, federal, for-profit).
+      </p>
+    </div>  
     <div class="overallbar"></div>
   </div>
   <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
-    <h3 class="section-header">Average Credit Completion by Year</h3>
+    <h3 class="section-header">Credit Completion by Year</h3>
     <div name="descriptor" id="scoring-version1-dropdown">
       <div value="0" checked="checked">LEED 2009</div>
       <div value="1">LEED 2.2</div>
       <div value="2">LEED 2.1</div>
     </div>
     <div name="descriptor" id="scoring-category1-dropdown">
-      <div value="eac" checked="checked">Energy & Atmosphere</div>
-      <div value="eqc">Indoor Environmental Quality</div>
-      <div value="extra">Regional Priority</div>
-      <div value="idc">Innovation & Design</div>
-      <div value="mrc">Materials & Resources</div>
-      <div value="ssc">Sustainable Sites</div>
-      <div value="wec">Water Efficiency</div>
+      <div value="eac" checked="checked">EA</div>
+      <div value="eqc">EQ</div>
+      <div value="extra">RP</div>
+      <div value="idc">ID</div>
+      <div value="mrc">MR</div>
+      <div value="ssc">SS</div>
+      <div value="wec">WE</div>
     </div>
+    <div class = "description scoring1-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
+        Intersting Findings: Credits vary in achievement. Some are easier or harder to meet. Those hard to meet (average less than 0.2 points) include on-ste renewable energy (EAc2), Daylight views (EQ8.1), Building and material reuse/renewable (MRc1, 3, 8), and innovaitve waste water technologies.
+        Further analysis: analyze the difference between indsutry types (e.g. residential, commerical, retail) or owner type (non-profit, federal, for-profit).
+      </p>
+    </div>      
     <div class="cc-by-year"></div>
   </div>
     <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
-    <h3 class="section-header">Average Credit Completion by Category</h3>
+    <h3 class="section-header">Credit Completion by Certification Level</h3>
     <div name="descriptor" id="scoring-version2-dropdown">
       <div value="0" checked="checked">LEED 2009</div>
       <div value="1">LEED 2.2</div>
       <div value="2">LEED 2.1</div>
     </div>
     <div name="descriptor" id="scoring-category2-dropdown">
-      <div value="eac" checked="checked">Energy & Atmosphere</div>
-      <div value="eqc">Indoor Environmental Quality</div>
-      <div value="extra">Regional Priority</div>
-      <div value="idc">Innovation & Design</div>
-      <div value="mrc">Materials & Resources</div>
-      <div value="ssc">Sustainable Sites</div>
-      <div value="wec">Water Efficiency</div>
+      <div value="eac" checked="checked">EA</div>
+      <div value="eqc">EQ</div>
+      <div value="extra">RP</div>
+      <div value="idc">ID</div>
+      <div value="mrc">MR</div>
+      <div value="ssc">SS</div>
+      <div value="wec">WE</div>
     </div>
+    <div class = "description scoring1-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
+        Intersting Findings: Credits vary in achievement. Some are easier or harder to meet. Those hard to meet (average less than 0.2 points) include on-ste renewable energy (EAc2), Daylight views (EQ8.1), Building and material reuse/renewable (MRc1, 3, 8), and innovaitve waste water technologies.
+        Further analysis: analyze the difference between indsutry types (e.g. residential, commerical, retail) or owner type (non-profit, federal, for-profit).
+      </p>
+    </div>      
     <div class="cc-by-category"></div>
+  </div>
+  </div>
+    <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
+    <h3 class="section-header">Points Achieved by Year</h3>
+    <div name="descriptor" id="scoring-version2-dropdown">
+      <div value="eac" checked="checked">Total</div>
+      <div value="eqc">EA</div>
+      <div value="idc">EQ</div>
+      <div value="mrc">MR</div>
+      <div value="ssc">SS</div>
+      <div value="wec">WE</div>
+      <div value="extra">RP & ID</div>    
+    </div>     
+    <div class="plotly-points">
+      <div class="total">
+         <a href="https://plot.ly/~jdhiggins/78/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/78.png" alt="Score vs Year" style="max-width: 100%;width: 792px;"  width="792" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:78"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <!--
+      <div class="ea">
+         <a href="https://plot.ly/~jdhiggins/84/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/84.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>  
+      <div class="eq">
+         <a href="https://plot.ly/~jdhiggins/80/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/80.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <div class="mr">
+         <a href="https://plot.ly/~jdhiggins/86/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/86.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <div class="ss">
+         <a href="https://plot.ly/~jdhiggins/76/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/76.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <div class="we">
+         <a href="https://plot.ly/~jdhiggins/82/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/82.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <div class="rpid">
+         <a href="https://plot.ly/~jdhiggins/88/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/88.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      -->
+    </div>
+    <div class = "description scoring-plotly-total-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 on all credits.
+        Interesting Findings: Overall performance on the public scored projects has declined from 57.25 to 54.45 since 2011. Much of this underperformance can be traced to a decline in the average scores for EAc1 and EAc2.
+        Further analysis: Has the ratio of Platinum, Gold, Silver and Certified projects changed? If so, what is the driver of the shift to lower LEED certified status? If not, why are scores declining overall?
+      </p>
+    </div>
+    <!--
+    <div class = "description scoring-plotly-ea-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 - Energy and Atmosphere credits.
+        Interesting Findings: Scores in EAc1 - Optimize Energy Performance have declined, on average, from 9.49 to 7.96 (out of 19 possible) and scores on EAc2 - On-site Renewable Energy have declined from 1.70 to .87 (out of 7 possible).
+        Further analysis: How can LEED encourage increased performance in this area? These credits are extremely important to incentivize, since they are the most directly related to greenhouse emmissions. Should certification level be linked more directly to these credits?
+      </p>
+    </div>
+    <div class = "description scoring-plotly-eq-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 - Indoor Environmental Quality credits.
+        Interesting Findings: Scores in Indoor Environmental Quality have descreased since 2012, EQc4.4 - Low-Emitting Materials (Composite Wood and Agrifiber Products) has contributed most to the decline.
+        Further analysis: Have costs in this space increased above inflation?
+      </p>
+    </div>
+    <div class = "description scoring-plotly-mr-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 - Materials and Resources credits.
+        Interesting Findings: Scores in MRc 1.2 - Building Reuse (Maintain Existing Interior Nonstructural Elements), MRc3 - Materials Reuse, and MRc6 - Rapidly Renewable Materials are almost never achieved.
+        Further analysis: When score points are not achieved, should they be reanalyzed? Do they not apply to all projects (perhaps for MRc3)? Are they too expensive relative to the point total? How could they be incentivized in the next version?
+      </p>
+    </div>
+    <div class = "description scoring-plotly-ss-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 Sustainable Sites credits by year.
+        Intersting Findings: Performance on these credits are relatively stable on the NC-2009 version. The dip in years 2012 and 2013 are mostly due to SSc4.1 - Alternative Transportation—Public Transportation Access.
+        Further analysis: How to encourage completion of SSc5.1 - Site Development (Protect or Restore Habitat) and SSc3 - Brownfield Redevelopment.
+      </p>
+    </div>
+    <div class = "description scoring-plotly-we-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 - Water Efficiency credits.
+        Interesting Findings: Scores in WEc1 - Water Efficient Landscaping and WEc2 - Innovative Wastewater Technologies have experienced declines, even as water use and drought has been a major policy concern.
+        Further analysis: How can LEED encourage increased performance in this area? Can LEED take the lead in pushing for new technologies and adoption of water efficient techniques? If WEc2 is rarely achieved, how can this point be changed or encouraged. Is the cost for achieving this credit too expensive?
+      </p>
+    </div>
+        <div class = "description scoring-plotly-rpid-desc">
+      <p>
+        Description: Average points achieved for LEED version 2009 - Innovation in Design and Regional Priority Credits (referenced as Extra).
+        Interesting Findings: Scores are relatively stable in these categories. Almost every project gets a credit for using a LEED Certified professional (IDc2). Perhaps this credit is unnecessary, since having a LEED professional seems to be essentially required to achieve certification?
+        Further analysis: How are the other Innovation in Design credits awarded? Is there variablity across projects or do most score near the average? What is the average completion of the different regional priority credits?
+      </p>
+    </div>
+    -->     
   </div>
 </div>

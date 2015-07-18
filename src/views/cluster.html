@@ -1,0 +1,54 @@
+<div class="intro-container">
+    <h1 class="intro-header">Cluster Analysis<span class="style-intro-header"></span></h1>
+    <div class="intro-image"></div>
+    <div class="intro-text">
+        <p>
+          K-Means is a method for clustering data in order to discover similarities that may not be obvious on initial viewing of data. A well known example is clustering variations of Iris flowers using recorded oberservations of flower petal lengths and widths. Because the width and lengths are different between flower variations K-Means can correctly cluster the variations by only seeing length and width.
+        </p>
+        <p>
+            We used the detailed credit scoring data for all 2009 projects to cluster LEED projects. With only the data on the scores achieved by each project, three unqiue clusters were identified. Buildings in Cluster 1 have a large gross square footage and a large total property area. Buildings in Cluster 2 have a smaller gross square footage and relatively small total property area. Buildings in Cluster 3 have a relatively large gross square foot (similar to Cluster 1) and a relatively small property area (similar to cluster Cluster 2).
+        </p>
+      </div> 
+</div>
+<div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
+    <h3 class="section-header">Average Credits Achieved by Cluster</h3>
+    <div class="description plotly-cluster1-desc">
+        <p>
+            Description: Comparison of K-Means clusters using the detailed credit data.
+            Interesting Findings: Optimized energy performance (EAc1) and on-site renewable energy (EAc2) are the main indicators for the clusters and are highly correlated with building size and total property area. Buildings with small square footage and small total property area perform best energy optimization and include a higher perecent of on-site renewable energy.
+            Further Analysis: The clustering may become more signifcant with more observations about the buildings. This could be expanded to predicting levels of LEED achieved based on a few specific data points.
+        </p>
+    </div>    
+    <div class="plotly-cluster1-chart">
+        <a href="https://plot.ly/~jdhiggins/101/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/101.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+    </div>
+</div>
+<div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
+    <h3 class="section-header">Cluster Attributes</h3>
+    <div class="description plotly-cluster2-desc">
+        <p>
+            Description: Clusters by average gross quare footage and total property area.
+            Interesting Findings: Without knowing the building size or total property area, our K-Means and mean shift analysis clustered by building size and lot size.
+            Further Analysis: Is there are difference between rural and urban buildings within clusters?  The largest cluster has buildings of relatively larger size on larger lots.  How can we further differentiate within that group?
+        </p>
+    </div>    
+    <div class="plotly-cluster2-chart">
+        <a href="https://plot.ly/~jdhiggins/105/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/105.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+    </div>
+</div>
+<div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container">
+    <h3 class="section-header">Total Score by Cluster</h3>
+    <div class="description plotly-cluster3-desc">
+        <p>
+            Description: Average score of the three clusters.
+            Interesting Findings: Buildings with a small square foot and small property area achieve the most points. Big buildings with a large property area score higher than big buidlings with a relatively smaller property area.
+            Further Analysis: Plot each cluster on a map to identify geographical connection within clusters.  Analyze how lot size correlates or affects total score.  Is project cost higher or lower with larger lots?  Is it relatively easier or harder to build an environmentally sound project on a smaller lot?
+        </p>
+    </div>    
+    <div class="plotly-cluster3-chart">
+        <a href="https://plot.ly/~jdhiggins/103/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/103.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+    </div>
+</div>
