@@ -74,6 +74,10 @@ svg {
   margin: 0 1em;
 }
 
+.btn-sc1-category, .btn-sc2-category {
+  width: 4em;
+}
+
 .map, .trend-1, .trend-2, .trend-3,
 .overallbar, .cc-by-year, .cc-by-category,
 .plotly-total, .plotly-adjusted {
@@ -83,11 +87,15 @@ svg {
 
 .plotly-total, .plotly-adjusted, 
 iframe {
-  width: 974px;
-  height: 528px;
+  width: 960px;
+  height: 500px;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+small {
+  color: white;
 }
 
 .axis path,
@@ -104,7 +112,7 @@ iframe {
   stroke-width: 1.5px;
 }
 
-.scoring, .leedvs, .about {
+.scoring, .leedvs, .about, .cluster {
  display: none;
 }
 
@@ -112,7 +120,7 @@ iframe {
   display: block;
 }
 
-.ov-btn, .abt-btn, .sc-btn, .leed-btn {
+.ov-btn, .abt-btn, .sc-btn, .leed-btn, .cluster-btn {
   cursor: pointer;
 }
 
