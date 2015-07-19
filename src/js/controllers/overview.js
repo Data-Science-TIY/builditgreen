@@ -42,6 +42,22 @@ router.route('','overview', function () {
     scatter(".trend-2");
     histo('.trend-3'); 
     
+    
+    
+    $('#plotly-dropdown').on('click', function(e) {
+      setTimeout(function() {
+        
+        if ($(e.target).parent().val()==='total') {
+        $('.plotly-total').css('visibility', 'visible');
+        $('.plotly-adjusted').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='adjusted') {
+        $('.plotly-total').css('visibility', 'hidden');
+        $('.plotly-adjusted').css('visibility', 'visible');
+      }
+        
+      });
+    });
   }
   
   function renderCredit () {
@@ -52,7 +68,9 @@ router.route('','overview', function () {
     toggle("#scoring-category1-dropdown div", 'btn-sc1-category');
     toggle("#scoring-version2-dropdown div", 'btn-sc2-version');
     toggle("#scoring-category2-dropdown div", 'btn-sc2-category');
+    toggle('#scoring-plotly-dropdown div', 'btn-scoring-plotly');
     overbar('.overallbar', '.cc-by-year', '.cc-by-category');
+    
     
     $('#scoring-version2-dropdown').on('click', function(e) {
       setTimeout(function() {

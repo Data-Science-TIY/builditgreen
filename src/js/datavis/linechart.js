@@ -4,15 +4,15 @@ module.exports = function(domLocation) {
     var $ = require('jquery');
 
     console.log('making line chart');
-
+        
     var margin = {
-            top: 20,
-            right: 80,
-            bottom: 30,
-            left: 50
-        },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        top: 0,
+        right: 80,
+        bottom: 0,
+        left: 50
+    },
+    width = 890 - margin.left - margin.right,
+    height = 464 - margin.top - margin.bottom;
 
     var certLevels = ['platinum_certifications', 'gold_certifications', 'silver_certifications', 'certified_only_certifications'];
     var buildType = ['leed_for_multi_low_family_certifications', 'leed_for_multi_mid_family_certifications',

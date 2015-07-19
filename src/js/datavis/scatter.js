@@ -3,13 +3,13 @@ module.exports = function(domLocation) {
     var $ = require('jquery');
 
     var margin = {
-            top: 20,
-            right: 80,
-            bottom: 30,
-            left: 50
+            top: 0,
+            right: 15,
+            bottom: 0,
+            left: 30
         },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
+        width = 890 - margin.left - margin.right,
+        height = 464 - margin.top - margin.bottom,
         dataUrl = ['/api/projects/2009/', '/api/projects/2-2/', '/api/projects/2-1/'];
 
 
