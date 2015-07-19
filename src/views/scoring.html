@@ -23,17 +23,29 @@
         <div value="2">LEED 2.1</div>
       </div>
     </div> 
-    <div class="overallbar mdl-cell mdl-cell--9-col">
+    <div class="overallbar-container mdl-cell mdl-cell--9-col">
+      <div class="overallbar">
+      </div>
       <div class = "description scoring1-desc">
-        <p>
-          <strong>Description:</strong> Average points achieved for each LEED version by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
-        </p>
+          <p>
+            <strong>Description:</strong> Average points achieved for each LEED version by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
+          </p>
       </div> 
     </div>
   </div>
   <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
     <div class="left-side left-side-score1 mdl-cell mdl-cell--3-col">
       <h4 class="section-header left-side-score1-section-header">Annual Credit Completion</h4>
+      <!--
+      <div>
+        <p>
+          <strong>Interesting Findings:</strong> Credits vary in achievement. Some are easier or harder to meet. Those hard to meet (average less than 0.2 points) include on-ste renewable energy (EAc2), Daylight views (EQ8.1), Building and material reuse/renewable (MRc1, 3, 8), and innovaitve waste water technologies.
+        </p>
+        <p>
+          <strong>Further analysis:</strong> analyze the difference between indsutry types (e.g. residential, commerical, retail) or owner type (non-profit, federal, for-profit).
+        </p>
+      </div>
+      -->
       <div class="dropdowns">
         <div name="descriptor" id="scoring-version1-dropdown">
           <div value="0" checked="checked">LEED 2009</div>
@@ -51,19 +63,18 @@
         </div>
       </div>  
     </div> 
-    <div class="cc-by-year mdl-cell mdl-cell--9-col">
-      
-      <div class = "description scoring1-desc">
-        <p>
-          <strong>Description:</strong> Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
-        </p>
-        <p>
-          <strong>Interesting Findings:</strong> Credits vary in achievement. Some are easier or harder to meet. Those hard to meet (average less than 0.2 points) include on-ste renewable energy (EAc2), Daylight views (EQ8.1), Building and material reuse/renewable (MRc1, 3, 8), and innovaitve waste water technologies.
-        </p>
-        <p>
-          <strong>Further analysis:</strong> analyze the difference between indsutry types (e.g. residential, commerical, retail) or owner type (non-profit, federal, for-profit).
-        </p>
-      </div>   
+    <div class="scoring2-container mdl-cell mdl-cell--9-col">
+      <div class="cc-by-year mdl-cell mdl-cell--9-col">
+           
+      </div>
+      <div class = "description scoring-desc">
+        <button class="analysis-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+        Analysis
+        </button>
+          <p>
+            <strong>Description:</strong> Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
+          </p>
+      </div>
     </div>
   </div>
     <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
@@ -86,21 +97,23 @@
         </div>
       </div>
     </div>
-    <div class="cc-by-category mdl-cell mdl-cell--9-col">
-      <div class = "description scoring1-desc">
-        <p>
-          Description: Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
-          Intersting Findings: Credits vary in achievement. Some are easier or harder to meet. Those hard to meet (average less than 0.2 points) include on-ste renewable energy (EAc2), Daylight views (EQ8.1), Building and material reuse/renewable (MRc1, 3, 8), and innovaitve waste water technologies.
-          Further analysis: analyze the difference between indsutry types (e.g. residential, commerical, retail) or owner type (non-profit, federal, for-profit).
-        </p>
+    <div class="scoring2-container mdl-cell mdl-cell--9-col">
+      <div class="cc-by-category mdl-cell mdl-cell--9-col">
+      </div>
+      <div class = "description scoring-desc">
+        <button class="analysis-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+        Analysis
+        </button>
+          <p>
+            <strong>Description:</strong> Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
+          </p>
       </div>      
-      
     </div>
   </div>
   </div>
-    <div class="mdl-cell mdl-cell--10-col mdl-cell--10-col-tablet chart-container chart-container-plotly">
+    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container chart-container-plotly">
       <div class="left-side left-side-score1 mdl-cell mdl-cell--3-col">
-        <h4 class="section-header section-header-plotly left-side-score1-section-header">Annual Points Achieved</h4>
+        <h4 class="section-header section-header-plotly left-side-score1-section-header">Annual Points Achieved</h4>  
         <div name="descriptor" id="scoring-plotly-dropdown">
           <div value="eac" checked="checked">Total</div>
           <div value="eqc">EA</div>
@@ -109,20 +122,21 @@
           <div value="ssc">SS</div>
           <div value="wec">WE</div>
           <div value="extra">RP & ID</div>    
-        </div>   
-      </div>
-      <div class="total mdl-cell mdl-cell--9-col">
-        <div class = "description scoring-plotly-total-desc">
-          <p>
-            Description: Average points achieved for LEED version 2009 on all credits.
-            Interesting Findings: Overall performance on the public scored projects has declined from 57.25 to 54.45 since 2011. Much of this underperformance can be traced to a decline in the average scores for EAc1 and EAc2.
-            Further analysis: Has the ratio of Platinum, Gold, Silver and Certified projects changed? If so, what is the driver of the shift to lower LEED certified status? If not, why are scores declining overall?
-          </p>
         </div> 
-        <div>
+      </div>
+      <div class="scoring-plotly mdl-cell mdl-cell--9-col">
+        <div class="total">
          <a href="https://plot.ly/~jdhiggins/132/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/132.png" alt="Score vs Year" style="max-width: 100%;width: 792px;"  width="792" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
          <script data-plotly="jdhiggins:78"  src="https://plot.ly/embed.js" async></script>
         </div>
+        <div class = "description scoring-desc plotly-desc">
+          <button class="analysis-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+          Analysis
+          </button>
+            <p>
+              <strong>Description:</strong> Average points achieved for LEED version 2009 by year. Credits valued more than 1 point were normalized to a 0 to 1 scale.
+            </p>  
+        </div>      
       </div>
       <!--
       <div class="ea mdl-cell mdl-cell--9-col">
