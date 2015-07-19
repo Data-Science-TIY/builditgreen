@@ -3,16 +3,13 @@
 @import 'material';
 
 body {
-  background-color: #FEFFFE;
-}
+  background-color: #FEFFFE; }
 
 .mdl-layout__header {
-  background-color: #FEFFFE;
-}
+  background-color: #FEFFFE; }
 
 .page-content {
-  margin: 0 auto;
-}
+  margin: 0 auto; }
 
 .section-header {
   margin: 0 auto;
@@ -20,210 +17,217 @@ body {
   display: block;
   width: 100%;
   padding: 0.5em;
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
 .chart-container {
-  margin: 0 auto;
+  
+  margin: 16px 8px 16px 8px;
   padding: 0.5em;
   width: 100%;
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
 svg {
   display: block;
   margin: 0 auto;
   padding-bottom: 2em;
   padding-left: 3em;
-  padding-top: 1.1em;
-}
+  padding-top: 1.1em; }
 
 .linechart {
   display: block;
   margin: 0 auto;
   padding-bottom: 2em;
-  padding-left: 1em;
-}
+  }
 
 .btn-map, .btn-trend1, .btn-trend2, .btn-trend3,
 .btn-overall, .btn-sc1-version, .btn-sc2-version,
 .btn-sc1-category, .btn-sc2-category, .btn-plotly {
-    margin: 0.5em 0;
-    display: block;
-    width: 9em;
-}
+  margin: 0.5em auto;
+  display: block;
+  width: 9em; 
+ }
 
 .btn-map-on, .btn-trend1-on, .btn-trend2-on, .btn-trend3-on,
 .btn-overall-on, .btn-sc1-version-on, .btn-sc2-version-on,
 .btn-sc1-category-on, .btn-sc2-category-on, .btn-plotly-on {
-    background-color: #777;
-    color: white;  
-}
+  background-color: #777;
+  color: white; }
 
-#map-dropdown, #trend1-dropdown, #trend2-dropdown, 
+#map-dropdown, #trend1-dropdown, #trend2-dropdown,
 #trend3-dropdown, #scoring1-dropdown, #scoring-version1-dropdown,
 #scoring-version2-dropdown, #scoring-category1-dropdown,
 #scoring-category2-dropdown, #plotly-dropdown {
-  display: inline-block;
-}
+  display: inline-block; 
+      margin: 0 auto;
+    width: 100%;
+  }
 
 #scoring-version1-dropdown,
 #scoring-version2-dropdown, #scoring-category1-dropdown,
 #scoring-category2-dropdown {
   float: left;
-  margin: 0 1em;
-}
+  margin: 0 1em; }
 
 .btn-sc1-category, .btn-sc2-category {
-  width: 4em;
-}
+  width: 4em; }
 
 .map, .trend-1, .trend-2, .trend-3,
 .overallbar, .cc-by-year, .cc-by-category,
 .plotly-total, .plotly-adjusted {
   display: inline-block;
-  float: right;
-}
+   }
 
-.plotly-total, .plotly-adjusted, 
+.plotly-total, .plotly-adjusted,
 iframe {
-  width: 960px;
-  height: 500px;
   box-sizing: border-box;
   padding: 0;
-  margin: 0;
-}
+  margin: 0; }
 
 small {
-  color: white;
+  color: white; 
+  text-align: center;
+  display: block;
+  font-size: 1.1em;
+  letter-spacing: 0.1em;
 }
 
 .axis path,
 .axis line {
   fill: none;
   stroke: #000;
-  shape-rendering: crispEdges;
-}
-
+  shape-rendering: crispEdges; }
 
 .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 1.5px;
-}
+  stroke-width: 1.5px; }
 
 .scoring, .leedvs, .about, .cluster {
- display: none;
-}
+  display: none; }
 
 .overview {
-  display: block;
-}
+  display: block; }
 
 .ov-btn, .abt-btn, .sc-btn, .leed-btn, .cluster-btn {
-  cursor: pointer;
-}
+  cursor: pointer; }
 
 .abt-container {
   width: 100%;
   margin: 0 auto;
-  margin-bottom: 2em;
-}
+  margin-bottom: 2em; }
 
 .abt-content {
   width: 50%;
-  margin: 0 auto;
-}
+  margin: 0 auto; }
 
 .abt-table {
-  margin: 0 auto;
-}
+  margin: 0 auto; }
 
 .abt-summary-table-and-content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
   flex-direction: row;
   width: 80%;
-  margin: 0 auto;
-}
+  margin: 0 auto; }
 
 .abt-summary-table-header {
-  margin: 30px 0 24px;
-}
+  margin: 30px 0 24px; }
 
 .abt-summary-table-content-container {
-  width: 50%;
-}
+  width: 50%; }
 
 .abt-summary-table-container {
   text-align: center;
-  margin: 0 auto;
-}
+  margin: 0 auto; }
 
 .intro-container {
   width: 100%;
-  background-image: linear-gradient(
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.5)
-    ), url(/static/img/2015-06-Life-of-Pix-free-stock-photos-new-york-buildings-city-desiree.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/static/img/2015-06-Life-of-Pix-free-stock-photos-new-york-buildings-city-desiree.jpg);
   background-size: cover;
   box-sizing: border-box;
   margin: 0 0 0 0;
-  padding: 2em;
-}
+  padding: 2em; }
 
 .intro-text {
   height: 100%;
   color: HSLA(0, 0%, 26%, 1);
   width: 43em;
-  margin: 65px auto;
-  padding: 2em;
+  margin: 25px auto;
+  padding: 1em;
   background-color: HSLA(120, 3%, 97%, 0.7);
-  border-radius: 10px;
-}
+  border-radius: 10px; }
 
 .intro-text p {
-  font-size: 1.2em;
-}
+  font-size: 1.2em; }
 
 .intro-header {
   margin: 0 auto;
   width: 50%;
   text-align: center;
-  color: white
-}
+  color: white; }
 
 .style-intro-header {
   color: #00F07B;
-  font-weight: 700;
-}
+  font-weight: 700; }
 
 .mdl-layout-title {
   font-family: 'Ubuntu', sans-serif;
   color: #00F07B;
   font-size: 2em;
-  letter-spacing: 0.3em;
-}
+  letter-spacing: 0.3em; }
 
 .mdl-navigation__link {
-  font-size: 1.1em;
-}
+  font-size: 1.1em; }
 
 .mdl-navigation__link:hover {
   background-color: #00F07B;
   color: white;
-  font-size: 1.1em;
-}
+  font-size: 1.1em; }
 
 .mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
-  font-size: 1.1em;
-}
+  font-size: 1.1em; }
 
 .mdl-layout__drawer .mdl-navigation .mdl-navigation__link:hover {
   background-color: #00F07B;
   color: white;
-  font-size: 1.1em;  
-}
+  font-size: 1.1em; }
 
 .plotly-adjusted {
+  display: inline-block; }
+
+.left-side {
+      float: left;
+    padding: 2em 0 0 0;
+}
+
+.left-side-plotly {
+  margin: 0 0 16px;
+  padding: 0 0 16px;
+}
+
+.description {
+      width: 80%;
+    margin: 2em auto;
+    
+}
+
+.dropdown-header {
   display: block;
+  width: 100%;
+  text-align: center;
+}
+
+svg {
+  padding-left: 0;
+}
+
+.description p {
+  font-size: 18px;
+}
+
+.map-section {
+  margin: 16px 8px 16px 8px;
 }
