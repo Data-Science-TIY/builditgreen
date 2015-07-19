@@ -10818,8 +10818,8 @@ module.exports = function(descriptor, gradient) {
 },{"../datavis/gradients":8,"d3":1,"jquery":"jquery"}],8:[function(require,module,exports){
 var buildgradient = require('./buildgradient');
 
-var numberCertified = buildgradient('#FFCDD2', '#B71C1C');
-var numberProjects = buildgradient('#C8E6C9', '#1B5E20');
+var numberCertified = buildgradient('#FF72A7', '#DB005B');
+var numberProjects = buildgradient('#A1FBCB', '#00D158');
 var popCorrect = buildgradient('#FFF9C4', '#F57F17');
 var gold = buildgradient('#FFCCBC', '#BF360C');
 var silver = buildgradient('#E1BEE7', '#4A148C');

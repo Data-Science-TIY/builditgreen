@@ -5527,7 +5527,7 @@ body {
   box-sizing: border-box; }
 
 .chart-container {
-  margin: 0 auto;
+  margin: 16px 8px 16px 8px;
   padding: 0.5em;
   width: 100%;
   box-sizing: border-box; }
@@ -5542,13 +5542,12 @@ svg {
 .linechart {
   display: block;
   margin: 0 auto;
-  padding-bottom: 2em;
-  padding-left: 1em; }
+  padding-bottom: 2em; }
 
 .btn-map, .btn-trend1, .btn-trend2, .btn-trend3,
 .btn-overall, .btn-sc1-version, .btn-sc2-version,
 .btn-sc1-category, .btn-sc2-category, .btn-plotly {
-  margin: 0.5em 0;
+  margin: 0.5em auto;
   display: block;
   width: 9em; }
 
@@ -5562,7 +5561,9 @@ svg {
 #trend3-dropdown, #scoring1-dropdown, #scoring-version1-dropdown,
 #scoring-version2-dropdown, #scoring-category1-dropdown,
 #scoring-category2-dropdown, #plotly-dropdown {
-  display: inline-block; }
+  display: inline-block;
+  margin: 0 auto;
+  width: 100%; }
 
 #scoring-version1-dropdown,
 #scoring-version2-dropdown, #scoring-category1-dropdown,
@@ -5576,19 +5577,20 @@ svg {
 .map, .trend-1, .trend-2, .trend-3,
 .overallbar, .cc-by-year, .cc-by-category,
 .plotly-total, .plotly-adjusted {
-  display: inline-block;
-  float: right; }
+  display: inline-block; }
 
 .plotly-total, .plotly-adjusted,
 iframe {
-  width: 960px;
-  height: 500px;
   box-sizing: border-box;
   padding: 0;
   margin: 0; }
 
 small {
-  color: white; }
+  color: white;
+  text-align: center;
+  display: block;
+  font-size: 1.1em;
+  letter-spacing: 0.1em; }
 
 .axis path,
 .axis line {
@@ -5654,8 +5656,8 @@ small {
   height: 100%;
   color: HSLA(0, 0%, 26%, 1);
   width: 43em;
-  margin: 65px auto;
-  padding: 2em;
+  margin: 25px auto;
+  padding: 1em;
   background-color: HSLA(120, 3%, 97%, 0.7);
   border-radius: 10px; }
 
@@ -5695,4 +5697,30 @@ small {
   font-size: 1.1em; }
 
 .plotly-adjusted {
-  display: block; }
+  display: inline-block; }
+
+.left-side {
+  float: left;
+  padding: 2em 0 0 0; }
+
+.left-side-plotly {
+  margin: 0 0 16px;
+  padding: 0 0 16px; }
+
+.description {
+  width: 80%;
+  margin: 2em auto; }
+
+.dropdown-header {
+  display: block;
+  width: 100%;
+  text-align: center; }
+
+svg {
+  padding-left: 0; }
+
+.description p {
+  font-size: 18px; }
+
+.map-section {
+  margin: 16px 8px 16px 8px; }
