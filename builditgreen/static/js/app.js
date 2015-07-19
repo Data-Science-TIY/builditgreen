@@ -10476,6 +10476,22 @@ router.route('','overview', function () {
     scatter(".trend-2");
     histo('.trend-3'); 
     
+    
+    
+    $('#plotly-dropdown').on('click', function(e) {
+      setTimeout(function() {
+        
+        if ($(e.target).parent().val()==='total') {
+        $('.plotly-total').css('visibility', 'visible');
+        $('.plotly-adjusted').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='adjusted') {
+        $('.plotly-total').css('visibility', 'hidden');
+        $('.plotly-adjusted').css('visibility', 'visible');
+      }
+        
+      });
+    });
   }
   
   function renderCredit () {
@@ -10486,7 +10502,9 @@ router.route('','overview', function () {
     toggle("#scoring-category1-dropdown div", 'btn-sc1-category');
     toggle("#scoring-version2-dropdown div", 'btn-sc2-version');
     toggle("#scoring-category2-dropdown div", 'btn-sc2-category');
+    toggle('#scoring-plotly-dropdown div', 'btn-scoring-plotly');
     overbar('.overallbar', '.cc-by-year', '.cc-by-category');
+    
     
     $('#scoring-version2-dropdown').on('click', function(e) {
       setTimeout(function() {
@@ -10947,14 +10965,14 @@ module.exports = function(domLocation) {
 
     console.log('making histogram');
 
-    var margin = {
-            top: 20,
-            right: 20,
-            bottom: 30,
-            left: 40
+   var margin = {
+            top: 0,
+            right: 15,
+            bottom: 0,
+            left: 30
         },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
+        width = 890 - margin.left - margin.right,
+        height = 464 - margin.top - margin.bottom,
         dataUrl = ['/api/projects/2009/', '/api/projects/2-2/', '/api/projects/2-1/'];
 
     var color = d3.scale.ordinal().range(['#00F8B1', '#3E5A65', '#FFDB00', '#327EFF']);
@@ -11072,11 +11090,11 @@ module.exports = function(domLocation) {
                     .attr("class", "y axis")
                     .call(yAxis)
                     .append("text")
-                    .attr("y", 220)
-                    .attr("x", -30)
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
                     .attr("dy", ".71em")
                     .style("text-anchor", "end")
-                    .text("Count");
+                    .text("Frequency");
 
                 var legend = svg.selectAll(".legend")
                     .data(color.domain())
@@ -11216,11 +11234,11 @@ module.exports = function(domLocation) {
                             .attr("class", "y axis")
                             .call(yAxis)
                             .append("text")
-                            .attr("y", 220)
-                            .attr("x", -30)
+                            .attr("transform", "rotate(-90)")
+                            .attr("y", 6)
                             .attr("dy", ".71em")
                             .style("text-anchor", "end")
-                            .text("Count");
+                            .text("Frequency");
 
                     });
                 });
@@ -11235,15 +11253,15 @@ module.exports = function(domLocation) {
     var $ = require('jquery');
 
     console.log('making line chart');
-
+        
     var margin = {
-            top: 20,
-            right: 80,
-            bottom: 30,
-            left: 50
-        },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        top: 0,
+        right: 80,
+        bottom: 0,
+        left: 50
+    },
+    width = 890 - margin.left - margin.right,
+    height = 464 - margin.top - margin.bottom;
 
     var certLevels = ['platinum_certifications', 'gold_certifications', 'silver_certifications', 'certified_only_certifications'];
     var buildType = ['leed_for_multi_low_family_certifications', 'leed_for_multi_mid_family_certifications',
@@ -12028,13 +12046,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     console.log('making overall score bar chart');
                     
                     var margin = {
-                        top: 20,
-                        right: 20,
-                        bottom: 30,
-                        left: 40
+                        top: 0,
+                        right: 30,
+                        bottom: 50,
+                        left: 30
                     },
-                    width = 960 - margin.left - margin.right,
-                    height = 500 - margin.top - margin.bottom,
+                    width = 824 - margin.left - margin.right,
+                    height = 430 - margin.top - margin.bottom,
                     endPoint2009 = "average_normal_scores_2009",
                     endPoint22 = "average_normal_scores_v2_2",
                     endPoint21 = "average_normal_scores_v2_1";
@@ -12157,13 +12175,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         });
 
                     legend.append("rect")
-                        .attr("x", width - 18)
+                        .attr("x", width + 14)
                         .attr("width", 18)
                         .attr("height", 18)
                         .style("fill", color);
 
                     legend.append("text")
-                        .attr("x", width - 24)
+                        .attr("x", width + 7)
                         .attr("y", 9)
                         .attr("dy", ".35em")
                         .style("text-anchor", "end")
@@ -12312,13 +12330,13 @@ module.exports = function(domLocation) {
     var $ = require('jquery');
 
     var margin = {
-            top: 20,
-            right: 80,
-            bottom: 30,
-            left: 50
+            top: 0,
+            right: 15,
+            bottom: 0,
+            left: 30
         },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
+        width = 890 - margin.left - margin.right,
+        height = 464 - margin.top - margin.bottom,
         dataUrl = ['/api/projects/2009/', '/api/projects/2-2/', '/api/projects/2-1/'];
 
 

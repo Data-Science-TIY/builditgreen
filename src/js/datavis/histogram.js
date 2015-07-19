@@ -4,14 +4,14 @@ module.exports = function(domLocation) {
 
     console.log('making histogram');
 
-    var margin = {
-            top: 20,
-            right: 20,
-            bottom: 30,
-            left: 40
+   var margin = {
+            top: 0,
+            right: 15,
+            bottom: 0,
+            left: 30
         },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
+        width = 890 - margin.left - margin.right,
+        height = 464 - margin.top - margin.bottom,
         dataUrl = ['/api/projects/2009/', '/api/projects/2-2/', '/api/projects/2-1/'];
 
     var color = d3.scale.ordinal().range(['#00F8B1', '#3E5A65', '#FFDB00', '#327EFF']);
@@ -129,11 +129,11 @@ module.exports = function(domLocation) {
                     .attr("class", "y axis")
                     .call(yAxis)
                     .append("text")
-                    .attr("y", 220)
-                    .attr("x", -30)
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
                     .attr("dy", ".71em")
                     .style("text-anchor", "end")
-                    .text("Count");
+                    .text("Frequency");
 
                 var legend = svg.selectAll(".legend")
                     .data(color.domain())
@@ -273,11 +273,11 @@ module.exports = function(domLocation) {
                             .attr("class", "y axis")
                             .call(yAxis)
                             .append("text")
-                            .attr("y", 220)
-                            .attr("x", -30)
+                            .attr("transform", "rotate(-90)")
+                            .attr("y", 6)
                             .attr("dy", ".71em")
                             .style("text-anchor", "end")
-                            .text("Count");
+                            .text("Frequency");
 
                     });
                 });

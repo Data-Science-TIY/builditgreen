@@ -477,13 +477,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     console.log('making overall score bar chart');
                     
                     var margin = {
-                        top: 20,
-                        right: 20,
-                        bottom: 30,
-                        left: 40
+                        top: 0,
+                        right: 30,
+                        bottom: 50,
+                        left: 30
                     },
-                    width = 960 - margin.left - margin.right,
-                    height = 500 - margin.top - margin.bottom,
+                    width = 824 - margin.left - margin.right,
+                    height = 430 - margin.top - margin.bottom,
                     endPoint2009 = "average_normal_scores_2009",
                     endPoint22 = "average_normal_scores_v2_2",
                     endPoint21 = "average_normal_scores_v2_1";
@@ -606,13 +606,13 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         });
 
                     legend.append("rect")
-                        .attr("x", width - 18)
+                        .attr("x", width + 14)
                         .attr("width", 18)
                         .attr("height", 18)
                         .style("fill", color);
 
                     legend.append("text")
-                        .attr("x", width - 24)
+                        .attr("x", width + 7)
                         .attr("y", 9)
                         .attr("dy", ".35em")
                         .style("text-anchor", "end")

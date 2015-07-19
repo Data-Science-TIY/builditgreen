@@ -2,23 +2,22 @@
     <h1 class="intro-header">Build it <span class="style-intro-header">Green</span></h1>
     <small>Data Science and Visualizations for Green Building Design</small>
     <div class="intro-image"></div>
-    <div class="intro-text">
+    <div class="intro-text altered-intro">
         <p>
-          Buildings account for over forty percent of energy use in the United States.  Leadership in Energy and Environmental Design (LEED) is a set of rating systems for the design, construction, operation, and maintenance of buildings to reduce energy and water consumption.
+          Buildings account for over forty percent of energy use in the United States.  LEED is a scoring system for the design and construction of buildings to reduce energy and water consumption.
         </p>
         <p>
-          Build It Green provides visual insights into trends in the LEED rating system — including a first of its kind meta-analysis of individual credit achievement. For example, we found renewable materials and innovation in wastewater technologies are almost never achieved. On the bright side, every year projects do better at cutting their heat island effect.  At Build It Green, we also analyze LEED certified buildings against open source energy data to find whether LEED is making a difference in reducing greenhouse gas emissions. 
+          Build It Green provides visual insights into trends in the LEED system — including a first of its kind analysis of individual credit achievement on new construction projects.  Interested in the real world energy performance of LEED buildings?   We compare LEED projects in New York City to non-LEED buildings to see how they stack up.
         </p>
         <p>
-          Our interactive site can help designers choose credits, researchers analyze trends, and government agencies compare their local buildings to national trends.  Build It Green is your first stop for engaging data visualizations of the LEED certification process.
+          Build It Green can help designers choose credits, researchers analyze trends, and government agencies compare their local buildings to national trends with data visualizations of the LEED certification process.
         </p>
       </div>  
   </div>
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet map-section">
-    <!--<h3 class="section-header">How does each state perform on LEED?</h3>-->
     <div class="left-side mdl-cell mdl-cell--3-col">
-      <h4 class="dropdown-header">LEED Projects by State</h4>
+      <h4 class="dropdown-header">Projects by State</h4>
       <div class="description map-desc">
         <p>
         Explore the map on the right to explore the total number and type of LEED projects built in each state.
@@ -37,69 +36,77 @@
   </div>
   <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
     <div class="left-side left-side-plotly mdl-cell mdl-cell--3-col">
-      <h4 class="dropdown-header left-side-plotly">Projects by City (Population Adjusted)</h4>
+      <h4 class="dropdown-header left-side-plotly">Projects by City</h4>
       <div class="description plotly-overview-desc">
         <p>
           After adjusting for population, how do cities perform? Smaller cities shine here, with many DC suburbs outperforming -- no doubt with many federal projects increasing their totals. In North Carolina, Jacksonville and Wilmington peform well on this adjusted scale. Explore how your city is doing in this interactive map.  
         </p>
       </div>
+      <div name="descriptor" id="plotly-dropdown">
+        <div value="total" checked="checked">Total</div>
+        <div value="adjusted">Adjusted</div>
+      </div>
     </div>
-    <div class="plotly-adjusted mdl-cell mdl-cell--9-col">
-       <a href="https://plot.ly/~jdhiggins/43/" target="_blank" title="Population Adjusted LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/43.png" alt="Population Adjusted LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-       <script data-plotly="jdhiggins:43"  src="https://plot.ly/embed.js" async></script>
+    <div class="main-plotly-container">
+     
+      <div class="plotly-total mdl-cell mdl-cell--9-col">
+         <a href="https://plot.ly/~jdhiggins/178/" target="_blank" title="Total LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/178.png" alt="Total LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:178"  src="https://plot.ly/embed.js" async></script>
+      </div>
+     
+     
+      <div class="plotly-adjusted mdl-cell mdl-cell--9-col">
+         <a href="https://plot.ly/~jdhiggins/180/" target="_blank" title="Population Adjusted LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/180.png" alt="Population Adjusted LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+         <script data-plotly="jdhiggins:180"  src="https://plot.ly/embed.js" async></script>
+      </div>
+     
     </div>
-    <!--
-    <div class="plotly-total mdl-cell mdl-cell--9-col">
-       <a href="https://plot.ly/~jdhiggins/41/" target="_blank" title="Total LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/41.png" alt="Total LEED Certified Projects&lt;br&gt;(Click legend to toggle traces)" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-       <script data-plotly="jdhiggins:41"  src="https://plot.ly/embed.js" async></script>
-    </div>
-    -->
   </div>
   <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
     <div class="left-side mdl-cell mdl-cell--3-col">
-      <h4 class="section-header">Has LEED grown over time?</h4>
+      <h4 class="section-header">Yearly Trends</h4>
+      <div class="description trend1-desc">
+        <p>
+          Do version implementations affect registrations and certifications?  Use this line chart to explore the yearly history of LEED.
+        </p>
+      </div>
       <div name="descriptor" id="trend1-dropdown">
         <div value="certLevels" checked="checked">Cert Level</div>
         <div value="regVsCert">Reg vs Cert</div>
         <div value="newConst">NC Versions</div>
         <div value="buildType">Residential</div>
       </div>
-      <div class="description trend1-desc">
-        <p>
-          Do version implementations affect registrations and certifications?  Use this line chart to explore the yearly history of LEED.
-        </p>
-      </div>
     </div>
     <div class="trend-1 mdl-cell mdl-cell--9-col"></div>
   </div>
   <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
     <div class="left-side mdl-cell mdl-cell--3-col">
-      <h4 class="section-header">Project Size and LEED Score</h4>
-      <div name="descriptor" id="trend2-dropdown">
-        <div value="0" checked="checked">LEED 2009</div>
-        <div value="1">LEED 2.2</div>
-        <div value="2">LEED 2.1</div>
-      </div>
+      <h4 class="section-header">Project Size and Score</h4>
       <div class="description trend2-desc">
         <p>
           Has project size and certification changed over time?  Does the size of the project correlate with certification levels?  Explore these scatterplots to visualize the all LEED certified projects.
         </p>
+      </div>
+      <div name="descriptor" id="trend2-dropdown">
+        <div value="0" checked="checked">LEED 2009</div>
+        <div value="1">LEED 2.2</div>
+        <div value="2">LEED 2.1</div>
       </div>   
     </div> 
     <div class="trend-2 mdl-cell mdl-cell--9-col"></div>
   </div>
   <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
     <div class="left-side mdl-cell mdl-cell--3-col">
-      <h4 class="section-header">Certification Level Cutoff Clustering</h4>
-      <div name="descriptor" id="trend3-dropdown">
-        <div value="0" checked="checked">LEED 2009</div>
-        <div value="1">LEED 2.2</div>
-        <div value="2">LEED 2.1</div>
-      </div>
+      <h4 class="section-header">Score Clustering</h4>
       <div class="description trend3-desc">
         <p>
           A histogram of the number of projects by score shows that the system encourages users to do the minimum to attain a certification level.
         </p>
+      </div>
+      <div name="descriptor" id="trend3-dropdown">
+        <div value="0" checked="checked">LEED 2009</div>
+        <div value="1">LEED 2.2</div>
+        <div value="2">LEED 2.1</div>
       </div>   
     </div> 
     <div class="trend-3 mdl-cell mdl-cell--9-col"></div>
