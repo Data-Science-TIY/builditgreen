@@ -423,11 +423,28 @@ strong {
 
 .plotly-desc {
  width: 85%;
- margin: 3em auto 0;
+ margin: 30em 0 0;
+ position: relative;
+}
+
+.total, .ea, .eq, .mr, .ss, .we,
+.rpid {
+  padding-top: 1.5em;
+}
+
+.score-plotly-container {
+  position: relative;
 }
 
 .total {
-  padding-top: 1.5em;
+  position: absolute !important;
+  visibility: visible;
+}
+
+.ea, .eq, .mr, .ss, .we,
+.rpid {
+  position: absolute !important;
+  visibility: hidden;
 }
 
 .leedvs-desc {
@@ -448,4 +465,16 @@ strong {
 
 .leedvs-p3 {
   margin: 4em 0 0 0;
+}
+
+.cluster-chart-container {
+      margin: 8em 0 5em;
+}
+
+.cluster-desc1 {
+  margin: 2em auto 0;
+}
+
+.cluster-desc3 {
+  text-align: center;
 }

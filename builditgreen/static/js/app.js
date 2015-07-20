@@ -10543,6 +10543,76 @@ router.route('','overview', function () {
       });
     });
     
+    $('#scoring-plotly-dropdown').on('click', function(e) {
+      setTimeout(function() {
+        
+        if ($(e.target).parent().val()==='total') {
+        $('.total').css('visibility', 'visible');
+        $('.ea').css('visibility', 'hidden');
+        $('.eq').css('visibility', 'hidden');
+        $('.mr').css('visibility', 'hidden');
+        $('.ss').css('visibility', 'hidden');
+        $('.we').css('visibility', 'hidden');
+        $('.rpid').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='ea') {
+        $('.total').css('visibility', 'hidden');
+        $('.ea').css('visibility', 'visible');
+        $('.eq').css('visibility', 'hidden');
+        $('.mr').css('visibility', 'hidden');
+        $('.ss').css('visibility', 'hidden');
+        $('.we').css('visibility', 'hidden');
+        $('.rpid').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='eq') {
+        $('.total').css('visibility', 'hidden');
+        $('.ea').css('visibility', 'hidden');
+        $('.eq').css('visibility', 'visible');
+        $('.mr').css('visibility', 'hidden');
+        $('.ss').css('visibility', 'hidden');
+        $('.we').css('visibility', 'hidden');
+        $('.rpid').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='mr') {
+        $('.total').css('visibility', 'hidden');
+        $('.ea').css('visibility', 'hidden');
+        $('.eq').css('visibility', 'hidden');
+        $('.mr').css('visibility', 'visible');
+        $('.ss').css('visibility', 'hidden');
+        $('.we').css('visibility', 'hidden');
+        $('.rpid').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='ss') {
+        $('.total').css('visibility', 'hidden');
+        $('.ea').css('visibility', 'hidden');
+        $('.eq').css('visibility', 'hidden');
+        $('.mr').css('visibility', 'hidden');
+        $('.ss').css('visibility', 'visible');
+        $('.we').css('visibility', 'hidden');
+        $('.rpid').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='we') {
+        $('.total').css('visibility', 'hidden');
+        $('.ea').css('visibility', 'hidden');
+        $('.eq').css('visibility', 'hidden');
+        $('.mr').css('visibility', 'hidden');
+        $('.ss').css('visibility', 'hidden');
+        $('.we').css('visibility', 'visible');
+        $('.rpid').css('visibility', 'hidden');
+      }
+        else if ($(e.target).parent().val()==='rpid') {
+        $('.total').css('visibility', 'hidden');
+        $('.ea').css('visibility', 'hidden');
+        $('.eq').css('visibility', 'hidden');
+        $('.mr').css('visibility', 'hidden');
+        $('.ss').css('visibility', 'hidden');
+        $('.we').css('visibility', 'hidden');
+        $('.rpid').css('visibility', 'visible');
+      }                              
+        
+      });
+    });
+    
   }
   
   function renderAbout () {
