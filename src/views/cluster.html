@@ -10,57 +10,75 @@
         </p>
       </div> 
 </div>
-<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
+<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-chart-container">
   <div class="left-side-leed mdl-cell mdl-cell--3-col">
     <h4 class="section-header">Average Credits Achieved by Cluster</h4>
     <div class="description plotly-cluster1-desc">
-        <p>
-            Description: Comparison of K-Means clusters using the detailed credit data.
-            
-            Interesting Findings: Optimized energy performance (EAc1) and on-site renewable energy (EAc2) are the main indicators for the clusters and are highly correlated with building size and total property area. Buildings with small square footage and small total property area perform best energy optimization and include a higher perecent of on-site renewable energy.
-            
-            Further Analysis: The clustering may become more signifcant with more observations about the buildings. This could be expanded to predicting levels of LEED achieved based on a few specific data points.
+        <p>   
+            <strong>Interesting Findings:</strong> Optimized energy performance (EAc1) and on-site renewable energy (EAc2) are the main indicators for the clusters and are highly correlated with building size and total property area. Buildings with small square footage and small total property area perform best energy optimization and include a higher perecent of on-site renewable energy.
+         </p>
+         <p>   
+            <strong>Further Analysis:</strong> The clustering may become more signifcant with more observations about the buildings. This could be expanded to predicting levels of LEED achieved based on a few specific data points.
         </p>
     </div>
-  </div>    
-    <div class="plotly-leedvs2-chart mdl-cell mdl-cell--9-col">
-        <a href="https://plot.ly/~jdhiggins/101/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/101.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
-    </div>
+  </div> 
+  <div class="scoring2-container mdl-cell mdl-cell--9-col">   
+      <div class="plotly-leedvs2-chart">
+          <a href="https://plot.ly/~jdhiggins/101/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/101.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+           <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <div class = "description scoring-desc leedvs-desc">
+        <p>
+            <strong>Description:</strong> Comparison of K-Means clusters using the detailed credit data.
+        </p>
+      </div>
+   </div>
 </div>
-<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
+<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-chart-container">
   <div class="left-side-leed mdl-cell mdl-cell--3-col">
     <h4 class="section-header">Cluster Attributes</h4>
     <div class="description plotly-cluster2-desc">
-        <p>
-            Description: Clusters by average gross quare footage and total property area.
-            
-            Interesting Findings: Without knowing the building size or total property area, our K-Means and mean shift analysis clustered by building size and lot size.
-            
-            Further Analysis: Is there are difference between rural and urban buildings within clusters?  The largest cluster has buildings of relatively larger size on larger lots.  How can we further differentiate within that group?
+        <p>  
+            <strong>Interesting Findings:</strong> Without knowing the building size or total property area, our K-Means and mean shift analysis clustered by building size and lot size.
+        </p>
+        <p>    
+            <strong>Further Analysis:</strong> Is there are difference between rural and urban buildings within clusters?  The largest cluster has buildings of relatively larger size on larger lots.  How can we further differentiate within that group?
         </p>
     </div> 
   </div>   
-    <div class="plotly-cluster2-chart mdl-cell mdl-cell--9-col">
-        <a href="https://plot.ly/~jdhiggins/105/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/105.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
-    </div>
+  <div class="scoring2-container mdl-cell mdl-cell--9-col">
+      <div class="plotly-cluster2-chart">
+          <a href="https://plot.ly/~jdhiggins/105/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/105.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+           <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <div class = "description scoring-desc leedvs-desc">
+        <p>
+            <strong>Description:</strong> Clusters by average gross quare footage and total property area.
+        </p>
+      </div>
+   </div>
 </div>
-<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container">
+<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-chart-container">
   <div class="left-side-leed mdl-cell mdl-cell--3-col">
     <h4 class="section-header">Total Score by Cluster</h4>
     <div class="description plotly-cluster3-desc">
-        <p>
-            Description: Average score of the three clusters.
-            
-            Interesting Findings: Buildings with a small square foot and small property area achieve the most points. Big buildings with a large property area score higher than big buidlings with a relatively smaller property area.
-            
-            Further Analysis: Plot each cluster on a map to identify geographical connection within clusters.  Analyze how lot size correlates or affects total score.  Is project cost higher or lower with larger lots?  Is it relatively easier or harder to build an environmentally sound project on a smaller lot?
+        <p>    
+            <strong>Interesting Findings:</strong> Buildings with a small square foot and small property area achieve the most points. Big buildings with a large property area score higher than big buidlings with a relatively smaller property area.
+        </p>
+        <p>    
+            <strong>Further Analysis:</strong> Plot each cluster on a map to identify geographical connection within clusters.  Analyze how lot size correlates or affects total score.  Is project cost higher or lower with larger lots?  Is it relatively easier or harder to build an environmentally sound project on a smaller lot?
         </p>
     </div>    
   </div>
-    <div class="plotly-cluster3-chart mdl-cell mdl-cell--9-col">
-        <a href="https://plot.ly/~jdhiggins/103/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/103.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-         <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
-    </div>
+  <div class="scoring-plotly mdl-cell mdl-cell--9-col">
+      <div class="plotly-cluster3-chart">
+          <a href="https://plot.ly/~jdhiggins/103/" target="_blank" title="Score vs Year" style="display: block; text-align: center;"><img src="https://plot.ly/~jdhiggins/103.png" alt="Score vs Year" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+           <script data-plotly="jdhiggins:84"  src="https://plot.ly/embed.js" async></script>
+      </div>
+      <div class = "description scoring-desc leedvs-desc">
+        <p>
+            <strong>Description:</strong> Average score of the three clusters.
+        </p>
+      </div>
+   </div>
 </div>

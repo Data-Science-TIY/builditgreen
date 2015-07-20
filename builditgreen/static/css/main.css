@@ -5740,7 +5740,8 @@ svg {
   padding: 0; }
 
 .left-side-score1-section-header {
-  padding-top: 0; }
+  padding-top: 0;
+  padding-bottom: 1.5em; }
 
 .left-side-score1 .description {
   margin-top: 1em; }
@@ -5789,7 +5790,7 @@ svg {
   margin-top: 0; }
 
 .section-header-plotly {
-  padding-bottom: 2.5em; }
+  padding-bottom: 1.5em; }
 
 .chart-container-plotly .description p {
   font-size: 14px;
@@ -5805,15 +5806,13 @@ svg {
   display: inline-block; }
 
 .left-side-leed, .left-side-leed3 {
-  margin-top: 6.5em;
   float: left; }
 
 .left-side-leed .section-header, .left-side-leed3 .section-header {
   margin-bottom: 2em; }
 
 .left-side-leed3 .description p, .left-side-leed .description p {
-  font-size: 18px;
-  margin: 0; }
+  font-size: 14px; }
 
 strong {
   font-weight: 700; }
@@ -5840,7 +5839,7 @@ strong {
   padding: 2em 0; }
 
 .overallbar {
-  margin: 0 auto;
+  margin: 0 auto 2em;
   display: block; }
 
 .scoring1-desc {
@@ -5875,3 +5874,18 @@ strong {
 
 .total {
   padding-top: 1.5em; }
+
+.leedvs-desc {
+  padding: 0 0em 0 25em; }
+
+.leedvs-desc p {
+  font-size: 14px; }
+
+.leedvs-chart-container {
+  margin: 3em 0 3em 0; }
+
+.leedvs-chart-container3 {
+  margin: 3.7em 0 3em 0; }
+
+.leedvs-p3 {
+  margin: 4em 0 0 0; }
