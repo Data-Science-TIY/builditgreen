@@ -5749,8 +5749,9 @@ svg {
   line-height: 1.4em;
   font-size: 14px; }
 
-.cc-by-year svg {
-  padding-bottom: 0; }
+.cc-by-year svg, .cc-by-category svg {
+  padding-bottom: 0;
+  padding-left: 2em; }
 
 .cc-by-year .description, .cc-by-category .description {
   width: 90%;
@@ -5767,7 +5768,7 @@ svg {
   margin: 0 auto 2em; }
 
 .overallbar svg {
-  padding: 0; }
+  padding: 0 0 0 2em; }
 
 .scoring-plotly-dropdown {
   width: 90%;
@@ -5777,22 +5778,18 @@ svg {
   width: 90%;
   margin: 0 auto; }
 
-.total {
+.scoring-plotly {
   margin: 0;
   display: inline-block; }
 
 .chart-container-plotly {
-  margin: 1.2em 8px 5em 8px; }
+  margin: 2em 8px 5em 8px; }
 
 .chart-container-plotly .left-side {
   margin-top: 0; }
 
 .section-header-plotly {
   padding-bottom: 2.5em; }
-
-.chart-container-plotly .description {
-  width: 85%;
-  margin: 0em auto 0; }
 
 .chart-container-plotly .description p {
   font-size: 14px;
@@ -5837,3 +5834,44 @@ strong {
 
 .trend-3 svg {
   padding-left: 1em; }
+
+.overallbar-container {
+  display: inline-block;
+  padding: 2em 0; }
+
+.overallbar {
+  margin: 0 auto;
+  display: block; }
+
+.scoring1-desc {
+  width: 500px;
+  margin: 2em auto; }
+
+.scoring-desc {
+  margin: 0em auto; }
+
+.scoring-desc p {
+  font-size: 14px;
+  line-height: 1.4em;
+  display: inline-block;
+  width: 80%;
+  margin-right: 1em;
+  margin-bottom: 0; }
+
+.analysis-btn {
+  display: inline-block;
+  margin: 0 1em 1.5em 0; }
+
+.scoring2-container {
+  display: inline-block; }
+
+.left-side-score2-section-header {
+  padding-top: 0;
+  padding-bottom: 1em; }
+
+.plotly-desc {
+  width: 85%;
+  margin: 3em auto 0; }
+
+.total {
+  padding-top: 1.5em; }
