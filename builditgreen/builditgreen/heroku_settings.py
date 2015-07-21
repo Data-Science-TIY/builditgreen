@@ -37,7 +37,7 @@ CACHES = {
         # timeout that should be applied to keys! Setting it to `None`
         # disables expiration.
         'TIMEOUT': None,
-        'LOCATION': os.environ.get('MMEMCACHIER_SERVERS').split(','),
+        'LOCATION': os.environ.get('MEMCACHIER_SERVERS').split(','),
         'USERNAME': os.environ.get('MEMCACHIER_USERNAME'),
         'PASSWORD': os.environ.get('MEMCACHIER_PASSWORD'),
 
