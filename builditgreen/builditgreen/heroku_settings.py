@@ -28,9 +28,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
         'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
-        'OPTIONS': {
-            'username': os.environ.get('MEMCACHEDCLOUD_USERNAME'),
-            'password': os.environ.get('MEMCACHEDCLOUD_PASSWORD')
+        'USERNAME': os.environ.get('MEMCACHEDCLOUD_USERNAME'),
+        'PASSWORD': os.environ.get('MEMCACHEDCLOUD_PASSWORD'),
         }
     }
-}
