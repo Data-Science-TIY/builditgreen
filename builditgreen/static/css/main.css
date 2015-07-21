@@ -5797,7 +5797,7 @@ svg {
   margin: 0; }
 
 .leedvs-intro {
-  padding: 3em; }
+  padding: 5em; }
 
 .leedvs-intro-header {
   margin: 0em auto 0.5em; }
@@ -5847,7 +5847,8 @@ strong {
   margin: 2em auto; }
 
 .scoring-desc {
-  margin: 0em auto; }
+  margin: 0em auto;
+  position: relative; }
 
 .scoring-desc p {
   font-size: 14px;
@@ -5860,6 +5861,9 @@ strong {
 .analysis-btn {
   display: inline-block;
   margin: 0 1em 1.5em 0; }
+
+.m-btn2 {
+  margin: 0 1em 4em 0; }
 
 .scoring2-container {
   display: inline-block; }
@@ -5895,20 +5899,189 @@ strong {
 .leedvs-desc p {
   font-size: 14px; }
 
+.leedvs-chart-container1 {
+  margin: 4em 0 4em 0; }
+
 .leedvs-chart-container {
   margin: 3em 0 3em 0; }
 
 .leedvs-chart-container3 {
-  margin: 3.7em 0 3em 0; }
+  margin: 4.5em 0; }
 
 .leedvs-p3 {
   margin: 4em 0 0 0; }
 
 .cluster-chart-container {
-  margin: 8em 0 5em; }
+  margin: 6.5em 0 3.5em; }
+
+.cluster-chart-container2 {
+  margin: 0em 0 8em; }
 
 .cluster-desc1 {
   margin: 2em auto 0; }
 
 .cluster-desc3 {
   text-align: center; }
+
+.cluster-img {
+  width: 930px; }
+
+.oeui {
+  display: block; }
+
+.ueui, .oghg, .ughg {
+  display: none; }
+
+.leedvs-plotly-container {
+  margin: 8em 0 4em; }
+
+.plotly-analysis {
+  margin: 0 1em 3em 0; }
+
+.plotly-scoring-desc {
+  margin: 0; }
+
+.modal1 {
+  position: absolute;
+  top: -225px;
+  width: 55%;
+  background-color: HSLA(120, 3%, 34%, 0.9);
+  color: white;
+  padding: 1em;
+  border-radius: 10px;
+  display: none; }
+
+.modal2 {
+  position: absolute;
+  top: -190px;
+  width: 55%;
+  background-color: HSLA(120, 3%, 34%, 0.9);
+  color: white;
+  padding: 1em;
+  border-radius: 10px;
+  display: none; }
+
+.modal3 {
+  position: absolute;
+  top: -265px;
+  width: 55%;
+  background-color: HSLA(120, 3%, 34%, 0.9);
+  color: white;
+  padding: 1em;
+  border-radius: 10px;
+  display: none; }
+
+.modal4 {
+  position: absolute;
+  top: -210px;
+  width: 55%;
+  background-color: HSLA(120, 3%, 34%, 0.9);
+  color: white;
+  padding: 1em;
+  border-radius: 10px;
+  display: none; }
+
+.modal4-ea, .modal4-eq, .modal4-mr, .modal4-ss,
+.modal4-we, .modal4-rpid {
+  display: none; }
+
+.modal2-ea {
+  display: block; }
+
+.modal2-id, .modal2-eq, .modal2-mr, .modal2-ss,
+.modal2-we, .modal2-rp {
+  display: none; }
+
+.modal3-ea {
+  display: block; }
+
+.modal3-id, .modal3-eq, .modal3-mr, .modal3-ss,
+.modal3-we, .modal3-rp {
+  display: none; }
+
+.modal5 {
+  position: absolute;
+  top: -345px;
+  width: 65%;
+  background-color: HSLA(120, 3%, 34%, 0.9);
+  color: white;
+  padding: 1em;
+  border-radius: 10px;
+  display: none; }
+
+.description .modal1 p, .description .modal2 p, .description .modal3 p,
+.description .modal4 p, .description .modal5 p {
+  margin: 0.5em auto;
+  width: 100%; }
+
+.btn-leedvs-plotly {
+  margin: 0.5em auto;
+  display: block;
+  width: 10em; }
+
+.header-nav {
+  padding: 0 40px; }
+
+.scoring-desc .total-plotly-desc {
+  display: inline-block; }
+
+.scoring-desc .total-plotly-ea, .scoring-desc .total-plotly-eq,
+.scoring-desc .total-plotly-mr, .scoring-desc .total-plotly-ss,
+.scoring-desc .total-plotly-we, .scoring-desc .total-plotly-rpid {
+  display: none; }
+
+.ac-d3-2009 {
+  display: inline-block;
+  width: 80%; }
+
+.cc-d3-2009 {
+  display: inline-block;
+  width: 80%; }
+
+.ac-d3-22, .ac-d3-21 {
+  display: none;
+  width: 80%; }
+
+.cc-d3-22, .cc-d3-21 {
+  display: none;
+  width: 80%; }
+
+.scoring-desc .ac-d3-desc-ea {
+  display: inline-block;
+  width: 100%; }
+
+.scoring-desc .cc-d3-desc-ea {
+  display: inline-block;
+  width: 100%; }
+
+.scoring-desc .ac-d3-desc-eq, .scoring-desc .ac-d3-desc-rp, .scoring-desc .ac-d3-desc-id,
+.scoring-desc .ac-d3-desc-mr, .scoring-desc .ac-d3-desc-ss, .scoring-desc .ac-d3-desc-we,
+.scoring-desc .ac-d3-desc-ea22, .scoring-desc .ac-d3-desc-ea21, .scoring-desc .ac-d3-desc-eq22,
+.scoring-desc .ac-d3-desc-eq21, .scoring-desc .ac-d3-desc-rp22, .scoring-desc .ac-d3-desc-rp21,
+.scoring-desc .ac-d3-desc-id22, .scoring-desc .ac-d3-desc-id21, .scoring-desc .ac-d3-desc-mr22,
+.scoring-desc .ac-d3-desc-mr21, .scoring-desc .ac-d3-desc-ss22, .scoring-desc .ac-d3-desc-ss21,
+.scoring-desc .ac-d3-desc-we22, .scoring-desc .ac-d3-desc-we21 {
+  display: none;
+  width: 100%; }
+
+.scoring-desc .cc-d3-desc-eq, .scoring-desc .cc-d3-desc-rp, .scoring-desc .cc-d3-desc-id,
+.scoring-desc .cc-d3-desc-mr, .scoring-desc .cc-d3-desc-ss, .scoring-desc .cc-d3-desc-we,
+.scoring-desc .cc-d3-desc-ea22, .scoring-desc .cc-d3-desc-ea21, .scoring-desc .cc-d3-desc-eq22,
+.scoring-desc .cc-d3-desc-eq21, .scoring-desc .cc-d3-desc-rp22, .scoring-desc .cc-d3-desc-rp21,
+.scoring-desc .cc-d3-desc-id22, .scoring-desc .cc-d3-desc-id21, .scoring-desc .cc-d3-desc-mr22,
+.scoring-desc .cc-d3-desc-mr21, .scoring-desc .cc-d3-desc-ss22, .scoring-desc .cc-d3-desc-ss21,
+.scoring-desc .cc-d3-desc-we22, .scoring-desc .cc-d3-desc-we21 {
+  display: none;
+  width: 100%; }
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 150px;
+  height: 25px;
+  padding: 2px;
+  font-size: 10px;
+  background: #FFFFE0;
+  border: 1px;
+  border-radius: 8px;
+  pointer-events: none; }

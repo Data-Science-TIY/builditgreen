@@ -5,11 +5,15 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
     
     var dataUrl = ['/api/score-trends-2009/', '/api/score-trends-2-2/', '/api/score-trends-2-1/'];
     
-    var chosenColors = ['#00F8B1', '#327EFF', '#FFDB00', '#3E5A65', '#5D00A9', '#EB6C48', '#5D00A9'];
+    var chosenColors = ['#965347', '#ED0000', '#00A730', '#FF7A00', '#0073B6', '#A05ABD', '#F866C0'];
     
     var color = d3.scale.category10();
     
+    var color1 = ['#327EFF', '#3E5A65', '#00F8B1', '#FFDB00'];
     
+    var color2 = ['#327EFF', '#FFDB00', '#00F8B1', '#3E5A65'];
+    
+    console.log(color);
     
     var svg = d3.select(domLocation).append("svg");
     
@@ -120,7 +124,12 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
 
                         dataSource2 = eval('data' + d3.select(".btn-sc2-version-on").node().value);
                         category2 = d3.select(".btn-sc2-category-on").node().value;
-                        buildCategoryPlot(dataSource2, category2);
+                        if ($('.btn-sc2-version-on').val()=='0') {
+                            buildCategoryPlot(dataSource2, category2, color1);
+                        }
+                        else {
+                             buildCategoryPlot(dataSource2, category2, color2);
+                        }
 
                     });
 
@@ -132,19 +141,26 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
 
                         dataSource2 = eval('data' + d3.select(".btn-sc2-version-on").node().value);
                         category2 = d3.select(".btn-sc2-category-on").node().value;
-                        buildCategoryPlot(dataSource2, category2);
-
+                        if ($('.btn-sc2-version-on').val()=='0') {
+                            buildCategoryPlot(dataSource2, category2, color1);
+                        }
+                        else {
+                             buildCategoryPlot(dataSource2, category2, color2);
+                        }
                     });
 
                 });
                 
                 buildOverallPlot();
                 buildYearPlot(dataSource, category);
-                buildCategoryPlot(dataSource2, category2);
+                buildCategoryPlot(dataSource2, category2, color1);
                 
                 
 
                 function buildYearPlot(data, cat) {
+                    
+                    var color = d3.scale.ordinal()
+                                    .range(['#965347', '#ED0000', '#00A730', '#FF7A00', '#0073B6', '#A05ABD', '#F866C0']);
                     
                     svg2.selectAll('g').remove();
                     
@@ -310,7 +326,10 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         });
                 };
                 
-                function buildCategoryPlot(data, cat) {
+                function buildCategoryPlot(data, cat, color) {
+                    
+                    var color = d3.scale.ordinal()
+                                    .range(color);
                     
                     svg3.selectAll('g').remove();
                     
@@ -371,7 +390,17 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         }
                     });
                     
-                    //console.log(categories);
+                    console.log(categories);
+                    var categories2 = [];
+                    categories.forEach(function(i) {
+                        //console.log(categories[i]);
+                        console.log(i);
+                        if (i=='Certified' || i=='Silver'|| i=='Gold'|| i=='Platinum') {
+                            categories2.push(i);
+                        }
+                    });
+                    
+                    console.log(categories);
                     
                     var allValues = [];
                     var objArr = [];
@@ -382,7 +411,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         //console.log(data[d]);
                         data[d].credit = d;
                         objArr.push(data[d]);
-                        categories.forEach(function(category) {
+                        categories2.forEach(function(category) {
                            //console.log(year);
                            //console.log(data[d][year]);
                            allValues.push(data[d][category]);
@@ -392,7 +421,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                     });
                     
                     objArr.forEach(function(d) {
-                      d.categories = categories.map(function(category) { return {category: category, value: +d[category]}; });
+                      d.categories = categories2.map(function(category) { return {category: category, value: +d[category]}; });
                     });
                     
                     console.log(allValues);
@@ -402,7 +431,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         return d;
                     }));
                     
-                    x1.domain(categories).rangeRoundBands([0, x0.rangeBand()]);
+                    x1.domain(categories2).rangeRoundBands([0, x0.rangeBand()]);
                     
                     
                     y.domain([0, d3.max(allValues, function(d) {
@@ -433,11 +462,14 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .enter().append("g")
                         .attr("class", "g")
                         .attr("transform", function(d) {
+                            // console.log(d.credit);
                             return "translate(" + x0(d.credit) + ",0)";
                         });
                     
                     category.selectAll("rect")
-                        .data(function(d) { return d.categories; })
+                        .data(function(d) { 
+                            
+                            return d.categories; })
                         .enter().append("rect") 
                         .attr("width", x1.rangeBand())
                         .attr("x", function(d) { 
@@ -449,10 +481,11 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .style("fill", function(d) { return color(d.category); }); 
                     
                     var legend3 = svg3.selectAll(".legend")
-                        .data(categories.slice().reverse())
+                        .data(categories2.slice().reverse())
                         .enter().append("g")
                         .attr("class", "legend")
                         .attr("transform", function(d, i) {
+                            console.log(d);
                             return "translate(0," + i * 20 + ")";
                         });
 
@@ -468,6 +501,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .attr("dy", ".35em")
                         .style("text-anchor", "end")
                         .text(function(d) {
+                            console.log(d);
                             return d;
                         });
                 };
@@ -602,6 +636,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .enter().append("g")
                         .attr("class", "legend")
                         .attr("transform", function(d, i) {
+                           // console.log(d);
                             return "translate(0," + i * 20 + ")";
                         });
 
@@ -617,6 +652,7 @@ module.exports = function(domLocation, domLocation2, domLocation3) {
                         .attr("dy", ".35em")
                         .style("text-anchor", "end")
                         .text(function(d) {
+                           // console.log(d);
                             return d;
                         });
 

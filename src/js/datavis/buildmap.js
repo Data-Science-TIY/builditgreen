@@ -32,7 +32,11 @@ module.exports = function(descriptor, gradient) {
 
     var ls_w = 20,
         ls_h = 20;
-
+     /*   
+    var div = d3.select(".map").append("div")   
+      .attr("class", "tooltip")               
+      .style("opacity", 0);        
+*/
 
     d3.json("/api/us", function(data) {
         //console.log(d3.max(data, function(d) { return d.number_of_projects; }));
@@ -86,8 +90,29 @@ module.exports = function(descriptor, gradient) {
                     }
 
                 })
-                .style("stroke", "#fff");
-
+                .style("stroke", "#fff")
+                /*
+                .on("mouseover", function(d) {
+                    d3.select(this).transition().duration(100).style("opacity", 1);
+                    div.transition().duration(100)
+                    .style("opacity", 1)
+                    div
+                        .data(json.features)
+                        .text(function (d) {
+                        console.log(d.properties.value);
+                        return 'Projects ' + ': ' + d.properties.value;
+                    })
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY -30) + "px");
+                  })
+                  .on("mouseout", function() {
+                    d3.select(this)
+                    .transition().duration(100)
+                    .style("opacity", 0.8);
+                    div.transition().duration(100)
+                    .style("opacity", 0);
+                  })
+                  */
             legend.append("rect")
                 .attr("x", 20)
                 .attr("y", function(d, i) {
@@ -99,6 +124,7 @@ module.exports = function(descriptor, gradient) {
                     return color(d);
                 })
                 .style("opacity", 0.8);
+
 
             var dF = d3.max(data, function(d) {
                 //console.log(d);
