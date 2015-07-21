@@ -32,3 +32,22 @@ CACHES = {
         'PASSWORD': os.environ.get('MEMCACHEDCLOUD_PASSWORD'),
         }
     }
+
+LOGGING = {
+    "version": 1,
+    # Don't throw away default loggers.
+    "disable_existing_loggers": False,
+    "handlers": {
+        # Redefine console logger to run in production.
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        # Redefine django logger to use redefined console logging.
+        "django": {
+            "handlers": ["console"],
+        }
+    }
+}
