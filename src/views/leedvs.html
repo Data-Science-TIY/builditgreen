@@ -1,5 +1,5 @@
 <div class="intro-container leedvs-intro">
-    <h1 class="intro-header leedvs-intro-header">Energy Analysis of LEED Buildings<span         class="style-intro-header"></span></h1>
+    <h1 class="intro-header leedvs-intro-header">Energy <span class="style-intro-header">Analysis</span></h1>
     <div class="intro-image"></div>
     <div class="intro-text">
         <p>
@@ -10,7 +10,93 @@
         </p>
       </div> 
 </div>
-<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-chart-container">
+<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-chart-container1">
+    <div class="left-side-leed mdl-cell mdl-cell--3-col">
+        <h4 class="section-header">Building Size and Energy Use</h4>
+        <div class="description plotly-leedvs1-desc">
+          <p>
+            <strong>Interesting Findings:</strong> This initial view suggests that LEED buildings perform similarly on GHG emissions to similarly sized non-LEED buildings, with a similar general shape but perhaps a slightly less steep slope, indicating somewhat better performance.
+          </p>
+          <p>
+            <strong>Further analysis:</strong> What scores and certifications did the New York City LEED buildings achieve?  How would commercial buildings do on a similar analysis?
+          </p>
+        </div>    
+    </div>
+        <div>
+           <img class="cluster-img" src="/static/img/energy-scatter.png" alt="energy scatter">
+        </div>
+        <div class = "description scoring-desc leedvs-desc">
+          <p>
+            <strong>Description:</strong> To get a general overview of the data, a scatterplot shows the relationship between square footage on the x axis and total greenhouse gas emissions on the y axis of residential multifamily buildings in New York City.
+          </p>
+        </div>
+</div>
+<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-chart-container1">
+    <div class="left-side-leed mdl-cell mdl-cell--3-col">
+        <h4 class="section-header">Score Distribution</h4>
+        <div class="description plotly-leedvs1-desc">
+          <p>
+            <strong>Interesting Findings:</strong> Most of these LEED buildings were scored on the 2.1 and 2.2 LEED NC versions. They averaged a LEED score of 37, with the most common score being a 33, right at the cutoff for Silver Certification. As we have seen in other analyses, the credits that are most heavily tied to building energy performance are not generally achieved until LEED status reaches Gold and Platinum.
+          </p>
+          <p>
+            <strong>Further analysis:</strong> How do the individual buildings do against buildings of a similar size and use in New York City? How expensive is LEED certification? How do builders decide which level to pursue?
+          </p>
+        </div>    
+    </div>
+        <div>
+           <img class="cluster-img" src="/static/img/energy-histogram.png" alt="energy histogram">
+        </div>
+        <div class = "description scoring-desc leedvs-desc">
+          <p>
+            <strong>Description:</strong> A histogram shows the LEED score distributions of seventeen New York City buildings in our analysis.
+          </p>
+        </div>
+</div>
+<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-plotly-container">
+  <div class="left-side left-side-score1 mdl-cell mdl-cell--3-col">
+    <h4 class="section-header left-side-score1-section-header">Building Performance</h4>
+    <div name="descriptor" id="leedvs-plotly-dropdown">
+      <div value="oeui" checked="checked">EUI > 150K SQ FT</div>
+      <div value="ueui">EUI &lt; 150K SQ FT</div>
+      <div value="oghg">GHG > 150K SQ FT</div>
+      <div value="ughg">EUI &lt; 150K SQ FT</div>
+    </div>
+  </div>
+  <div class="scoring2-container mdl-cell mdl-cell--9-col">
+    <div class="cc-by-category">
+      <div class="oeui">
+         <img class="cluster-img" src="/static/img/energy-over-EUI.png" alt="over EUI">
+      </div>
+      <div class="ueui">
+         <img class="cluster-img" src="/static/img/energy-under-EUI.png" alt="under EUI">
+      </div>
+      <div class="oghg">
+         <img class="cluster-img" src="/static/img/energy-over-ghg.png" alt="over ghg">
+      </div>
+      <div class="ughg">
+         <img class="cluster-img" src="/static/img/energy-under-ghg.png" alt="under ghg">
+      </div>
+    </div>
+    <div class = "description plotly-scoring-desc scoring-desc">
+      <div class="modal5">
+        <p>
+          <strong>Interesting Findings:</strong> We then compared each building on Temperature Weighted Source EUI and direct , indirect, and total greenhouse gas emissions. Source energy represents the total amount of raw fuel that is required to operate the building. It incorporates all transmission, delivery, and production losses. By taking all energy use into account, the score provides a complete assessment of energy efficiency in a building.  LEED performance is uneven in this sample of NYC buildings. LEED buildings generally outperform non LEED in total greenhouse gas emissions, with 13 out of 17 doing better than their similarly sized peers.  However, they fare worse on Temperature Weighted Source EUI, with only 6 of 17 outperforming their peers. 
+        </p>
+        <p>
+         <strong>Further analysis:</strong> With a bigger sample, could LEED score be correlated with energy performance?  With a detailed score breakdown for each building, could we correlate energy performance to EAc1 and EAc1: 
+         Optimize Energy Performance and On-site Renewable Energy?
+        </p>
+      </div>
+      <button class="analysis-btn m-btn5 plotly-analysis mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+      Analysis
+      </button>
+        <p>
+          <strong>Description:</strong> A comparison of each individual LEED building to a subset of multifamily residential buildings with similar square footage. For example, if a LEED building is 50000 square feet, we compared it to peers between 45000 and 55000 square feet. 
+        </p>
+    </div>
+  </div>
+</div>
+<div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet chart-container leedvs-chart-container1">
     <div class="left-side-leed mdl-cell mdl-cell--3-col">
         <h4 class="section-header">303 East 33rd Street</h4>
         <div class="description plotly-leedvs1-desc">
@@ -23,8 +109,7 @@
         </div>    
     </div>
         <div>
-           <a href="https://plot.ly/~trippshealy/35/" target="_blank" title="Building 303 East 33 Street vs Average Similar Buildings" style="display: block; text-align: center;"><img src="https://plot.ly/~trippshealy/35.png" alt="Building 303 East 33 Street vs Average Similar Buildings" style="max-width: 100%;width: 960px;"  width="960" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-           <script data-plotly="trippshealy:35"  src="https://plot.ly/embed.js" async></script>
+           <img src="/static/img/energy-303-east.jpg" alt="303">
         </div>
         <div class = "description scoring-desc leedvs-desc">
           <p>
@@ -45,8 +130,7 @@
         </div>
     </div>  
         <div class="plotly-leedvs2-chart mdl-cell mdl-cell--9-col">
-            <a href="https://plot.ly/~trippshealy/33/" target="_blank" title="Building 149 East 85 Street vs Average Similar Buildings" style="display: block; text-align: center;"><img src="https://plot.ly/~trippshealy/33.png" alt="Building 149 East 85 Street vs Average Similar Buildings" style="max-width: 100%;width: 960px;"  width="960" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-            <script data-plotly="trippshealy:33"  src="https://plot.ly/embed.js" async></script>
+            <img src="/static/img/energy-149-east.jpg" alt="149">
         </div>
         <div class = "description scoring-desc leedvs-desc">
           <p>
@@ -67,8 +151,7 @@
         </div>   
     </div> 
     <div class="plotly-leedvs2-chart">
-        <a href="https://plot.ly/~trippshealy/31/" target="_blank" title="Building 628 West 113th Street vs Average Similar Buildings" style="display: block; text-align: center;"><img src="https://plot.ly/~trippshealy/31.png" alt="Building 628 West 113th Street vs Average Similar Buildings" style="max-width: 100%;width: 960px;"  width="960" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-        <script data-plotly="trippshealy:31"  src="https://plot.ly/embed.js" async></script>
+        <img src="/static/img/energy-628-west.jpg" alt="628">
     </div>
     <div class = "description scoring-desc leedvs-desc">
       <p>
